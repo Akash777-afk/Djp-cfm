@@ -1,0 +1,658 @@
+<div class="the-djp">
+
+  <!-- ===== Topbar ===== -->
+  <div class="rectangle-group">
+    <div class="group-child12"></div>
+    <img class="airtel-logo-4-icon" src="\assets\Airtel-logo 5.png" alt="Airtel" />
+
+    <div class="text-input">
+      <img class="icon" src="\assets\Search-topbar.svg" alt="" />
+      <input
+        type="text"
+        class="search-services-devices search-input"
+        [(ngModel)]="searchQuery"
+        [placeholder]="searchPlaceholder"
+        (keyup.enter)="onSearch()"
+        aria-label="Search services, devices, or alerts"
+      />
+    </div>
+
+    <div class="walk-through-our-exclusive-dig-parent">
+      <div class="welcome-to-cmf-row">
+        <div class="welcome-to-cmf">{{ portalTitle }}</div>
+        <img class="emoji-icon" src="\assets\welcome-dude.png" alt="" />
+      </div>
+      <div class="walk-through-our">{{ portalSubtitle }}</div>
+    </div>
+
+    <div class="button-parent">
+      <button type="button" class="button5" aria-label="Documents" (click)="onDocumentsClick()">
+        <img class="famiconsdocuments-outline" src="\assets\Documentation-topbar.svg" alt="" />
+      </button>
+      <button type="button" class="button5" aria-label="Notifications" (click)="onNotificationsClick()">
+        <img class="famiconsdocuments-outline" src="\assets\App-topbar.svg" alt="" />
+      </button>
+
+      <div class="button7-wrapper">
+        <div
+          class="button7"
+          role="button"
+          tabindex="0"
+          aria-haspopup="true"
+          [attr.aria-expanded]="isUserMenuOpen"
+          [class.button7-active]="isUserMenuOpen"
+          (click)="toggleUserMenu()"
+          (keyup.enter)="toggleUserMenu()"
+        >
+          <div class="container8">
+            <div class="ag">{{ userInitials }}</div>
+          </div>
+          <div class="container9">
+            <div class="container10">
+              <div class="akashg">{{ userName }}</div>
+            </div>
+            <div class="container11">
+              <div class="noc-lead">{{ userRole }}</div>
+            </div>
+          </div>
+          <img class="icon3" [class.icon3-open]="isUserMenuOpen" src="\assets\Dropdown-topbar.svg" alt="" />
+        </div>
+
+        <div class="user-menu" *ngIf="isUserMenuOpen">
+          <button type="button" class="user-menu-item" (click)="onUserMenuAction('preferences')">User Preferences</button>
+          <button type="button" class="user-menu-item" (click)="onUserMenuAction('profile')">My Profile</button>
+          <button type="button" class="user-menu-item" (click)="onUserMenuAction('settings')">Settings</button>
+          <button type="button" class="user-menu-item" (click)="onUserMenuAction('logout')">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Module Nav Cards ===== -->
+  <!-- NOC Portal -->
+  <div
+    class="group-container module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('noc-portal')"
+    (keyup.enter)="navigateToModule('noc-portal')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="noc-card-bg"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="rectangle-div"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-1.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">NOC Portal</div>
+    <div class="network-operations-center">Network Operations Center</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Proactive Automation -->
+  <div
+    class="group-parent module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('proactive-automation')"
+    (keyup.enter)="navigateToModule('proactive-automation')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-item"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-2.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Proactive Automation</div>
+    <div class="network-operations-center">Automated workflows</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Incident Management -->
+  <div
+    class="group-div module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('incident-management')"
+    (keyup.enter)="navigateToModule('incident-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child3"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child-incident"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-3.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Incident Management</div>
+    <div class="network-operations-center">Track and resolve Incidents</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Problem Management -->
+  <div
+    class="group-parent2 module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('problem-management')"
+    (keyup.enter)="navigateToModule('problem-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child6"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child-problem"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-4.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Problem Management</div>
+    <div class="network-operations-center">Analyzing the root cause</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Change Management -->
+  <div
+    class="group-parent3 module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('change-management')"
+    (keyup.enter)="navigateToModule('change-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child9"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child10"></div>
+      </div>
+      <img class="icbaseline-tv-icon" src="\assets\tile-5.svg" alt="" />
+    </div>
+    <div class="change-management2">Change Management</div>
+    <div class="network-operations-center">Manage system changes</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- ===== Analytics Header + Controls ===== -->
+  <div class="container-parent">
+
+    <!-- Analytics title -->
+    <div class="analytics-overview-parent">
+      <div class="analytics-overview">{{ analyticsTitle }}</div>
+      <div class="real-time-insights-and">{{ analyticsSubtitle }}</div>
+    </div>
+
+    <!-- Nav tabs pill bar -->
+    <div class="container7">
+      <button
+        type="button"
+        class="nav-tab-btn"
+        *ngFor="let tab of navTabs"
+        [class.tab-active]="tab.active"
+        (click)="setActiveTab(tab)"
+      >
+        <span class="incident-management">{{ tab.label }}</span>
+      </button>
+    </div>
+
+    <!-- Interface toggle -->
+    <div class="container">
+      <div class="container2" (click)="setInterface('classic')">
+        <img class="monitoricon" src="\assets\classic-ui.svg" alt="" />
+        <div class="text">
+          <div class="classic-interface" [class.active-iface]="activeInterface === 'classic'">Classic Interface</div>
+        </div>
+      </div>
+      <div class="container3">
+        <div class="container4">
+          <div class="container5"></div>
+        </div>
+      </div>
+      <div class="container6" (click)="setInterface('enhanced')">
+        <img class="monitoricon" src="\assets\modern-ui.svg" alt="" />
+        <div class="text">
+          <div class="enhanced-interface">Enhanced Interface</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SR Overview Card ===== -->
+  <div
+    class="content-parent grid-card"
+    [style.top.px]="getCardPosition('sr').top"
+    [style.left.px]="getCardPosition('sr').left"
+  >
+
+    <!-- Card header -->
+    <div class="frame-parent">
+      <div class="frame-group">
+        <img class="frame-child" src="\assets\SR-overview.svg" alt="" />
+        <div class="sr-overview-parent">
+          <div class="sr-overview2">{{ srCardTitle }}</div>
+          <div class="manage-service-requests">{{ srCardSubtitle }}</div>
+        </div>
+      </div>
+      <img
+        class="icon-parkfull-screen-one"
+        src="\assets\Expand.svg"
+        alt="Expand SR overview"
+        role="button"
+        tabindex="0"
+        (click)="onExpandCard('sr')"
+        (keyup.enter)="onExpandCard('sr')"
+      />
+    </div>
+
+    <!-- Table (column-major: each column is a flex column of cells) -->
+    <div class="content">
+
+      <!-- Column 1: SR Number -->
+      <div class="column">
+        <div class="table-header-cell">
+          <div class="table-header"><div class="sr-number">SR NUMBER</div></div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+        >
+          <div class="text"><div class="ag">{{ row.srNumber }}</div></div>
+        </div>
+      </div>
+
+      <!-- Column 2: SR Rise Date -->
+      <div class="column2">
+        <div class="table-header-cell">
+          <div class="sr-rise-date">SR Rise date</div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+        >
+          <div class="network-outage-in">{{ row.riseDate }}</div>
+        </div>
+      </div>
+
+      <!-- Column 3: SR Summary -->
+      <div class="column2">
+        <div class="table-header-cell">
+          <div class="sr-number">SR Summary</div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+        >
+          <div class="network-outage-in">{{ row.summary }}</div>
+        </div>
+      </div>
+
+      <!-- Column 4: SR Sub Type -->
+      <div class="column4">
+        <div class="table-header-cell">
+          <div class="sr-number">SR Sub Type</div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell4' : (row.subType === 'Child' ? 'table-cell14' : 'table-cell')"
+        >
+          <div [ngClass]="row.subType === 'Child' ? 'div2' : 'div'">
+            <div class="parent">{{ row.subType }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 5: Escalation Level -->
+      <div class="column5">
+        <div class="table-header-cell5">
+          <div class="escalation-level">Escalation Level</div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell17'"
+          class="esc-cell"
+        >
+          <div [ngClass]="row.badgeClass">
+            <div [ngClass]="row.badgeDotClass"></div>
+            <div class="ag">{{ row.escalationLevel }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 6: Tracking -->
+      <div class="column6">
+        <div class="table-header-cell6">
+          <div class="sr-number">tracking</div>
+        </div>
+        <div
+          *ngFor="let row of srRows"
+          [ngClass]="row.isLast ? 'table-cell24' : 'table-cell21'"
+        >
+          <div class="badge5">
+            <div class="container12">
+              <div class="container13">
+                <div
+                  class="tracking-fill"
+                  [style.width.px]="(row.trackingPercent / 100) * 60"
+                  [style.backgroundColor]="row.trackingColor"
+                ></div>
+              </div>
+              <div class="text">
+                <div class="div5">{{ row.trackingPercent }}%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== Incident Management Analytics Card ===== -->
+  <div
+    class="the-djp-inner grid-card"
+    [style.top.px]="getCardPosition('incident').top"
+    [style.left.px]="getCardPosition('incident').left"
+  >
+    <div class="frame-container">
+
+      <!-- Card header -->
+      <div class="frame-div">
+        <div class="frame-group">
+          <img class="frame-child" src="\assets\incident-management.svg" alt="" />
+          <div class="incident-management-group">
+            <div class="sr-overview2">{{ incidentCardTitle }}</div>
+            <div class="manage-service-requests">{{ incidentCardSubtitle }}</div>
+          </div>
+        </div>
+        <img
+          class="icon-parkfull-screen-one"
+          src="\assets\Expand.svg"
+          alt="Expand Incident management"
+          role="button"
+          tabindex="0"
+          (click)="onExpandCard('incident')"
+          (keyup.enter)="onExpandCard('incident')"
+        />
+      </div>
+
+      <!-- Stat tiles row -->
+      <div class="group-parent6">
+        <div
+          class="stat-tile"
+          *ngFor="let stat of incidentStats"
+          [style.width.px]="stat.width"
+          [style.backgroundColor]="stat.bg"
+          [style.borderColor]="stat.border"
+          [style.color]="stat.color"
+        >
+          <b class="stat-value">{{ stat.value }}</b>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+
+      <!-- Bar chart -->
+      <div class="group-parent7">
+        <!-- Y-axis labels -->
+        <div class="group">
+          <div class="y-label" *ngFor="let lbl of incidentYLabels; let i = index" [style.top.px]="i * 44">{{ lbl }}</div>
+          <div class="x-label" *ngFor="let lbl of incidentXLabels; let i = index" [style.left.px]="i * 103 + 118.5">{{ lbl }}</div>
+        </div>
+        <!-- Bars -->
+        <div class="bar-parent">
+          <div
+            *ngFor="let bar of incidentBars"
+            class="bar-item"
+            [class.bar-active]="bar.active"
+            [style.height.px]="bar.height"
+          ></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== Escalation Matrix Analytics Card ===== -->
+  <div
+    class="the-djp-child grid-card"
+    [style.top.px]="getCardPosition('escalation').top"
+    [style.left.px]="getCardPosition('escalation').left"
+  >
+    <div class="frame-parent2">
+
+      <!-- Card header -->
+      <div class="frame-div">
+        <div class="frame-group">
+          <img class="frame-child" src="\assets\Group 427319744.svg" alt="" />
+          <div class="escalation-matrix-parent">
+            <div class="sr-overview2">{{ escalationCardTitle }}</div>
+            <div class="manage-service-requests">{{ escalationCardSubtitle }}</div>
+          </div>
+        </div>
+        <img
+          class="icon-parkfull-screen-one"
+          src="\assets\Expand.svg"
+          alt="Expand Escalation matrix"
+          role="button"
+          tabindex="0"
+          (click)="onExpandCard('escalation')"
+          (keyup.enter)="onExpandCard('escalation')"
+        />
+      </div>
+
+      <!-- Donut + level table -->
+      <div class="container-group">
+
+        <!-- Donut chart -->
+        <div class="container25">
+          <div class="piechart">
+            <div class="surface">
+              <svg width="340" height="340" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="segmentShadow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(255,255,255,0.6)" result="outer"/>
+                  </filter>
+                </defs>
+
+                <!-- Base track ring -->
+                <circle cx="190" cy="190" r="140" fill="none" stroke="#efefef" stroke-width="46"/>
+
+                <!-- Dynamic coloured segments -->
+                <circle
+                  *ngFor="let seg of donutSegments"
+                  cx="190" cy="190" r="140"
+                  fill="none"
+                  [attr.stroke]="seg.color"
+                  stroke-width="46"
+                  stroke-linecap="butt"
+                  [attr.stroke-dasharray]="seg.dashArray"
+                  [attr.stroke-dashoffset]="seg.dashOffset"
+                  transform="rotate(-90 190 190)"
+                  filter="url(#segmentShadow)"
+                  style="transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;"
+                />
+
+                <!-- Centre white fill disc -->
+                <circle cx="190" cy="190" r="114" fill="white"
+                  filter="drop-shadow(0 2px 8px rgba(255,255,255,0.8))"
+                />
+
+                <!-- Centre text -->
+                <text x="190" y="183" text-anchor="middle" font-size="46" font-weight="700" fill="#0f172a" font-family="Inter,sans-serif">{{ totalEscalated }}</text>
+                <text x="190" y="210" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Total</text>
+                <text x="190" y="230" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Escalated SRs</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level breakdown table (column-major) -->
+        <div class="content2">
+
+          <!-- Column 7: SR Levels -->
+          <div class="column7">
+            <div class="table-header-cell7">
+              <div class="table-header"><div class="sr-number">Sr levels</div></div>
+            </div>
+            <div
+              *ngFor="let level of escalationLevels"
+              class="table-cell25"
+            >
+              <div class="text">
+                <div class="container26">
+                  <span class="level-dot" [style.backgroundColor]="level.dotColor"></span>
+                  <div class="text">
+                    <div class="incident-management">{{ level.label }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 8: SR Counts -->
+          <div class="column8">
+            <div class="table-header-cell8">
+              <div class="sr-number">sr counts</div>
+            </div>
+            <div
+              *ngFor="let level of escalationLevels"
+              class="table-cell31"
+            >
+              <div class="ag">{{ level.count }}</div>
+            </div>
+          </div>
+
+          <!-- Column 9: Percentage -->
+          <div class="column9">
+            <div class="table-header-cell9">
+              <div class="sr-number">percentage</div>
+            </div>
+            <div
+              *ngFor="let level of escalationLevels"
+              [ngClass]="level.isLast ? 'table-cell42' : 'table-cell37'"
+            >
+              <div class="div20">{{ level.percent }}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Change Management Analytics Card ===== -->
+  <div
+    class="frame-parent4 grid-card"
+    [style.top.px]="getCardPosition('change').top"
+    [style.left.px]="getCardPosition('change').left"
+  >
+
+    <!-- Card header -->
+    <div class="frame-parent5">
+      <div class="frame-group">
+        <img class="frame-child" src="\assets\change-management.svg" alt="" />
+        <div class="change-management-parent">
+          <div class="sr-overview2">{{ changeCardTitle }}</div>
+          <div class="manage-service-requests">{{ changeCardSubtitle }}</div>
+        </div>
+      </div>
+      <img
+        class="icon-parkfull-screen-one"
+        src="\assets\Expand.svg"
+        alt="Expand Change management"
+        role="button"
+        tabindex="0"
+        (click)="onExpandCard('change')"
+        (keyup.enter)="onExpandCard('change')"
+      />
+    </div>
+
+    <!-- Table (column-major) -->
+    <div class="content-wrapper">
+      <div class="content3">
+
+        <!-- Column 10: Outage ID (labelled CRQ in original) -->
+        <div class="column10">
+          <div class="table-header-cell10">
+            <div class="sr-number">crq</div>
+          </div>
+          <div
+            *ngFor="let row of changeRows"
+            [ngClass]="row.isLast ? 'table-cell46' : 'table-cell43'"
+          >
+            <div class="text"><div class="div26">{{ row.outageId }}</div></div>
+          </div>
+        </div>
+
+        <!-- Column 11a: Planned Outage ID (CRQ numbers) -->
+        <div class="column11">
+          <div class="table-header-cell11">
+            <div class="planned-outage-id">planned outage id</div>
+          </div>
+          <div
+            *ngFor="let row of changeRows"
+            [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
+          >
+            <div class="div27">{{ row.crq }}</div>
+          </div>
+        </div>
+
+        <!-- Column 12: Impact -->
+        <div class="column12">
+          <div class="table-header-cell12">
+            <div class="sr-number">impact</div>
+          </div>
+          <div
+            *ngFor="let row of changeRows"
+            [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+          >
+            <div class="div26">{{ row.impact }}</div>
+          </div>
+        </div>
+
+        <!-- Column 11b: Implementor -->
+        <div class="column11">
+          <div class="table-header-cell6">
+            <div class="sr-number">implementor</div>
+          </div>
+          <div
+            *ngFor="let row of changeRows"
+            [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
+          >
+            <div class="div27">{{ row.implementor }}</div>
+          </div>
+        </div>
+
+       <!-- Column 14: Submission status -->
+
+<div class="column14">
+  <div class="table-header-cell14">
+    <div class="escalation-level">submission</div>
+  </div>
+  <ng-container *ngFor="let row of changeRows">
+    <div [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'">
+
+      <!-- Submitted -->
+      <div *ngIf="row.submitted" class="status-badge badge-submitted">
+        <img class="status-icon" src="assets/submitted.svg" alt="" />
+        <span>Submitted</span>
+      </div>
+
+      <!-- Not submitted -->
+      <div *ngIf="!row.submitted" class="status-badge badge-not-submitted">
+        <img class="status-icon" src="\assets\not-submitted.svg" alt="" />
+        <span>Not submitted</span>
+      </div>
+
+    </div>
+  </ng-container>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
