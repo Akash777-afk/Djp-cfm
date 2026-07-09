@@ -1,4 +1,4 @@
-<div class="the-djp-scale-wrapper">
+<div class="the-djp-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp">
 
   <!-- ===== Topbar ===== -->
@@ -657,4 +657,300 @@
     </div>
   </div>
 </div>
+</div>
+
+<!-- =========================================================
+     Responsive layout (< 1024px) — natively-flowing rebuild of the
+     canvas above, sharing the same component state/handlers.
+     ========================================================= -->
+<div class="mobile-layout">
+
+  <!-- ===== Topbar ===== -->
+  <header class="m-topbar">
+    <img class="m-logo" src="/assets/Airtel-logo 5.png" alt="Airtel" />
+
+    <div class="m-search">
+      <img class="m-search-icon" src="/assets/Search-topbar.svg" alt="" />
+      <input
+        type="text"
+        class="m-search-input"
+        [(ngModel)]="searchQuery"
+        [placeholder]="searchPlaceholder"
+        (keyup.enter)="onSearch()"
+        aria-label="Search services, devices, or alerts"
+      />
+    </div>
+
+    <div class="m-topbar-actions">
+      <button type="button" class="m-icon-btn" aria-label="Documents" (click)="onDocumentsClick()">
+        <img src="/assets/Documentation-topbar.svg" alt="" />
+      </button>
+      <button type="button" class="m-icon-btn" aria-label="Notifications" (click)="onNotificationsClick()">
+        <img src="/assets/App-topbar.svg" alt="" />
+      </button>
+
+      <div class="m-user-wrapper">
+        <div
+          class="m-user-trigger"
+          role="button"
+          tabindex="0"
+          aria-haspopup="true"
+          [attr.aria-expanded]="isUserMenuOpen"
+          [class.m-user-trigger-active]="isUserMenuOpen"
+          (click)="toggleUserMenu()"
+          (keyup.enter)="toggleUserMenu()"
+        >
+          <div class="m-user-avatar">{{ userInitials }}</div>
+          <div class="m-user-text">
+            <div class="m-user-name">{{ userName }}</div>
+            <div class="m-user-role">{{ userRole }}</div>
+          </div>
+          <img class="m-user-caret" [class.m-user-caret-open]="isUserMenuOpen" src="/assets/Dropdown-topbar.svg" alt="" />
+        </div>
+
+        <div class="m-user-menu" *ngIf="isUserMenuOpen">
+          <button type="button" (click)="onUserMenuAction('preferences')">User Preferences</button>
+          <button type="button" (click)="onUserMenuAction('profile')">My Profile</button>
+          <button type="button" (click)="onUserMenuAction('settings')">Settings</button>
+          <button type="button" (click)="onUserMenuAction('logout')">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="m-welcome">
+    <div class="m-welcome-title-row">
+      <span class="m-welcome-title">{{ portalTitle }}</span>
+      <img class="m-welcome-emoji" src="/assets/welcome-dude.png" alt="" />
+    </div>
+    <div class="m-welcome-subtitle">{{ portalSubtitle }}</div>
+  </div>
+
+  <!-- ===== Module Nav Tiles ===== -->
+  <div class="m-tiles">
+    <div
+      class="m-tile"
+      [ngClass]="tile.gradientClass"
+      *ngFor="let tile of moduleTiles"
+      role="button"
+      tabindex="0"
+      (click)="navigateToModule(tile.key)"
+      (keyup.enter)="navigateToModule(tile.key)"
+    >
+      <div class="m-tile-icon-wrap">
+        <img class="m-tile-icon" [src]="tile.icon" alt="" />
+      </div>
+      <div class="m-tile-label">{{ tile.label }}</div>
+      <div class="m-tile-subtitle">{{ tile.subtitle }}</div>
+    </div>
+  </div>
+
+  <!-- ===== Analytics Header + Controls ===== -->
+  <div class="m-analytics-header">
+    <div class="m-analytics-title-block">
+      <div class="m-analytics-title">{{ analyticsTitle }}</div>
+      <div class="m-analytics-subtitle">{{ analyticsSubtitle }}</div>
+    </div>
+
+    <div class="m-tabs">
+      <button
+        type="button"
+        class="m-tab-btn"
+        *ngFor="let tab of navTabs"
+        [class.m-tab-active]="tab.active"
+        (click)="setActiveTab(tab)"
+      >{{ tab.label }}</button>
+    </div>
+
+    <div class="m-iface-toggle">
+      <button
+        type="button"
+        class="m-iface-btn"
+        [class.m-iface-active]="activeInterface === 'classic'"
+        (click)="setInterface('classic')"
+      >
+        <img src="/assets/classic-ui.svg" alt="" />
+        <span>Classic Interface</span>
+      </button>
+      <button
+        type="button"
+        class="m-iface-btn"
+        [class.m-iface-active]="activeInterface === 'enhanced'"
+        (click)="setInterface('enhanced')"
+      >
+        <img src="/assets/modern-ui.svg" alt="" />
+        <span>Enhanced Interface</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Analytics Cards ===== -->
+  <div class="m-cards">
+
+    <!-- SR overview -->
+    <div class="m-card" [style.order]="cardOrder.indexOf('sr')">
+      <div class="m-card-header">
+        <img class="m-card-icon" src="/assets/SR-overview.svg" alt="" />
+        <div>
+          <div class="m-card-title">{{ srCardTitle }}</div>
+          <div class="m-card-subtitle">{{ srCardSubtitle }}</div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="m-table">
+          <thead>
+            <tr>
+              <th>SR Number</th>
+              <th>SR Rise Date</th>
+              <th>SR Summary</th>
+              <th>SR Sub Type</th>
+              <th>Escalation Level</th>
+              <th>Tracking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of srRows">
+              <td class="m-cell-accent">{{ row.srNumber }}</td>
+              <td>{{ row.riseDate }}</td>
+              <td>{{ row.summary }}</td>
+              <td>
+                <span [ngClass]="row.subType === 'Child' ? 'div2' : 'div'">
+                  <span class="parent">{{ row.subType }}</span>
+                </span>
+              </td>
+              <td>
+                <span [ngClass]="row.badgeClass">
+                  <span [ngClass]="row.badgeDotClass"></span>
+                  <span class="ag">{{ row.escalationLevel }}</span>
+                </span>
+              </td>
+              <td>
+                <div class="m-tracking">
+                  <div class="m-tracking-track">
+                    <div class="m-tracking-fill" [style.width.%]="row.trackingPercent" [style.backgroundColor]="row.trackingColor"></div>
+                  </div>
+                  <span>{{ row.trackingPercent }}%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Incident management -->
+    <div class="m-card" [style.order]="cardOrder.indexOf('incident')">
+      <div class="m-card-header">
+        <img class="m-card-icon" src="/assets/incident-management.svg" alt="" />
+        <div>
+          <div class="m-card-title">{{ incidentCardTitle }}</div>
+          <div class="m-card-subtitle">{{ incidentCardSubtitle }}</div>
+        </div>
+      </div>
+
+      <div class="m-stat-tiles">
+        <div
+          class="m-stat-tile"
+          *ngFor="let stat of incidentStats"
+          [style.backgroundColor]="stat.bg"
+          [style.borderColor]="stat.border"
+          [style.color]="stat.color"
+        >
+          <b>{{ stat.value }}</b>
+          <span>{{ stat.label }}</span>
+        </div>
+      </div>
+
+      <div class="m-bar-chart">
+        <div class="m-bar-col" *ngFor="let bar of incidentBars; let i = index">
+          <div class="m-bar" [class.m-bar-active]="bar.active" [style.height.%]="(bar.height / incidentBarMax) * 100"></div>
+          <span class="m-bar-label">{{ incidentXLabels[i] }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Escalation matrix -->
+    <div class="m-card" [style.order]="cardOrder.indexOf('escalation')">
+      <div class="m-card-header">
+        <img class="m-card-icon" src="/assets/Group 427319744.svg" alt="" />
+        <div>
+          <div class="m-card-title">{{ escalationCardTitle }}</div>
+          <div class="m-card-subtitle">{{ escalationCardSubtitle }}</div>
+        </div>
+      </div>
+
+      <div class="m-donut-wrap">
+        <svg class="m-donut" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="190" cy="190" r="140" fill="none" stroke="#efefef" stroke-width="46"/>
+          <circle
+            *ngFor="let seg of donutSegments"
+            cx="190" cy="190" r="140"
+            fill="none"
+            [attr.stroke]="seg.color"
+            stroke-width="46"
+            stroke-linecap="butt"
+            [attr.stroke-dasharray]="seg.dashArray"
+            [attr.stroke-dashoffset]="seg.dashOffset"
+            transform="rotate(-90 190 190)"
+          />
+          <circle cx="190" cy="190" r="114" fill="white" />
+          <text x="190" y="183" text-anchor="middle" font-size="46" font-weight="700" fill="#0f172a" font-family="Inter,sans-serif">{{ totalEscalated }}</text>
+          <text x="190" y="210" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Total</text>
+          <text x="190" y="230" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Escalated SRs</text>
+        </svg>
+      </div>
+
+      <div class="table-scroll">
+        <table class="m-table">
+          <thead>
+            <tr><th>SR Levels</th><th>SR Counts</th><th>Percentage</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let level of escalationLevels">
+              <td><span class="level-dot" [style.backgroundColor]="level.dotColor"></span>{{ level.label }}</td>
+              <td>{{ level.count }}</td>
+              <td>{{ level.percent }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Change management -->
+    <div class="m-card" [style.order]="cardOrder.indexOf('change')">
+      <div class="m-card-header">
+        <img class="m-card-icon" src="/assets/change-management.svg" alt="" />
+        <div>
+          <div class="m-card-title">{{ changeCardTitle }}</div>
+          <div class="m-card-subtitle">{{ changeCardSubtitle }}</div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="m-table">
+          <thead>
+            <tr><th>CRQ</th><th>Planned Outage ID</th><th>Impact</th><th>Implementor</th><th>Submission</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of changeRows">
+              <td>{{ row.outageId }}</td>
+              <td>{{ row.crq }}</td>
+              <td class="m-cell-danger">{{ row.impact }}</td>
+              <td>{{ row.implementor }}</td>
+              <td>
+                <span *ngIf="row.submitted" class="status-badge badge-submitted">
+                  <img class="status-icon" src="/assets/submitted.svg" alt="" />
+                  <span>Submitted</span>
+                </span>
+                <span *ngIf="!row.submitted" class="status-badge badge-not-submitted">
+                  <img class="status-icon" src="/assets/not-submitted.svg" alt="" />
+                  <span>Not submitted</span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -2,16 +2,44 @@
 // CMF DJ Portal – Landing Page SCSS (v2 — auto-layout source)
 // =========================================================
 
-// Fixed pixel canvas scaled down to fit typical viewports.
-// The wrapper reserves exactly the *scaled* footprint (1920*0.66 x 1444*0.66)
+// =========================================================
+// Responsive strategy
+// =========================================================
+// >= 1024px (laptop/desktop): the pixel-perfect 1920x1444 canvas below,
+//   scaled to fit the window (--djp-scale, computed in the component).
+// <  1024px (phone/tablet): .mobile-layout takes over instead — a
+//   natively-flowing rebuild sharing the same component data/handlers.
+// Both stay in the DOM; CSS `display` picks the active one.
+$breakpoint-desktop: 1024px;
+
+:host {
+  display: block;
+  width: 100%;
+  background-color: #f7f8f9;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .mobile-layout { display: none; }
+}
+
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .the-djp-scale-wrapper { display: none; }
+}
+
+// The wrapper reserves exactly the *scaled* footprint (1920*scale x 1444*scale)
 // since `transform: scale` doesn't affect layout size — without this wrapper
 // the parent would reserve the full 1920x1444px, leaving blank space below/right.
-$djp-scale: 0.66;
-
+// --djp-scale is fit to the window's *width only* (component computes
+// min(vw/1920, 1)) so the canvas always fills the window edge-to-edge with
+// no left/right/bottom letterboxing; the page scrolls vertically like any
+// normal webpage if the scaled height exceeds the viewport.
 .the-djp-scale-wrapper {
-  width: 1920px * $djp-scale;
-  height: 1444px * $djp-scale;
+  --djp-scale: 1; // fallback for first paint, before JS runs
+  width: calc(1920px * var(--djp-scale));
+  height: calc(1444px * var(--djp-scale));
+  max-width: 100%;
   overflow: hidden;
+  margin: 0 auto; // centers only in the rare case scale is capped at 1 on a screen wider than 1920px
 }
 
 .the-djp {
@@ -24,7 +52,7 @@ $djp-scale: 0.66;
   font-size: 22px;
   color: #fff;
   font-family: 'Inter', sans-serif;
-  transform: scale($djp-scale);
+  transform: scale(var(--djp-scale));
   transform-origin: top left;
 }
 
@@ -1032,3 +1060,398 @@ $djp-scale: 0.66;
   flex-shrink: 0;
   object-fit: contain;
 }
+
+// =========================================================
+// Responsive layout (< 1024px) — natively-flowing rebuild.
+// Reuses badge/pill primitives already defined above (.badge*,
+// .prioritybadge*, .ag, .div, .div2, .parent, .status-badge,
+// .badge-submitted, .badge-not-submitted, .status-icon, .level-dot)
+// since those are self-contained, fixed-size components, not tied
+// to the 1920px canvas.
+// =========================================================
+.mobile-layout {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f7f8f9;
+  font-family: 'Inter', sans-serif;
+  color: #1e2939;
+  padding: 16px;
+
+  * , *::before, *::after { box-sizing: border-box; }
+
+  @media (min-width: 640px) { padding: 20px 24px; }
+  @media (min-width: 900px) { padding: 24px 32px; }
+}
+
+// ---------- Mobile Topbar ----------
+.m-topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px 16px;
+
+  @media (max-width: 639px) {
+    grid-template-columns: auto auto;
+
+    .m-logo { grid-column: 1; grid-row: 1; }
+    .m-topbar-actions { grid-column: 2; grid-row: 1; justify-self: end; }
+    .m-search { grid-column: 1 / -1; grid-row: 2; }
+  }
+}
+.m-logo { height: 32px; width: auto; object-fit: contain; }
+.m-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  background-color: rgba(100, 116, 139, 0.05);
+  border: 1px solid rgba(100, 116, 139, 0.27);
+  border-radius: 44px;
+  padding: 9px 16px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:focus-within {
+    border-color: #e60012;
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 3px rgba(230, 0, 18, 0.08);
+  }
+}
+.m-search-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.m-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: #3d3e3f;
+  padding: 0;
+
+  &::placeholder { color: rgba(107, 114, 128, 0.6); }
+}
+.m-topbar-actions { display: flex; align-items: center; gap: 8px; }
+.m-icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background-color: #f7f8f9;
+  border: 1px solid #cfd4dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+
+  img { width: 18px; height: 18px; }
+  &:hover { background-color: #eef1f5; }
+}
+.m-user-wrapper { position: relative; flex-shrink: 0; }
+.m-user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 8px 3px 3px;
+  border-radius: 24px;
+  border: 1px solid #cfd4dc;
+  background-color: #f7f8f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover, &.m-user-trigger-active { background-color: #eef1f5; }
+}
+.m-user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e60012, #ff6b7a);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.m-user-text { display: none; text-align: left; }
+.m-user-name { font-size: 13px; font-weight: 600; color: #1e2939; line-height: 1.2; }
+.m-user-role { font-size: 10px; color: #5a5b5d; line-height: 1.2; }
+.m-user-caret { width: 16px; height: 16px; transition: transform 0.2s ease; }
+.m-user-caret-open { transform: rotate(180deg); }
+@media (min-width: 640px) {
+  .m-user-text { display: block; }
+}
+.m-user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0px 10px 28px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 12px 16px;
+    font: inherit;
+    font-size: 14px;
+    color: #1e2939;
+    cursor: pointer;
+
+    &:hover { background-color: #f7f8f9; }
+    & + button { border-top: 1px solid #eef1f5; }
+  }
+}
+
+// ---------- Mobile welcome strip ----------
+.m-welcome { padding: 14px 0 6px; }
+.m-welcome-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.m-welcome-title { font-size: 19px; font-weight: 600; color: #3d3e3f; }
+.m-welcome-emoji { width: 22px; height: 22px; object-fit: contain; }
+.m-welcome-subtitle { font-size: 13px; color: rgba(61, 62, 63, 0.66); margin-top: 2px; }
+
+// ---------- Mobile Module Nav Tiles ----------
+.m-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  padding: 12px 0;
+}
+.m-tile {
+  position: relative;
+  border-radius: 18px;
+  padding: 18px;
+  min-height: 118px;
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover { filter: brightness(1.15); box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4); }
+  &:active { filter: brightness(1.05); }
+  &:focus-visible { outline: 3px solid rgba(255, 255, 255, 0.85); outline-offset: 3px; }
+}
+.m-tile-icon-wrap {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+  background-color: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.m-tile-icon { width: 24px; height: 24px; }
+.m-tile-label { font-size: 16px; font-weight: 600; line-height: 1.25; margin-bottom: 4px; }
+.m-tile-subtitle { font-size: 12.5px; line-height: 1.3; opacity: 0.92; }
+
+.tile-noc        { background: linear-gradient(259.43deg, #c0392b, #7b0000); }
+.tile-automation { background: linear-gradient(259.43deg, #4d26bd, #22086a); }
+.tile-incident   { background: linear-gradient(259.43deg, rgba(34, 197, 94, 0.9), rgba(1, 87, 32, 0.9)); }
+.tile-problem    { background: linear-gradient(259.43deg, #48b0ff, #053d67); }
+.tile-change     { background: linear-gradient(259.43deg, rgba(251, 8, 194, 0.9), #790368); }
+
+// ---------- Mobile Analytics Header ----------
+.m-analytics-header { display: flex; flex-direction: column; gap: 14px; padding: 16px 0; }
+.m-analytics-title { font-size: 20px; font-weight: 600; color: #101828; }
+.m-analytics-subtitle { font-size: 13px; color: #717182; margin-top: 2px; }
+
+.m-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 6px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.m-tab-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover:not(.m-tab-active) { background: rgba(0, 0, 0, 0.04); }
+}
+.m-tab-active {
+  background: linear-gradient(90deg, #e60012, #ff3030);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0px 2px 12px rgba(230, 0, 18, 0.35);
+}
+
+.m-iface-toggle { display: flex; gap: 8px; }
+.m-iface-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  font: inherit;
+  font-size: 13px;
+  color: #64748b;
+  cursor: pointer;
+
+  img { width: 18px; height: 18px; }
+}
+.m-iface-active {
+  border-color: #ff2424;
+  color: #e60012;
+  font-weight: 600;
+  box-shadow: 0px 0px 12px rgba(172, 45, 45, 0.18);
+}
+
+// ---------- Mobile Analytics Cards ----------
+.m-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 16px;
+  padding-bottom: 24px;
+
+  @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+}
+.m-card {
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.m-card-header { display: flex; align-items: center; gap: 12px; }
+.m-card-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+.m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
+
+// Shared scrollable-table pattern for SR overview / Escalation / Change mgmt
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+  -webkit-overflow-scrolling: touch;
+  // Fades the trailing edge so a horizontally-scrollable table doesn't look
+  // like it just ends mid-column — hints there's more to swipe to.
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+}
+.m-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 10px 12px;
+    background-color: #fcfcfd;
+    border-top: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .level-dot { margin-right: 8px; }
+}
+.m-cell-accent { color: #e60012; font-weight: 600; }
+.m-cell-danger { color: #e7000b; }
+
+.m-tracking { display: flex; align-items: center; gap: 8px; }
+.m-tracking-track {
+  width: 60px; height: 8px;
+  border-radius: 999px;
+  background-color: #f3f4f6;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.m-tracking-fill { height: 100%; border-radius: 999px; }
+
+// Incident management: stat tiles + bar chart
+.m-stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  gap: 8px;
+}
+.m-stat-tile {
+  border-radius: 10px;
+  border: 1px solid;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08) inset;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  b { font-size: 16px; line-height: 1; }
+  span { font-size: 10px; font-weight: 500; text-align: center; line-height: 1.2; }
+}
+.m-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  padding-top: 8px;
+}
+.m-bar-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.m-bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 8px 8px 0px 0px;
+  background-color: #ffecec;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  transition: background-color 0.3s ease;
+
+  &.m-bar-active { background-color: #ff4949; }
+}
+.m-bar-label {
+  font-size: 9px;
+  color: rgba(100, 116, 139, 0.75);
+  text-align: center;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+// Escalation matrix: donut chart
+.m-donut-wrap { display: flex; justify-content: center; padding: 8px 0; }
+.m-donut { width: 100%; max-width: 260px; height: auto; }

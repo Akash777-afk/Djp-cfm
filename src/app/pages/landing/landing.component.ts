@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 
 interface NavTab {
   label: string;
@@ -64,9 +64,29 @@ type CardKey = 'sr' | 'incident' | 'change' | 'escalation';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit {
 
   constructor(private elementRef: ElementRef) {}
+
+  // ---------- Responsive scale-to-fit (desktop canvas, >= 1024px) ----------
+  // The desktop canvas is a fixed 1920x1444 design. Scale to the window's
+  // WIDTH only (capped at 100% so it never upscales/blurs on huge displays)
+  // so the canvas always fills the window edge-to-edge with no left/right
+  // blank margins; the page scrolls vertically for the rest, same as any
+  // normal webpage. (Fitting height too would leave letterboxing whenever
+  // the window's aspect ratio isn't exactly 1920:1444, which is most
+  // monitors.) Below 1024px the canvas is hidden in favor of .mobile-layout.
+  private static readonly DESIGN_WIDTH = 1920;
+  scale = 1;
+
+  ngOnInit(): void {
+    this.updateScale();
+  }
+
+  @HostListener('window:resize')
+  updateScale(): void {
+    this.scale = Math.min(window.innerWidth / LandingComponent.DESIGN_WIDTH, 1);
+  }
 
   // ---------- Topbar ----------
   portalTitle    = 'Welcome to CMF DJ Portal..!';
@@ -117,6 +137,16 @@ export class LandingComponent {
   }
 
   // ---------- Module nav tiles ----------
+  // Drives the mobile/tablet responsive nav grid (.mobile-layout). The
+  // desktop canvas keeps its own hardcoded per-tile markup untouched.
+  moduleTiles: { key: ModuleKey; label: string; subtitle: string; icon: string; gradientClass: string }[] = [
+    { key: 'noc-portal',            label: 'NOC Portal',            subtitle: 'Network Operations Center',      icon: '/assets/tile-1.svg', gradientClass: 'tile-noc' },
+    { key: 'proactive-automation',  label: 'Proactive Automation',  subtitle: 'Automated workflows',            icon: '/assets/tile-2.svg', gradientClass: 'tile-automation' },
+    { key: 'incident-management',   label: 'Incident Management',   subtitle: 'Track and resolve Incidents',    icon: '/assets/tile-3.svg', gradientClass: 'tile-incident' },
+    { key: 'problem-management',    label: 'Problem Management',    subtitle: 'Analyzing the root cause',       icon: '/assets/tile-4.svg', gradientClass: 'tile-problem' },
+    { key: 'change-management',     label: 'Change Management',     subtitle: 'Manage system changes',          icon: '/assets/tile-5.svg', gradientClass: 'tile-change' },
+  ];
+
   navigateToModule(moduleKey: ModuleKey): void {
     console.log('Navigate to module:', moduleKey);
     // TODO: replace with real navigation, e.g. this.router.navigate(['/', moduleKey]);
@@ -213,6 +243,12 @@ export class LandingComponent {
 
   incidentYLabels: string[] = ['1000', '500', '250', '100', '0'];
   incidentXLabels: string[] = ['Unknown', 'In progress', 'Assigned', 'Escalated', 'Resolved', 'Closed', 'Cancelled', 'Total'];
+
+  // Used by the mobile bar chart (.mobile-layout) to scale bars relative to
+  // the tallest bar, since that chart has no fixed pixel canvas to size against.
+  get incidentBarMax(): number {
+    return Math.max(...this.incidentBars.map(b => b.height));
+  }
 
   // ---------- SR Overview card ----------
   srCardTitle    = 'SR overview';
