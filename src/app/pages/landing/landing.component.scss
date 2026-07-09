@@ -2,6 +2,18 @@
 // CMF DJ Portal – Landing Page SCSS (v2 — auto-layout source)
 // =========================================================
 
+// Fixed pixel canvas scaled down to fit typical viewports.
+// The wrapper reserves exactly the *scaled* footprint (1920*0.66 x 1444*0.66)
+// since `transform: scale` doesn't affect layout size — without this wrapper
+// the parent would reserve the full 1920x1444px, leaving blank space below/right.
+$djp-scale: 0.66;
+
+.the-djp-scale-wrapper {
+  width: 1920px * $djp-scale;
+  height: 1444px * $djp-scale;
+  overflow: hidden;
+}
+
 .the-djp {
   width: 1920px;
   height: 1444px;
@@ -12,9 +24,8 @@
   font-size: 22px;
   color: #fff;
   font-family: 'Inter', sans-serif;
-  transform: scale(0.66);
+  transform: scale($djp-scale);
   transform-origin: top left;
-  margin-bottom: -491px; // 1444 × 0.34 = 490.96px
 }
 
 // ---------- Topbar ----------
