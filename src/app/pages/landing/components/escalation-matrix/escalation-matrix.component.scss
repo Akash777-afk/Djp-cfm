@@ -1,0 +1,181 @@
+:host {
+  display: contents;
+}
+
+// Shared class applied to all 4 reorderable grid cards so their top/left
+// position animates smoothly when the analytics tab changes.
+.grid-card {
+  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ---------- Escalation Matrix Card (desktop) ----------
+.the-djp-child {
+  position: absolute;
+  top: 453px; left: 33px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 24px;
+  background-color: #fff;
+  width: 914px; height: 454px;
+  overflow: hidden;
+  color: #101828;
+}
+.frame-parent2 {
+  position: absolute;
+  top: 20px; left: 21px;
+  width: 871px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.frame-group { display: flex; align-items: center; gap: 13px; }
+.frame-child { height: 40px; width: 40px; position: relative; }
+.frame-div {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.sr-overview2 {
+  align-self: stretch;
+  position: relative;
+  line-height: 36px;
+  font-weight: 600;
+}
+.manage-service-requests {
+  align-self: stretch;
+  position: relative;
+  font-size: 16px;
+  line-height: 28px;
+  color: #717182;
+  white-space: nowrap;
+}
+.icon-parkfull-screen-one {
+  height: 36px; width: 36px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+
+  &:hover {
+    transform: scale(1.12);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  &:active { transform: scale(0.96); }
+  &:focus-visible {
+    outline: 2px solid #e60012;
+    outline-offset: 2px;
+  }
+}
+.escalation-matrix-parent {
+  width: 462px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.container-group {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 42px;
+  color: #0f172a;
+}
+.container25 { height: 340px; width: 340px; display: flex; flex-direction: column; align-items: flex-start; }
+.piechart { align-self: stretch; height: 340px; display: flex; flex-direction: column; align-items: flex-start; }
+.surface {
+  width: 340px; height: 340px;
+  position: relative;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+// Escalation level table (column-major)
+.text { display: flex; flex-direction: column; align-items: flex-start; }
+.ag { position: relative; line-height: 16.5px; font-weight: 600; }
+.incident-management {
+  position: relative;
+  line-height: 16.5px;
+  font-weight: 500;
+}
+.content2 {
+  width: 416px;
+  border-radius: 12px;
+  background-color: #fff;
+  display: flex;
+  align-items: flex-start;
+  text-align: right;
+  font-size: 14px;
+  color: rgba(15, 23, 42, 0.66);
+}
+.column7 { width: 144px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.column8 { width: 135px; display: flex; flex-direction: column; align-items: flex-start; color: rgba(15,23,42,0.77); }
+.column9 { width: 137px; display: flex; flex-direction: column; align-items: flex-start; color: #64748b; }
+
+.table-header-cell7 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; border-left: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; color: rgba(0,0,0,0.75); font-size: 15px; }
+.table-header-cell8 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 13px; text-align: left; color: rgba(0,0,0,0.75); font-size: 15px; }
+.table-header-cell9 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-right: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 10px; text-align: left; color: rgba(0,0,0,0.75); font-size: 15px; }
+
+.table-cell25 { align-self: stretch; height: 48px; border-bottom: 1px solid #eaecf0; border-left: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 15px; }
+.table-cell31 { align-self: stretch; height: 48px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 45px; font-size: 15px; }
+.table-cell37 { align-self: stretch; height: 48px; border-right: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 15px; }
+.table-cell42 { align-self: stretch; height: 48px; border-right: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 12px; }
+
+.container26 { display: flex; align-items: center; gap: 12px; }
+.level-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.div20 { position: relative; line-height: 16.5px; }
+
+// ---------- Escalation matrix (mobile card) ----------
+.m-card {
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.m-card-header { display: flex; align-items: center; gap: 12px; }
+.m-card-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+.m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
+
+.m-donut-wrap { display: flex; justify-content: center; padding: 8px 0; }
+.m-donut { width: 100%; max-width: 260px; height: auto; }
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+}
+.m-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 10px 12px;
+    background-color: #fcfcfd;
+    border-top: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .level-dot { margin-right: 8px; }
+}

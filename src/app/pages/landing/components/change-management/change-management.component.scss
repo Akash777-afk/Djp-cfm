@@ -1,0 +1,232 @@
+:host {
+  display: contents;
+}
+
+// Shared class applied to all 4 reorderable grid cards so their top/left
+// position animates smoothly when the analytics tab changes.
+.grid-card {
+  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ---------- Change Management Card (desktop) ----------
+.frame-parent4 {
+  position: absolute;
+  top: 933px; left: 33px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 24px;
+  background-color: #fff;
+  width: 914px; height: 454px;
+  overflow: hidden;
+  font-size: 16px;
+  color: #4a5565;
+}
+.frame-parent5 {
+  position: absolute;
+  width: calc(100% - 43px);
+  top: 20px; right: 22px; left: 21px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 222px;
+  font-size: 22px;
+  color: #101828;
+}
+.frame-group { display: flex; align-items: center; gap: 13px; }
+.frame-child { height: 40px; width: 40px; position: relative; }
+.change-management-parent { width: 560px; display: flex; flex-direction: column; align-items: flex-start; }
+.sr-overview2 {
+  align-self: stretch;
+  position: relative;
+  line-height: 36px;
+  font-weight: 600;
+}
+.manage-service-requests {
+  align-self: stretch;
+  position: relative;
+  font-size: 16px;
+  line-height: 28px;
+  color: #717182;
+  white-space: nowrap;
+}
+.icon-parkfull-screen-one {
+  height: 36px; width: 36px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+
+  &:hover {
+    transform: scale(1.12);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  &:active { transform: scale(0.96); }
+  &:focus-visible {
+    outline: 2px solid #e60012;
+    outline-offset: 2px;
+  }
+}
+
+.content-wrapper {
+  position: absolute;
+  width: calc(100% - 2px);
+  top: 88px; right: 2px; left: 0;
+  height: 366px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 10px 10px 0px;
+  box-sizing: border-box;
+}
+.content3 {
+  align-self: stretch;
+  background-color: #fff;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.column10 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; }
+.column11 { width: 183px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; }
+.column12 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; color: #e7000b; }
+.column14 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; color: #136f12; }
+
+.sr-number {
+  position: relative;
+  letter-spacing: 0.6px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.escalation-level {
+  width: 146px;
+  position: relative;
+  letter-spacing: 0.6px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.table-header-cell6 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 14px; color: rgba(0,0,0,0.75); }
+.table-header-cell10 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; font-size: 15px; color: rgba(0,0,0,0.75); }
+.table-header-cell11 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 13px; font-size: 15px; color: rgba(0,0,0,0.75); }
+.table-header-cell12 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 50px; font-size: 15px; color: rgba(0,0,0,0.75); }
+.table-header-cell14 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 26px; font-size: 15px; color: rgba(0,0,0,0.75); }
+
+.planned-outage-id { position: relative; letter-spacing: 0.6px; line-height: 22px; text-transform: uppercase; font-weight: 600; flex-shrink: 0; }
+
+.text { display: flex; flex-direction: column; align-items: flex-start; }
+.table-cell {
+  align-self: stretch;
+  height: 70px;
+  border-bottom: 1px solid #eaecf0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  font-size: 16px;
+}
+.table-cell4 {
+  align-self: stretch;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.table-cell43 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; }
+.table-cell46 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; box-sizing: border-box; }
+.table-cell47 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; }
+.table-cell50 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; box-sizing: border-box; }
+
+.div26 { position: relative; line-height: 20px; }
+.div27 { position: relative; line-height: 20px; flex-shrink: 0; }
+
+// ---------- Submission status badges ----------
+.status-badge {
+  height: 28px;
+  border-radius: 25px;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.22);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge-submitted {
+  background-color: #e2ffe2;
+  color: #136f12;
+  width: 128px;
+}
+.badge-not-submitted {
+  background-color: #ffe7e6;
+  color: #dc2626;
+  width: 147px;
+}
+.status-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+// ---------- Change management (mobile card) ----------
+.m-card {
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.m-card-header { display: flex; align-items: center; gap: 12px; }
+.m-card-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+.m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+}
+.m-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 10px 12px;
+    background-color: #fcfcfd;
+    border-top: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+.m-cell-danger { color: #e7000b; }

@@ -1,0 +1,133 @@
+<!-- ===== Module Nav Cards (desktop) ===== -->
+<ng-container *ngIf="variant === 'desktop'">
+
+  <!-- NOC Portal -->
+  <div
+    class="group-container module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('noc-portal')"
+    (keyup.enter)="navigateToModule('noc-portal')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="noc-card-bg"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="rectangle-div"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-1.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">NOC Portal</div>
+    <div class="network-operations-center">Network Operations Center</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Proactive Automation -->
+  <div
+    class="group-parent module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('proactive-automation')"
+    (keyup.enter)="navigateToModule('proactive-automation')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-item"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-2.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Proactive Automation</div>
+    <div class="network-operations-center">Automated workflows</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Incident Management -->
+  <div
+    class="group-div module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('incident-management')"
+    (keyup.enter)="navigateToModule('incident-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child3"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child-incident"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-3.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Incident Management</div>
+    <div class="network-operations-center">Track and resolve Incidents</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Problem Management -->
+  <div
+    class="group-parent2 module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('problem-management')"
+    (keyup.enter)="navigateToModule('problem-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child6"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child-problem"></div>
+        <img class="icbaseline-tv-icon" src="\assets\tile-4.svg" alt="" />
+      </div>
+    </div>
+    <div class="noc-portal">Problem Management</div>
+    <div class="network-operations-center">Analyzing the root cause</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+  <!-- Change Management -->
+  <div
+    class="group-parent3 module-card"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule('change-management')"
+    (keyup.enter)="navigateToModule('change-management')"
+  >
+    <div class="rectangle-wrapper">
+      <div class="group-child9"></div>
+    </div>
+    <div class="group-wrapper">
+      <div class="rectangle-container">
+        <div class="group-child10"></div>
+      </div>
+      <img class="icbaseline-tv-icon" src="\assets\tile-5.svg" alt="" />
+    </div>
+    <div class="change-management2">Change Management</div>
+    <div class="network-operations-center">Manage system changes</div>
+    <img class="group-child8" src="\assets\tile-open.svg" alt="" />
+  </div>
+
+</ng-container>
+
+<!-- ===== Module Nav Tiles (mobile) ===== -->
+<div class="m-tiles" *ngIf="variant === 'mobile'">
+  <div
+    class="m-tile"
+    [ngClass]="tile.gradientClass"
+    *ngFor="let tile of moduleTiles"
+    role="button"
+    tabindex="0"
+    (click)="navigateToModule(tile.key)"
+    (keyup.enter)="navigateToModule(tile.key)"
+  >
+    <div class="m-tile-icon-wrap">
+      <img class="m-tile-icon" [src]="tile.icon" alt="" />
+    </div>
+    <div class="m-tile-label">{{ tile.label }}</div>
+    <div class="m-tile-subtitle">{{ tile.subtitle }}</div>
+  </div>
+</div>

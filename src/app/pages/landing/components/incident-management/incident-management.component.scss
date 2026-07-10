@@ -1,0 +1,237 @@
+:host {
+  display: contents;
+}
+
+// Shared class applied to all 4 reorderable grid cards so their top/left
+// position animates smoothly when the analytics tab changes.
+.grid-card {
+  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ---------- Incident Management Card (desktop) ----------
+.the-djp-inner {
+  position: absolute;
+  top: 453px; left: 973px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 24px;
+  background-color: #fff;
+  width: 914px; height: 454px;
+  overflow: hidden;
+  color: #101828;
+}
+.frame-container {
+  position: absolute;
+  width: calc(100% - 43px);
+  top: 20px; right: 22px; left: 21px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+}
+.frame-div {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.frame-group { display: flex; align-items: center; gap: 13px; }
+.frame-child { height: 40px; width: 40px; position: relative; }
+.incident-management-group {
+  width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.sr-overview2 {
+  align-self: stretch;
+  position: relative;
+  line-height: 36px;
+  font-weight: 600;
+}
+.manage-service-requests {
+  align-self: stretch;
+  position: relative;
+  font-size: 16px;
+  line-height: 28px;
+  color: #717182;
+  white-space: nowrap;
+}
+.icon-parkfull-screen-one {
+  height: 36px; width: 36px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+
+  &:hover {
+    transform: scale(1.12);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  &:active { transform: scale(0.96); }
+  &:focus-visible {
+    outline: 2px solid #e60012;
+    outline-offset: 2px;
+  }
+}
+
+// Stat tiles
+.group-parent6 {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+.stat-tile {
+  height: 83px;
+  position: relative;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  border-radius: 12px;
+  border: 1px solid;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.stat-value {
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 17px;
+  font-size: 22px;
+}
+.stat-label {
+  position: absolute;
+  top: 53px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  line-height: 10.63px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+// Bar chart
+.group-parent7 {
+  align-self: stretch;
+  height: 214px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 8px 0px 90px;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(100, 116, 139, 0.66);
+}
+.group {
+  width: 871px; height: 214px;
+  position: absolute;
+  margin: 0;
+  top: 0; left: 0;
+  z-index: 0;
+  flex-shrink: 0;
+}
+.y-label {
+  position: absolute;
+  left: 5px;
+  line-height: 16.5px;
+  font-size: 14px;
+  color: rgba(100, 116, 139, 0.66);
+}
+.x-label {
+  position: absolute;
+  top: 197px;
+  line-height: 16.5px;
+  font-size: 14px;
+  color: rgba(100, 116, 139, 0.66);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.bar-parent {
+  display: flex;
+  align-items: flex-end;
+  gap: 46px;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.bar-item {
+  width: 57px;
+  position: relative;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  border-radius: 14px 14px 0px 0px;
+  background-color: #ffecec;
+  transition: background-color 0.3s ease;
+  &.bar-active { background-color: #ff4949; }
+}
+
+// ---------- Incident management (mobile card) ----------
+.m-card {
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.m-card-header { display: flex; align-items: center; gap: 12px; }
+.m-card-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+.m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
+
+.m-stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  gap: 8px;
+}
+.m-stat-tile {
+  border-radius: 10px;
+  border: 1px solid;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08) inset;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  b { font-size: 16px; line-height: 1; }
+  span { font-size: 10px; font-weight: 500; text-align: center; line-height: 1.2; }
+}
+.m-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  padding-top: 8px;
+}
+.m-bar-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.m-bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 8px 8px 0px 0px;
+  background-color: #ffecec;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  transition: background-color 0.3s ease;
+
+  &.m-bar-active { background-color: #ff4949; }
+}
+.m-bar-label {
+  font-size: 9px;
+  color: rgba(100, 116, 139, 0.75);
+  text-align: center;
+  line-height: 1.15;
+  word-break: break-word;
+}

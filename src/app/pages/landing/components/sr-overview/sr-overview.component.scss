@@ -1,0 +1,292 @@
+:host {
+  display: contents;
+}
+
+// Shared class applied to all 4 reorderable grid cards so their top/left
+// position animates smoothly when the analytics tab changes.
+.grid-card {
+  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ---------- SR Overview Card (desktop) ----------
+.content-parent {
+  position: absolute;
+  top: 933px; left: 973px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 24px;
+  background-color: #fff;
+  width: 914px; height: 454px;
+  overflow: hidden;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+}
+.frame-parent {
+  position: absolute;
+  top: 20px; left: 21px;
+  display: flex;
+  align-items: center;
+  gap: 243px;
+  font-size: 22px;
+  color: #101828;
+}
+.frame-group { display: flex; align-items: center; gap: 13px; }
+.frame-child { height: 40px; width: 40px; position: relative; }
+.sr-overview-parent {
+  width: 539px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.sr-overview2 {
+  align-self: stretch;
+  position: relative;
+  line-height: 36px;
+  font-weight: 600;
+}
+.manage-service-requests {
+  align-self: stretch;
+  position: relative;
+  font-size: 16px;
+  line-height: 28px;
+  color: #717182;
+  white-space: nowrap;
+}
+.icon-parkfull-screen-one {
+  height: 36px; width: 36px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+
+  &:hover {
+    transform: scale(1.12);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  &:active { transform: scale(0.96); }
+  &:focus-visible {
+    outline: 2px solid #e60012;
+    outline-offset: 2px;
+  }
+}
+
+// SR table (column-major flex)
+.content {
+  position: absolute;
+  width: 100%;
+  top: 94px; right: 0; left: 0;
+  background-color: #fff;
+  height: 350px;
+  display: flex;
+  align-items: flex-start;
+}
+.column {
+  width: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #e60012;
+}
+.column2 {
+  width: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.column4 {
+  width: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #a855f7;
+}
+.column5 {
+  width: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: rgba(0,0,0,0.75);
+}
+.column6 {
+  width: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 10px;
+  color: #99a1af;
+}
+.table-header-cell {
+  align-self: stretch;
+  height: 70px;
+  background-color: #fcfcfd;
+  border-top: 1px solid #eaecf0;
+  border-bottom: 1px solid #eaecf0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  color: rgba(0,0,0,0.75);
+  font-size: 13px;
+}
+.table-header { display: flex; align-items: center; }
+.sr-number {
+  position: relative;
+  letter-spacing: 0.6px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.sr-rise-date {
+  width: 100px;
+  position: relative;
+  letter-spacing: 0.6px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.escalation-level {
+  width: 146px;
+  position: relative;
+  letter-spacing: 0.6px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.table-cell {
+  align-self: stretch;
+  height: 70px;
+  border-bottom: 1px solid #eaecf0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  font-size: 16px;
+}
+.table-cell4 {
+  align-self: stretch;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.table-cell14 {
+  align-self: stretch;
+  height: 70px;
+  border-bottom: 1px solid #eaecf0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  color: #4670f1;
+  font-size: 16px;
+}
+.esc-cell {
+  align-self: stretch;
+  height: 70px;
+  border-bottom: 1px solid #eaecf0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 11.5px 23.1px;
+  font-size: 16px;
+}
+.table-cell17 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 16px; }
+.table-header-cell5 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 3px; font-size: 14px; }
+.table-header-cell6 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 14px; color: rgba(0,0,0,0.75); }
+.table-cell21 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 10.6px 23.1px; font-size: 16px; }
+.table-cell24 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 10.6px 23.1px; box-sizing: border-box; font-size: 16px; }
+
+// SR badge styles
+.text { display: flex; flex-direction: column; align-items: flex-start; }
+.ag { position: relative; line-height: 16.5px; font-weight: 600; }
+.network-outage-in { height: 29px; position: relative; line-height: 27.5px; display: inline-block; flex-shrink: 0; white-space: nowrap; font-size: 16px; }
+.div { height: 28px; width: 74px; position: relative; box-shadow: 0px 0px 6px rgba(168,85,247,0.2) inset; border-radius: 22369600px; background-color: rgba(168,85,247,0.15); border: 0.7px solid rgba(168,85,247,0.3); box-sizing: border-box; }
+.div2 { height: 28px; width: 65px; position: relative; box-shadow: 0px 0px 6px rgba(85,107,247,0.2) inset; border-radius: 22369600px; background-color: #e2ecfe; border: 0.7px solid #a6c6fb; box-sizing: border-box; }
+.parent { position: absolute; top: 3px; left: 14px; letter-spacing: 0.41px; line-height: 22px; font-weight: 500; font-size: 16px; }
+.badge  { height: 28px; border-radius: 22369600px; background-color: #e2ffed; border: 0.7px solid #54ba7d; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #2a9655; }
+.badge2 { height: 28px; border-radius: 22369600px; background-color: #eefff4; border: 0.7px solid rgba(99,181,130,0.8); box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #65a87d; }
+.badge3 { height: 28px; border-radius: 22369600px; background-color: #fffaf0; border: 0.7px solid #f1c16f; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #f59e0b; }
+.badge4 { height: 28px; border-radius: 22369600px; background-color: #fef2f2; border: 0.7px solid #ffa5a5; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #e7000b; }
+.prioritybadge  { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #2a9655; }
+.prioritybadge2 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #65a87d; }
+.prioritybadge3 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #f59e0b; }
+.prioritybadge4 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #fb2c36; }
+.badge5 { display: flex; align-items: flex-start; mix-blend-mode: multiply; flex-shrink: 0; }
+.container12 { width: 121.9px; display: flex; align-items: center; gap: 7.5px; }
+.container13 { height: 8px; width: 60px; border-radius: 22369600px; background-color: #f3f4f6; overflow: hidden; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; }
+.tracking-fill { height: 8px; border-radius: 22369600px; }
+.div5 { position: relative; line-height: 15px; }
+
+// ---------- SR overview (mobile card) ----------
+.m-card {
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.m-card-header { display: flex; align-items: center; gap: 12px; }
+.m-card-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+.m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+}
+.m-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 10px 12px;
+    background-color: #fcfcfd;
+    border-top: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecf0;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+.m-cell-accent { color: #e60012; font-weight: 600; }
+
+.m-tracking { display: flex; align-items: center; gap: 8px; }
+.m-tracking-track {
+  width: 60px; height: 8px;
+  border-radius: 999px;
+  background-color: #f3f4f6;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.m-tracking-fill { height: 100%; border-radius: 999px; }

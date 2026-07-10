@@ -1,0 +1,181 @@
+<!-- ===== SR Overview Card (desktop) ===== -->
+<div
+  class="content-parent grid-card"
+  *ngIf="variant === 'desktop'"
+  [style.top.px]="top"
+  [style.left.px]="left"
+>
+
+  <!-- Card header -->
+  <div class="frame-parent">
+    <div class="frame-group">
+      <img class="frame-child" src="\assets\SR-overview.svg" alt="" />
+      <div class="sr-overview-parent">
+        <div class="sr-overview2">{{ srCardTitle }}</div>
+        <div class="manage-service-requests">{{ srCardSubtitle }}</div>
+      </div>
+    </div>
+    <img
+      class="icon-parkfull-screen-one"
+      src="\assets\Expand.svg"
+      alt="Expand SR overview"
+      role="button"
+      tabindex="0"
+      (click)="onExpandCard()"
+      (keyup.enter)="onExpandCard()"
+    />
+  </div>
+
+  <!-- Table (column-major: each column is a flex column of cells) -->
+  <div class="content">
+
+    <!-- Column 1: SR Number -->
+    <div class="column">
+      <div class="table-header-cell">
+        <div class="table-header"><div class="sr-number">SR NUMBER</div></div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+      >
+        <div class="text"><div class="ag">{{ row.srNumber }}</div></div>
+      </div>
+    </div>
+
+    <!-- Column 2: SR Rise Date -->
+    <div class="column2">
+      <div class="table-header-cell">
+        <div class="sr-rise-date">SR Rise date</div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+      >
+        <div class="network-outage-in">{{ row.riseDate }}</div>
+      </div>
+    </div>
+
+    <!-- Column 3: SR Summary -->
+    <div class="column2">
+      <div class="table-header-cell">
+        <div class="sr-number">SR Summary</div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+      >
+        <div class="network-outage-in">{{ row.summary }}</div>
+      </div>
+    </div>
+
+    <!-- Column 4: SR Sub Type -->
+    <div class="column4">
+      <div class="table-header-cell">
+        <div class="sr-number">SR Sub Type</div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell4' : (row.subType === 'Child' ? 'table-cell14' : 'table-cell')"
+      >
+        <div [ngClass]="row.subType === 'Child' ? 'div2' : 'div'">
+          <div class="parent">{{ row.subType }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 5: Escalation Level -->
+    <div class="column5">
+      <div class="table-header-cell5">
+        <div class="escalation-level">Escalation Level</div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell4' : 'table-cell17'"
+        class="esc-cell"
+      >
+        <div [ngClass]="row.badgeClass">
+          <div [ngClass]="row.badgeDotClass"></div>
+          <div class="ag">{{ row.escalationLevel }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 6: Tracking -->
+    <div class="column6">
+      <div class="table-header-cell6">
+        <div class="sr-number">tracking</div>
+      </div>
+      <div
+        *ngFor="let row of srRows"
+        [ngClass]="row.isLast ? 'table-cell24' : 'table-cell21'"
+      >
+        <div class="badge5">
+          <div class="container12">
+            <div class="container13">
+              <div
+                class="tracking-fill"
+                [style.width.px]="(row.trackingPercent / 100) * 60"
+                [style.backgroundColor]="row.trackingColor"
+              ></div>
+            </div>
+            <div class="text">
+              <div class="div5">{{ row.trackingPercent }}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SR overview (mobile) ===== -->
+<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+  <div class="m-card-header">
+    <img class="m-card-icon" src="/assets/SR-overview.svg" alt="" />
+    <div>
+      <div class="m-card-title">{{ srCardTitle }}</div>
+      <div class="m-card-subtitle">{{ srCardSubtitle }}</div>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table class="m-table">
+      <thead>
+        <tr>
+          <th>SR Number</th>
+          <th>SR Rise Date</th>
+          <th>SR Summary</th>
+          <th>SR Sub Type</th>
+          <th>Escalation Level</th>
+          <th>Tracking</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of srRows">
+          <td class="m-cell-accent">{{ row.srNumber }}</td>
+          <td>{{ row.riseDate }}</td>
+          <td>{{ row.summary }}</td>
+          <td>
+            <span [ngClass]="row.subType === 'Child' ? 'div2' : 'div'">
+              <span class="parent">{{ row.subType }}</span>
+            </span>
+          </td>
+          <td>
+            <span [ngClass]="row.badgeClass">
+              <span [ngClass]="row.badgeDotClass"></span>
+              <span class="ag">{{ row.escalationLevel }}</span>
+            </span>
+          </td>
+          <td>
+            <div class="m-tracking">
+              <div class="m-tracking-track">
+                <div class="m-tracking-fill" [style.width.%]="row.trackingPercent" [style.backgroundColor]="row.trackingColor"></div>
+              </div>
+              <span>{{ row.trackingPercent }}%</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<!-- ===== Incident Management Analytics Card (desktop) ===== -->
+<div
+  class="the-djp-inner grid-card"
+  *ngIf="variant === 'desktop'"
+  [style.top.px]="top"
+  [style.left.px]="left"
+>
+  <div class="frame-container">
+
+    <!-- Card header -->
+    <div class="frame-div">
+      <div class="frame-group">
+        <img class="frame-child" src="\assets\incident-management.svg" alt="" />
+        <div class="incident-management-group">
+          <div class="sr-overview2">{{ incidentCardTitle }}</div>
+          <div class="manage-service-requests">{{ incidentCardSubtitle }}</div>
+        </div>
+      </div>
+      <img
+        class="icon-parkfull-screen-one"
+        src="\assets\Expand.svg"
+        alt="Expand Incident management"
+        role="button"
+        tabindex="0"
+        (click)="onExpandCard()"
+        (keyup.enter)="onExpandCard()"
+      />
+    </div>
+
+    <!-- Stat tiles row -->
+    <div class="group-parent6">
+      <div
+        class="stat-tile"
+        *ngFor="let stat of incidentStats"
+        [style.width.px]="stat.width"
+        [style.backgroundColor]="stat.bg"
+        [style.borderColor]="stat.border"
+        [style.color]="stat.color"
+      >
+        <b class="stat-value">{{ stat.value }}</b>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+
+    <!-- Bar chart -->
+    <div class="group-parent7">
+      <!-- Y-axis labels -->
+      <div class="group">
+        <div class="y-label" *ngFor="let lbl of incidentYLabels; let i = index" [style.top.px]="i * 44">{{ lbl }}</div>
+        <div class="x-label" *ngFor="let lbl of incidentXLabels; let i = index" [style.left.px]="i * 103 + 118.5">{{ lbl }}</div>
+      </div>
+      <!-- Bars -->
+      <div class="bar-parent">
+        <div
+          *ngFor="let bar of incidentBars"
+          class="bar-item"
+          [class.bar-active]="bar.active"
+          [style.height.px]="bar.height"
+        ></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== Incident management (mobile) ===== -->
+<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+  <div class="m-card-header">
+    <img class="m-card-icon" src="/assets/incident-management.svg" alt="" />
+    <div>
+      <div class="m-card-title">{{ incidentCardTitle }}</div>
+      <div class="m-card-subtitle">{{ incidentCardSubtitle }}</div>
+    </div>
+  </div>
+
+  <div class="m-stat-tiles">
+    <div
+      class="m-stat-tile"
+      *ngFor="let stat of incidentStats"
+      [style.backgroundColor]="stat.bg"
+      [style.borderColor]="stat.border"
+      [style.color]="stat.color"
+    >
+      <b>{{ stat.value }}</b>
+      <span>{{ stat.label }}</span>
+    </div>
+  </div>
+
+  <div class="m-bar-chart">
+    <div class="m-bar-col" *ngFor="let bar of incidentBars; let i = index">
+      <div class="m-bar" [class.m-bar-active]="bar.active" [style.height.%]="(bar.height / incidentBarMax) * 100"></div>
+      <span class="m-bar-label">{{ incidentXLabels[i] }}</span>
+    </div>
+  </div>
+</div>

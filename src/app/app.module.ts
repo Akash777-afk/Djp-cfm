@@ -8,6 +8,13 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
 import { ChangeManagementComponent } from './pages/change-management/change-management.component';
 import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
+import { HeaderPartComponent } from './pages/landing/components/header-part/header-part.component';
+import { ColorfulTilesComponent } from './pages/landing/components/colorful-tiles/colorful-tiles.component';
+import { AnalyticsOverviewComponent } from './pages/landing/components/analytics-overview/analytics-overview.component';
+import { SrOverviewComponent } from './pages/landing/components/sr-overview/sr-overview.component';
+import { EscalationMatrixCardComponent } from './pages/landing/components/escalation-matrix/escalation-matrix.component';
+import { IncidentManagementCardComponent } from './pages/landing/components/incident-management/incident-management.component';
+import { ChangeManagementCardComponent } from './pages/landing/components/change-management/change-management.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +22,14 @@ import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-
     LandingComponent,
     IncidentManagementComponent,
     ChangeManagementComponent,
-    EscalationMatrixComponent
+    EscalationMatrixComponent,
+    HeaderPartComponent,
+    ColorfulTilesComponent,
+    AnalyticsOverviewComponent,
+    SrOverviewComponent,
+    EscalationMatrixCardComponent,
+    IncidentManagementCardComponent,
+    ChangeManagementCardComponent
   ],
   imports: [
     BrowserModule,

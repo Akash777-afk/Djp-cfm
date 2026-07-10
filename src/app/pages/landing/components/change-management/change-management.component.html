@@ -1,0 +1,146 @@
+<!-- ===== Change Management Analytics Card (desktop) ===== -->
+<div
+  class="frame-parent4 grid-card"
+  *ngIf="variant === 'desktop'"
+  [style.top.px]="top"
+  [style.left.px]="left"
+>
+
+  <!-- Card header -->
+  <div class="frame-parent5">
+    <div class="frame-group">
+      <img class="frame-child" src="\assets\change-management.svg" alt="" />
+      <div class="change-management-parent">
+        <div class="sr-overview2">{{ changeCardTitle }}</div>
+        <div class="manage-service-requests">{{ changeCardSubtitle }}</div>
+      </div>
+    </div>
+    <img
+      class="icon-parkfull-screen-one"
+      src="\assets\Expand.svg"
+      alt="Expand Change management"
+      role="button"
+      tabindex="0"
+      (click)="onExpandCard()"
+      (keyup.enter)="onExpandCard()"
+    />
+  </div>
+
+  <!-- Table (column-major) -->
+  <div class="content-wrapper">
+    <div class="content3">
+
+      <!-- Column 10: Outage ID (labelled CRQ in original) -->
+      <div class="column10">
+        <div class="table-header-cell10">
+          <div class="sr-number">crq</div>
+        </div>
+        <div
+          *ngFor="let row of changeRows"
+          [ngClass]="row.isLast ? 'table-cell46' : 'table-cell43'"
+        >
+          <div class="text"><div class="div26">{{ row.outageId }}</div></div>
+        </div>
+      </div>
+
+      <!-- Column 11a: Planned Outage ID (CRQ numbers) -->
+      <div class="column11">
+        <div class="table-header-cell11">
+          <div class="planned-outage-id">planned outage id</div>
+        </div>
+        <div
+          *ngFor="let row of changeRows"
+          [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
+        >
+          <div class="div27">{{ row.crq }}</div>
+        </div>
+      </div>
+
+      <!-- Column 12: Impact -->
+      <div class="column12">
+        <div class="table-header-cell12">
+          <div class="sr-number">impact</div>
+        </div>
+        <div
+          *ngFor="let row of changeRows"
+          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
+        >
+          <div class="div26">{{ row.impact }}</div>
+        </div>
+      </div>
+
+      <!-- Column 11b: Implementor -->
+      <div class="column11">
+        <div class="table-header-cell6">
+          <div class="sr-number">implementor</div>
+        </div>
+        <div
+          *ngFor="let row of changeRows"
+          [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
+        >
+          <div class="div27">{{ row.implementor }}</div>
+        </div>
+      </div>
+
+      <!-- Column 14: Submission status -->
+      <div class="column14">
+        <div class="table-header-cell14">
+          <div class="escalation-level">submission</div>
+        </div>
+        <ng-container *ngFor="let row of changeRows">
+          <div [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'">
+
+            <!-- Submitted -->
+            <div *ngIf="row.submitted" class="status-badge badge-submitted">
+              <img class="status-icon" src="assets/submitted.svg" alt="" />
+              <span>Submitted</span>
+            </div>
+
+            <!-- Not submitted -->
+            <div *ngIf="!row.submitted" class="status-badge badge-not-submitted">
+              <img class="status-icon" src="\assets\not-submitted.svg" alt="" />
+              <span>Not submitted</span>
+            </div>
+
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Change management (mobile) ===== -->
+<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+  <div class="m-card-header">
+    <img class="m-card-icon" src="/assets/change-management.svg" alt="" />
+    <div>
+      <div class="m-card-title">{{ changeCardTitle }}</div>
+      <div class="m-card-subtitle">{{ changeCardSubtitle }}</div>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table class="m-table">
+      <thead>
+        <tr><th>CRQ</th><th>Planned Outage ID</th><th>Impact</th><th>Implementor</th><th>Submission</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of changeRows">
+          <td>{{ row.outageId }}</td>
+          <td>{{ row.crq }}</td>
+          <td class="m-cell-danger">{{ row.impact }}</td>
+          <td>{{ row.implementor }}</td>
+          <td>
+            <span *ngIf="row.submitted" class="status-badge badge-submitted">
+              <img class="status-icon" src="/assets/submitted.svg" alt="" />
+              <span>Submitted</span>
+            </span>
+            <span *ngIf="!row.submitted" class="status-badge badge-not-submitted">
+              <img class="status-icon" src="/assets/not-submitted.svg" alt="" />
+              <span>Not submitted</span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

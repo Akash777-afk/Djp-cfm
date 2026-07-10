@@ -1,0 +1,175 @@
+<!-- ===== Escalation Matrix Analytics Card (desktop) ===== -->
+<div
+  class="the-djp-child grid-card"
+  *ngIf="variant === 'desktop'"
+  [style.top.px]="top"
+  [style.left.px]="left"
+>
+  <div class="frame-parent2">
+
+    <!-- Card header -->
+    <div class="frame-div">
+      <div class="frame-group">
+        <img class="frame-child" src="\assets\Group 427319744.svg" alt="" />
+        <div class="escalation-matrix-parent">
+          <div class="sr-overview2">{{ escalationCardTitle }}</div>
+          <div class="manage-service-requests">{{ escalationCardSubtitle }}</div>
+        </div>
+      </div>
+      <img
+        class="icon-parkfull-screen-one"
+        src="\assets\Expand.svg"
+        alt="Expand Escalation matrix"
+        role="button"
+        tabindex="0"
+        (click)="onExpandCard()"
+        (keyup.enter)="onExpandCard()"
+      />
+    </div>
+
+    <!-- Donut + level table -->
+    <div class="container-group">
+
+      <!-- Donut chart -->
+      <div class="container25">
+        <div class="piechart">
+          <div class="surface">
+            <svg width="340" height="340" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="segmentShadow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(255,255,255,0.6)" result="outer"/>
+                </filter>
+              </defs>
+
+              <!-- Base track ring -->
+              <circle cx="190" cy="190" r="140" fill="none" stroke="#efefef" stroke-width="46"/>
+
+              <!-- Dynamic coloured segments -->
+              <circle
+                *ngFor="let seg of donutSegments"
+                cx="190" cy="190" r="140"
+                fill="none"
+                [attr.stroke]="seg.color"
+                stroke-width="46"
+                stroke-linecap="butt"
+                [attr.stroke-dasharray]="seg.dashArray"
+                [attr.stroke-dashoffset]="seg.dashOffset"
+                transform="rotate(-90 190 190)"
+                filter="url(#segmentShadow)"
+                style="transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;"
+              />
+
+              <!-- Centre white fill disc -->
+              <circle cx="190" cy="190" r="114" fill="white"
+                filter="drop-shadow(0 2px 8px rgba(255,255,255,0.8))"
+              />
+
+              <!-- Centre text -->
+              <text x="190" y="183" text-anchor="middle" font-size="46" font-weight="700" fill="#0f172a" font-family="Inter,sans-serif">{{ totalEscalated }}</text>
+              <text x="190" y="210" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Total</text>
+              <text x="190" y="230" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Escalated SRs</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level breakdown table (column-major) -->
+      <div class="content2">
+
+        <!-- Column 7: SR Levels -->
+        <div class="column7">
+          <div class="table-header-cell7">
+            <div class="table-header"><div class="sr-number">Sr levels</div></div>
+          </div>
+          <div
+            *ngFor="let level of escalationLevels"
+            class="table-cell25"
+          >
+            <div class="text">
+              <div class="container26">
+                <span class="level-dot" [style.backgroundColor]="level.dotColor"></span>
+                <div class="text">
+                  <div class="incident-management">{{ level.label }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 8: SR Counts -->
+        <div class="column8">
+          <div class="table-header-cell8">
+            <div class="sr-number">sr counts</div>
+          </div>
+          <div
+            *ngFor="let level of escalationLevels"
+            class="table-cell31"
+          >
+            <div class="ag">{{ level.count }}</div>
+          </div>
+        </div>
+
+        <!-- Column 9: Percentage -->
+        <div class="column9">
+          <div class="table-header-cell9">
+            <div class="sr-number">percentage</div>
+          </div>
+          <div
+            *ngFor="let level of escalationLevels"
+            [ngClass]="level.isLast ? 'table-cell42' : 'table-cell37'"
+          >
+            <div class="div20">{{ level.percent }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Escalation matrix (mobile) ===== -->
+<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+  <div class="m-card-header">
+    <img class="m-card-icon" src="/assets/Group 427319744.svg" alt="" />
+    <div>
+      <div class="m-card-title">{{ escalationCardTitle }}</div>
+      <div class="m-card-subtitle">{{ escalationCardSubtitle }}</div>
+    </div>
+  </div>
+
+  <div class="m-donut-wrap">
+    <svg class="m-donut" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="190" cy="190" r="140" fill="none" stroke="#efefef" stroke-width="46"/>
+      <circle
+        *ngFor="let seg of donutSegments"
+        cx="190" cy="190" r="140"
+        fill="none"
+        [attr.stroke]="seg.color"
+        stroke-width="46"
+        stroke-linecap="butt"
+        [attr.stroke-dasharray]="seg.dashArray"
+        [attr.stroke-dashoffset]="seg.dashOffset"
+        transform="rotate(-90 190 190)"
+      />
+      <circle cx="190" cy="190" r="114" fill="white" />
+      <text x="190" y="183" text-anchor="middle" font-size="46" font-weight="700" fill="#0f172a" font-family="Inter,sans-serif">{{ totalEscalated }}</text>
+      <text x="190" y="210" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Total</text>
+      <text x="190" y="230" text-anchor="middle" font-size="15" fill="#64748b" font-family="Inter,sans-serif">Escalated SRs</text>
+    </svg>
+  </div>
+
+  <div class="table-scroll">
+    <table class="m-table">
+      <thead>
+        <tr><th>SR Levels</th><th>SR Counts</th><th>Percentage</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let level of escalationLevels">
+          <td><span class="level-dot" [style.backgroundColor]="level.dotColor"></span>{{ level.label }}</td>
+          <td>{{ level.count }}</td>
+          <td>{{ level.percent }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
