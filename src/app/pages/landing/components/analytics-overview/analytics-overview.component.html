@@ -22,19 +22,19 @@
 
   <!-- Interface toggle -->
   <div class="container">
-    <div class="container2" (click)="interfaceSelect.emit('classic')">
-      <img class="monitoricon" src="\assets\classic-ui.svg" alt="" />
+    <div class="container2" [class.iface-active]="activeInterface === 'classic'" (click)="interfaceSelect.emit('classic')">
+      <span class="monitoricon icon-classic"></span>
       <div class="text">
-        <div class="classic-interface" [class.active-iface]="activeInterface === 'classic'">Classic Interface</div>
+        <div class="classic-interface">Classic Interface</div>
       </div>
     </div>
-    <div class="container3">
-      <div class="container4">
-        <div class="container5"></div>
-      </div>
-    </div>
-    <div class="container6" (click)="interfaceSelect.emit('enhanced')">
-      <img class="monitoricon" src="\assets\modern-ui.svg" alt="" />
+    <div class="container3" (click)="interfaceSelect.emit(activeInterface === 'classic' ? 'enhanced' : 'classic')">
+  <div class="container4" [class.knob-classic]="activeInterface === 'classic'">
+    <div class="container5"></div>
+  </div>
+</div>
+    <div class="container6" [class.iface-active]="activeInterface === 'enhanced'" (click)="interfaceSelect.emit('enhanced')">
+      <span class="monitoricon icon-enhanced"></span>
       <div class="text">
         <div class="enhanced-interface">Enhanced Interface</div>
       </div>
