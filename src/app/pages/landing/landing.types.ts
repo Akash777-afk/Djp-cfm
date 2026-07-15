@@ -52,7 +52,10 @@ export type ModuleKey =
   | 'proactive-automation'
   | 'incident-management'
   | 'problem-management'
-  | 'change-management';
+  | 'change-management'
+  | 'rooster-management'
+  | 'escalation-matrix'
+  | 'sr-assign-reassign';
 
 export type CardKey = 'sr' | 'incident' | 'change' | 'escalation';
 

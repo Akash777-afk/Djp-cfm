@@ -4,4 +4,9 @@ html, body {
   padding: 0;
     background-color: #f7f8f9;
   font-family: 'Inter', sans-serif;
+
+  // Scrollbar hidden — page still scrolls, just without the visible track.
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
 }

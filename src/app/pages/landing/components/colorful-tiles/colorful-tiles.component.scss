@@ -3,21 +3,84 @@
 }
 
 // ---------- Module Nav Cards (desktop, shared structure) ----------
-.group-container,
-.group-parent,
-.group-div,
-.group-parent2,
-.group-parent3 {
+// Horizontally scrollable so the row can hold more tiles than fit in the
+// 1920px canvas width without wrapping or shrinking existing tiles.
+.tiles-row-wrapper {
   position: absolute;
   top: 157px;
+  left: 30px;
+  width: 1860px;
+  height: 144px;
+}
+.tiles-row {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  // Scrollbar hidden — navigation happens via the prev/next buttons instead.
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+.tile-slot {
+  position: relative;
+  flex: 0 0 359px;
   width: 359px;
   height: 144px;
 }
-.group-container { left: 30px; }
-.group-parent    { left: 405px; }
-.group-div       { left: 780px; }
-.group-parent2   { left: 1155px; }
-.group-parent3   { left: 1530px; }
+
+.tiles-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 37px;
+  height: 37px;
+  padding: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.15s ease, opacity 0.2s ease, background-color 0.2s ease;
+
+  &:hover:not(.tiles-nav-disabled) { transform: translateY(-50%) scale(1.08); background-color: rgba(255, 255, 255, 0.32); }
+  &:active:not(.tiles-nav-disabled) { transform: translateY(-50%) scale(0.96); }
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
+.tiles-nav-arrow {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid #e60012;
+  margin-left: 3px;
+}
+.tiles-nav-prev {
+  left: -18px;
+}
+.tiles-nav-prev .tiles-nav-arrow {
+  transform: rotate(180deg);
+  margin-left: 0;
+  margin-right: 3px;
+}
+.tiles-nav-next {
+  right: -18px;
+}
+.tiles-nav-disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
 
 // Shared hover/click affordance for the 5 module tiles
 .module-card {
@@ -48,6 +111,9 @@
 .group-child6 { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, #48b0ff, #053d67); width: 359px; height: 144px; }
 .group-child9 { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, rgba(251,8,194,0.8), #790368); width: 359px; height: 144px; }
 .noc-card-bg  { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, #c0392b, #7b0000); width: 359px; height: 144px; }
+.rooster-card-bg    { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, #f4a13a, #8a5a10); width: 359px; height: 144px; }
+.escalation-card-bg { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, #adb63b, #5b6318); width: 359px; height: 144px; }
+.sr-assign-card-bg  { position: absolute; top: 0; left: 0; border-radius: 21px; background: linear-gradient(259.43deg, #9b3937, #5c1a19); width: 359px; height: 144px; }
 
 .group-wrapper {
   position: absolute;
@@ -91,6 +157,30 @@
   position: absolute; top: 0; left: 0;
   border-radius: 7px;
   background: rgba(5, 61, 103, 0.7) padding-box, linear-gradient(180deg, #fff, #666) border-box;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  width: 42px; height: 38px;
+}
+.rooster-badge-bg {
+  position: absolute; top: 0; left: 0;
+  border-radius: 7px;
+  background: #f4a13a padding-box, linear-gradient(180deg, #fff, #666) border-box;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  width: 42px; height: 38px;
+}
+.escalation-badge-bg {
+  position: absolute; top: 0; left: 0;
+  border-radius: 7px;
+  background: #adb63b padding-box, linear-gradient(180deg, #fff, #666) border-box;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  width: 42px; height: 38px;
+}
+.sr-assign-badge-bg {
+  position: absolute; top: 0; left: 0;
+  border-radius: 7px;
+  background: #9b3937 padding-box, linear-gradient(180deg, #fff, #666) border-box;
   border: 1px solid transparent;
   box-sizing: border-box;
   width: 42px; height: 38px;
@@ -148,3 +238,6 @@
 .tile-incident   { background: linear-gradient(259.43deg, rgba(34, 197, 94, 0.9), rgba(1, 87, 32, 0.9)); }
 .tile-problem    { background: linear-gradient(259.43deg, #48b0ff, #053d67); }
 .tile-change     { background: linear-gradient(259.43deg, rgba(251, 8, 194, 0.9), #790368); }
+.tile-rooster    { background: linear-gradient(259.43deg, #f4a13a, #8a5a10); }
+.tile-escalation { background: linear-gradient(259.43deg, #adb63b, #5b6318); }
+.tile-sr-assign  { background: linear-gradient(259.43deg, #9b3937, #5c1a19); }

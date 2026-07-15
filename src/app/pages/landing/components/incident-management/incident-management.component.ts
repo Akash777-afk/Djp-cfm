@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { IncidentBar, IncidentStat, SectionVariant } from '../../landing.types';
 
 @Component({
@@ -7,6 +8,8 @@ import { IncidentBar, IncidentStat, SectionVariant } from '../../landing.types';
   styleUrls: ['./incident-management.component.scss']
 })
 export class IncidentManagementCardComponent {
+
+  constructor(private router: Router) {}
 
   @Input() variant: SectionVariant = 'desktop';
 
@@ -50,7 +53,6 @@ export class IncidentManagementCardComponent {
   }
 
   onExpandCard(): void {
-    console.log('Expand card: incident');
-    // TODO: open a full-screen modal / dedicated route for this card
+    this.router.navigate(['/incident-management']);
   }
 }
