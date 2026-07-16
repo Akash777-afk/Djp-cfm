@@ -1,300 +1,33 @@
+<app-sidebar-nav></app-sidebar-nav>
+
+<div class="the-djp-incident-management-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-incident-management">
 
-  <!-- ===== Top Bar ===== -->
-  <div class="tablerprogress-down"></div>
-  <div class="the-djp-incident-management-child"></div>
-  <img class="airtel-logo-4-icon" alt="" />
+  <app-top-bar
+    [pageTitle]="pageTitle"
+    [searchPlaceholder]="searchPlaceholder"
+    [lastUpdated]="lastUpdated"
+    [searchQuery]="searchQuery"
+    (searchQueryChange)="searchQuery = $event"
+    (search)="onSearch()"
+    (menuClick)="onMenuClick()"
+    (refreshClick)="onTopbarRefresh()"
+  ></app-top-bar>
 
-  <div class="text-input">
-    <div class="select-bin">{{ searchPlaceholder }}</div>
-    <img class="icon" alt="" />
-  </div>
+  <app-nstt-status
+    [statTiles]="statTiles"
+    (refreshClick)="onNsttStatusRefresh()"
+  ></app-nstt-status>
 
-  <!-- Last Updated -->
-  <div class="button-wrapper">
-    <div class="button">
-      <img class="famiconstime-outline" alt="" />
-      <div class="container">
-        <div class="container2">
-          <div class="last-updated">Last Updated</div>
-        </div>
-        <div class="container3">
-          <div class="am-28042024">{{ lastUpdated }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Page Title -->
-  <div class="incident-management">{{ pageTitle }}</div>
-  <img class="the-djp-incident-management-item" alt="" />
-  <img class="the-djp-incident-management-inner" alt="" />
-
-  <!-- Icon buttons -->
-  <div class="button2"><img class="material-symbolsmenu-rounded-icon" alt="" /></div>
-  <div class="button3"><img class="material-symbolsmenu-rounded-icon" alt="" /></div>
-
-  <!-- Broadcast button -->
-  <div class="group-parent">
-    <div class="rectangle-wrapper"><div class="group-child"></div></div>
-    <div class="broadcast">Broadcast</div>
-    <img class="icon-park-outlinebroadcast" alt="" />
-  </div>
-
-  <!-- ===== NSTT Status + Stat Tiles ===== -->
-  <div class="rectangle-parent">
-    <div class="group-item"></div>
-    <div class="group-container">
-
-      <!-- Stat tiles -->
-      <div class="container-parent">
-        <div
-          class="stat-tile"
-          *ngFor="let tile of statTiles; let i = index"
-          [style.left.px]="i * 216"
-          [style.backgroundColor]="tile.bg"
-          [style.borderTopColor]="tile.borderColor"
-          [style.borderRightColor]="tile.borderColor"
-          [style.borderBottomColor]="tile.borderColor"
-          [style.color]="tile.textColor"
-        >
-          <!-- Icon box -->
-          <div class="tile-icon-box" [style.borderColor]="tile.badgeBorderColor">
-            <img class="icon2" alt="" />
-          </div>
-          <!-- Label -->
-          <div class="tile-label">{{ tile.label }}</div>
-          <!-- Divider bar -->
-          <div class="tile-divider"></div>
-          <!-- Value -->
-          <b class="tile-value" [style.left.px]="tile.valueLeft">{{ tile.value }}</b>
-          <!-- Badge -->
-          <div class="tile-badge-wrap">
-            <div
-              class="tile-badge"
-              [style.width.px]="tile.badgeWidth"
-              [style.borderColor]="tile.badgeBorderColor"
-            >
-              <img class="icon3" alt="" />
-              <div class="text">
-                <div class="needs-review">{{ tile.badge }}</div>
-              </div>
-              <div class="text6" *ngIf="tile.badgeExtra">
-                <div class="vs-yesterday">{{ tile.badgeExtra }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Separator -->
-      <div class="group-inner"></div>
-
-      <!-- NSTT Status Header -->
-      <div class="nstt-status-parent">
-        <b class="nstt-status">NSTT status</b>
-        <div class="container20"></div>
-        <img class="frame-icon" alt="" />
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ===== All NSTTs Table ===== -->
-  <div class="rectangle-group">
-    <div class="rectangle-div"></div>
-
-    <!-- Table toolbar -->
-    <div class="group-div">
-
-      <!-- Title -->
-      <div class="all-nstts-parent">
-        <b class="all-nstts">All NSTTs</b>
-        <div class="container21">
-          <div class="ixcustomer"></div>
-          <img class="vector-icon" alt="" />
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="frame-parent">
-        <img class="group-child3" alt="" />
-        <img class="group-child4" alt="" />
-        <div class="rectangle-container">
-          <div class="group-child5"></div>
-          <div class="filter-by">Filter by</div>
-          <img class="gridiconsdropdown" alt="" />
-        </div>
-        <div class="rectangle-parent2">
-          <div class="group-child6"></div>
-          <div class="current-owner">Current owner</div>
-          <img class="gridiconsdropdown2" alt="" />
-        </div>
-        <div class="group-parent2">
-          <div class="rectangle-frame"><div class="group-child7"></div></div>
-          <div class="search-results">Search results..</div>
-          <img class="group-child8" alt="" />
-        </div>
-        <img class="latoggle-on-icon" alt="" />
-        <div class="group-parent3">
-          <div class="rectangle-wrapper2"><div class="group-child9"></div></div>
-          <div class="export">Export</div>
-        </div>
-      </div>
-
-      <!-- SR Count column (icons) -->
-      <div class="frame-group">
-        <img *ngFor="let row of nsttRows; let i = index"
-          class="sr-count-icon"
-          [style.top.px]="62 + i * 71"
-          alt="" />
-        <div class="sr-count">sr count</div>
-      </div>
-
-      <!-- VIP Flag column -->
-      <div class="vip-flag-parent">
-        <div class="sr-count">VIP flag</div>
-        <div class="icbaseline-diamond-parent">
-          <ng-container *ngFor="let row of nsttRows; let i = index">
-            <img
-              *ngIf="row.vipType === 'diamond'"
-              class="vip-icon"
-              [style.top.px]="i * 70"
-              alt="" />
-            <img
-              *ngIf="row.vipType === 'account'"
-              class="vip-icon vip-icon-account"
-              [style.top.px]="i * 70"
-              alt="" />
-          </ng-container>
-        </div>
-      </div>
-
-      <!-- NSTT column -->
-      <div class="nstt-parent">
-        <div class="nstt">NStt</div>
-        <div class="network-outage-in-east-coast-d-parent">
-          <div
-            class="col-cell nstt-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.nstt }}</div>
-        </div>
-      </div>
-
-      <!-- NSTT Ageing column -->
-      <div class="nstt-ageing-parent">
-        <div class="sr-count">nstt ageing</div>
-        <div class="parent">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.nsttAgeing }}</div>
-        </div>
-      </div>
-
-      <!-- Site column -->
-      <div class="site-parent">
-        <div class="site">site</div>
-        <div class="network-outage-in-east-coast-d-group">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.site }}</div>
-        </div>
-      </div>
-
-      <!-- Status column -->
-      <div class="status-parent">
-        <div class="status">status</div>
-        <div class="network-outage-in-east-coast-d-container">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.status }}</div>
-        </div>
-      </div>
-
-      <!-- Actual Incident Time column -->
-      <div class="actual-incident-time-parent">
-        <div class="sr-count">Actual incident time</div>
-        <div class="network-outage-in-east-coast-d-parent2">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.actualIncidentTime }}</div>
-        </div>
-      </div>
-
-      <!-- Assigned Group column -->
-      <div class="assigned-group-parent">
-        <div class="sr-count">Assigned group</div>
-        <div class="network-outage-in-east-coast-d-parent3">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.assignedGroup }}</div>
-        </div>
-      </div>
-
-      <!-- Last ERT Time column -->
-      <div class="last-ert-time-parent">
-        <div class="last-ert-time">Last ert time</div>
-        <div class="network-outage-in-east-coast-d-parent4">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.lastErtTime }}</div>
-        </div>
-      </div>
-
-      <!-- Up Time column -->
-      <div class="up-time-parent">
-        <div class="up-time">up time</div>
-        <div class="network-outage-in-east-coast-d-parent4">
-          <div
-            class="col-cell"
-            *ngFor="let row of nsttRows; let i = index"
-            [style.top.px]="i * ROW_GAP"
-          >{{ row.upTime }}</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Header background row -->
-    <div class="group-child2"></div>
-
-    <!-- Pagination -->
-    <div class="line-parent">
-      <div class="line-div"></div>
-      <div class="showing-16-of">{{ showingText }}</div>
-      <ng-container *ngFor="let page of pages; let i = index">
-        <div
-          class="page-btn"
-          [class.page-btn-active]="page.active"
-          [style.left.px]="1304 + i * 67"
-          (click)="setPage(page)"
-        >
-          <div class="previous">{{ page.label }}</div>
-        </div>
-      </ng-container>
-    </div>
-
-  </div>
+  <app-all-nstts [nsttRows]="nsttRows"></app-all-nstts>
 
   <!-- ===== Footer ===== -->
   <div class="the-main-page">
     <div class="tier-1">
       <div class="powered-by">Powered by</div>
-      <img class="t1-4-icon" alt="" />
+      <img class="t1-4-icon" src="\assets\im-3-tier1.png" alt="" />
     </div>
   </div>
 
+</div>
 </div>

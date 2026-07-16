@@ -1,46 +1,49 @@
-import { Component } from '@angular/core';
-
-interface StatTile {
-  label: string;
-  value: string;
-  badge: string;
-  badgeExtra: string;
-  bg: string;
-  borderColor: string;
-  textColor: string;
-  badgeBorderColor: string;
-  valueLeft: number;
-  badgeWidth: number;
-}
-
-interface NsttRow {
-  vipType: 'diamond' | 'account';
-  nstt: string;
-  nsttAgeing: string;
-  site: string;
-  status: string;
-  actualIncidentTime: string;
-  assignedGroup: string;
-  lastErtTime: string;
-  upTime: string;
-}
-
-interface PaginationPage {
-  label: string;
-  active: boolean;
-}
+import { Component, HostListener, OnInit } from '@angular/core';
+import { StatTile } from './components/nstt-status/nstt-status.component';
+import { NsttRow } from './components/all-nstts/all-nstts.component';
 
 @Component({
   selector: 'app-incident-management',
   templateUrl: './incident-management.component.html',
   styleUrls: ['./incident-management.component.scss']
 })
-export class IncidentManagementComponent {
+export class IncidentManagementComponent implements OnInit {
+
+  // ---------- Responsive scale-to-fit (same approach as the landing canvas) ----------
+  private static readonly DESIGN_WIDTH = 1920;
+  scale = 1;
+
+  ngOnInit(): void {
+    this.updateScale();
+  }
+
+  @HostListener('window:resize')
+  updateScale(): void {
+    this.scale = Math.min(window.innerWidth / IncidentManagementComponent.DESIGN_WIDTH, 1);
+  }
 
   // ---------- Topbar ----------
   lastUpdated = '09.56 am 28.04.2024';
   pageTitle = 'Incident management';
   searchPlaceholder = 'Select bin...';
+  searchQuery = '';
+
+  onSearch(): void {
+    console.log('Searching for:', this.searchQuery);
+  }
+
+  onMenuClick(): void {
+    console.log('Menu clicked');
+  }
+
+  onTopbarRefresh(): void {
+    console.log('Refresh clicked');
+  }
+
+  // ---------- NSTT status ----------
+  onNsttStatusRefresh(): void {
+    console.log('Refresh NSTT status');
+  }
 
   // ---------- Stat Tiles (left to right order) ----------
   statTiles: StatTile[] = [
@@ -54,7 +57,9 @@ export class IncidentManagementComponent {
       textColor: '#6b7280',
       badgeBorderColor: '#000',
       valueLeft: 92,
-      badgeWidth: 91
+      badgeWidth: 91,
+      icon: '/assets/im-2-cd1-t.svg',
+      badgeIcon: '/assets/im-2-cd1-b.svg'
     },
     {
       label: 'In Progress',
@@ -66,7 +71,9 @@ export class IncidentManagementComponent {
       textColor: '#3b82f6',
       badgeBorderColor: '#3b82f6',
       valueLeft: 112,
-      badgeWidth: 90
+      badgeWidth: 90,
+      icon: '/assets/im-2-cd2-t.svg',
+      badgeIcon: '/assets/im-2-cd2-b.svg'
     },
     {
       label: 'Assigned',
@@ -78,7 +85,9 @@ export class IncidentManagementComponent {
       textColor: '#8b5cf6',
       badgeBorderColor: '#8b5cf6',
       valueLeft: 118,
-      badgeWidth: 118
+      badgeWidth: 145,
+      icon: '/assets/im-2-cd3-t.svg',
+      badgeIcon: '/assets/im-2-cd3-b.svg'
     },
     {
       label: 'Escalated',
@@ -90,7 +99,9 @@ export class IncidentManagementComponent {
       textColor: '#e60023',
       badgeBorderColor: '#e60023',
       valueLeft: 137,
-      badgeWidth: 90
+      badgeWidth: 90,
+      icon: '/assets/im-2-cd4-t.svg',
+      badgeIcon: '/assets/im-2-cd4-b.svg'
     },
     {
       label: 'Resolved',
@@ -102,7 +113,9 @@ export class IncidentManagementComponent {
       textColor: '#208261',
       badgeBorderColor: '#10b981',
       valueLeft: 113,
-      badgeWidth: 91
+      badgeWidth: 91,
+      icon: '/assets/im-2-cd5-t.svg',
+      badgeIcon: '/assets/im-2-cd5-b.svg'
     },
     {
       label: 'Closed',
@@ -114,7 +127,9 @@ export class IncidentManagementComponent {
       textColor: '#b70777',
       badgeBorderColor: '#b70777',
       valueLeft: 117,
-      badgeWidth: 118
+      badgeWidth: 155,
+      icon: '/assets/im-2-cd6-t.svg',
+      badgeIcon: '/assets/im-2-cd6-b.svg'
     },
     {
       label: 'Cancelled',
@@ -126,7 +141,9 @@ export class IncidentManagementComponent {
       textColor: '#ff7007',
       badgeBorderColor: '#f97316',
       valueLeft: 138,
-      badgeWidth: 121
+      badgeWidth: 121,
+      icon: '/assets/im-2-cd7-t.svg',
+      badgeIcon: '/assets/im-2-cd7-b.svg'
     },
     {
       label: 'Unknown',
@@ -138,7 +155,9 @@ export class IncidentManagementComponent {
       textColor: '#b0880b',
       badgeBorderColor: 'rgba(234,179,8,0.74)',
       valueLeft: 133,
-      badgeWidth: 110
+      badgeWidth: 135,
+      icon: '/assets/im-2-cd8-t.svg',
+      badgeIcon: '/assets/im-2-cd8-b.svg'
     },
   ];
 
@@ -152,23 +171,4 @@ export class IncidentManagementComponent {
     { vipType: 'account', nstt: 'INC0012345', nsttAgeing: '03.20.26', site: 'LUCKNOW', status: 'In progress', actualIncidentTime: '12.08.25   03:10:12', assignedGroup: 'Noc_NS', lastErtTime: '12.08.25   03:10:12', upTime: '12.08.25   03:10:12' },
     { vipType: 'account', nstt: 'INC0012345', nsttAgeing: '03.20.26', site: 'LUCKNOW', status: 'In progress', actualIncidentTime: '12.08.25   03:10:12', assignedGroup: 'Noc_NS', lastErtTime: '12.08.25   03:10:12', upTime: '12.08.25   03:10:12' },
   ];
-
-  // ---------- Pagination ----------
-  showingText = 'Showing 1–6 of 10 entries';
-  pages: PaginationPage[] = [
-    { label: 'Previous', active: false },
-    { label: '1',        active: true  },
-    { label: '2',        active: false },
-    { label: '3',        active: false },
-    { label: 'Next',     active: false },
-  ];
-
-  setPage(page: PaginationPage): void {
-    if (page.label === 'Previous' || page.label === 'Next') return;
-    this.pages.forEach(p => (p.active = false));
-    page.active = true;
-  }
-
-  // Row spacing constant (px between rows in the column-major table)
-  readonly ROW_GAP = 71;
 }

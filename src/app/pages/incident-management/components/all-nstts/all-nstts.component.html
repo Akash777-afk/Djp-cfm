@@ -1,0 +1,251 @@
+<div class="rectangle-group">
+  <div class="rectangle-div"></div>
+
+  <!-- Table toolbar -->
+  <div class="group-div">
+
+    <!-- Title -->
+    <div class="all-nstts-parent">
+      <b class="all-nstts">All NSTTs</b>
+      <div class="container21">
+        <div class="ixcustomer"></div>
+        <img class="vector-icon" src="\assets\SR-overview.svg" alt="" />
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="frame-parent">
+      <img
+        class="group-child3"
+        src="\assets\im-3-refresh.svg"
+        alt="Refresh"
+        role="button"
+        tabindex="0"
+        (click)="onToolbarRefresh()"
+        (keyup.enter)="onToolbarRefresh()"
+      />
+      <img
+        class="group-child4"
+        src="\assets\im-3-settings.svg"
+        alt="Settings"
+        role="button"
+        tabindex="0"
+        (click)="onToolbarSettings()"
+        (keyup.enter)="onToolbarSettings()"
+      />
+      <div
+        class="rectangle-container"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="isFilterOpen"
+        (click)="toggleFilter()"
+        (keyup.enter)="toggleFilter()"
+      >
+        <div class="group-child5"></div>
+        <div class="filter-by">Filter by</div>
+        <img class="gridiconsdropdown" [class.dropdown-open]="isFilterOpen" src="\assets\Dropdown-topbar.svg" alt="" />
+        <div class="filter-panel" *ngIf="isFilterOpen">No filters available yet</div>
+      </div>
+      <div
+        class="rectangle-parent2"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="isOwnerOpen"
+        (click)="toggleOwner()"
+        (keyup.enter)="toggleOwner()"
+      >
+        <div class="group-child6"></div>
+        <div class="current-owner">Current owner</div>
+        <img class="gridiconsdropdown2" [class.dropdown-open]="isOwnerOpen" src="\assets\Dropdown-topbar.svg" alt="" />
+        <div class="filter-panel" *ngIf="isOwnerOpen">No owners available yet</div>
+      </div>
+      <div class="group-parent2">
+        <div class="rectangle-frame"><div class="group-child7"></div></div>
+        <input
+          type="text"
+          class="search-results"
+          [(ngModel)]="tableSearchQuery"
+          placeholder="Search results.."
+          (keyup.enter)="onTableSearch()"
+          aria-label="Search NSTT results"
+        />
+        <img
+          class="group-child8"
+          src="\assets\Search-topbar.svg"
+          alt="Search"
+          role="button"
+          tabindex="0"
+          (click)="onTableSearch()"
+          (keyup.enter)="onTableSearch()"
+        />
+      </div>
+      <div
+        class="latoggle-on-icon"
+        [class.latoggle-off]="!toggleOn"
+        role="switch"
+        tabindex="0"
+        [attr.aria-checked]="toggleOn"
+        (click)="onToggleClick()"
+        (keyup.enter)="onToggleClick()"
+      >
+        <div class="latoggle-knob"></div>
+      </div>
+      <div class="group-parent3">
+        <div class="rectangle-wrapper2"><div class="group-child9"></div></div>
+        <div class="export">Export</div>
+      </div>
+    </div>
+
+    <!-- SR Count column (icons) -->
+    <div class="frame-group">
+      <img *ngFor="let row of nsttRows; let i = index"
+        class="sr-count-icon"
+        [style.top.px]="62 + i * 71"
+        src="\assets\im-3-tablerefresh.svg"
+        alt="Refresh row"
+        role="button"
+        tabindex="0"
+        (click)="onRowRefresh(row)"
+        (keyup.enter)="onRowRefresh(row)" />
+      <div class="col-header sr-count-header">sr count</div>
+    </div>
+
+    <!-- VIP Flag column -->
+    <div class="vip-flag-parent">
+      <div class="col-header vip-flag-header">VIP flag</div>
+      <div class="icbaseline-diamond-parent">
+        <ng-container *ngFor="let row of nsttRows; let i = index">
+          <img
+            *ngIf="row.vipType === 'diamond'"
+            class="vip-icon"
+            [style.top.px]="i * 70"
+            src="\assets\im-3-vipflag1.svg"
+            alt="Diamond VIP" />
+          <img
+            *ngIf="row.vipType === 'account'"
+            class="vip-icon vip-icon-account"
+            [style.top.px]="i * 70"
+            src="\assets\im-3-vipflag2.svg"
+            alt="Account VIP" />
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- NSTT column -->
+    <div class="nstt-parent">
+      <div class="col-header nstt-header">NStt</div>
+      <div class="network-outage-in-east-coast-d-parent">
+        <div
+          class="col-cell nstt-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.nstt }}</div>
+      </div>
+    </div>
+
+    <!-- NSTT Ageing column -->
+    <div class="nstt-ageing-parent">
+      <div class="col-header nstt-ageing-header">nstt ageing</div>
+      <div class="parent">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.nsttAgeing }}</div>
+      </div>
+    </div>
+
+    <!-- Site column -->
+    <div class="site-parent">
+      <div class="col-header site-header">site</div>
+      <div class="network-outage-in-east-coast-d-group">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.site }}</div>
+      </div>
+    </div>
+
+    <!-- Status column -->
+    <div class="status-parent">
+      <div class="col-header status-header">status</div>
+      <div class="network-outage-in-east-coast-d-container">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.status }}</div>
+      </div>
+    </div>
+
+    <!-- Actual Incident Time column -->
+    <div class="actual-incident-time-parent">
+      <div class="col-header actual-incident-header">Actual incident time</div>
+      <div class="network-outage-in-east-coast-d-parent2">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.actualIncidentTime }}</div>
+      </div>
+    </div>
+
+    <!-- Assigned Group column -->
+    <div class="assigned-group-parent">
+      <div class="col-header assigned-group-header">Assigned group</div>
+      <div class="network-outage-in-east-coast-d-parent3">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.assignedGroup }}</div>
+      </div>
+    </div>
+
+    <!-- Last ERT Time column -->
+    <div class="last-ert-time-parent">
+      <div class="col-header last-ert-time-header">Last ert time</div>
+      <div class="network-outage-in-east-coast-d-parent4">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.lastErtTime }}</div>
+      </div>
+    </div>
+
+    <!-- Up Time column -->
+    <div class="up-time-parent">
+      <div class="col-header up-time-header">up time</div>
+      <div class="network-outage-in-east-coast-d-parent4">
+        <div
+          class="col-cell"
+          *ngFor="let row of nsttRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+        >{{ row.upTime }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Header background row -->
+  <div class="group-child2"></div>
+
+  <!-- Pagination -->
+  <div class="line-parent">
+    <div class="line-div"></div>
+    <div class="showing-16-of">{{ showingText }}</div>
+    <div class="pagination-buttons">
+      <div
+        class="page-btn"
+        *ngFor="let page of pages"
+        [class.page-btn-active]="page.active"
+        (click)="setPage(page)"
+      >
+        <div class="previous">{{ page.label }}</div>
+      </div>
+    </div>
+  </div>
+
+</div>

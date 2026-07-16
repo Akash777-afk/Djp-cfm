@@ -1,0 +1,49 @@
+<div class="tablerprogress-down"></div>
+<div class="the-djp-incident-management-child"></div>
+<img class="airtel-logo-4-icon" src="\assets\Airtel-logo 5.png" alt="" />
+
+<div class="text-input">
+  <input
+    type="text"
+    class="select-bin"
+    [ngModel]="searchQuery"
+    (ngModelChange)="searchQueryChange.emit($event)"
+    [placeholder]="searchPlaceholder"
+    (keyup.enter)="search.emit()"
+    aria-label="Select bin"
+  />
+  <img class="icon" src="\assets\im-1-searchbutton.svg" alt="Search" role="button" tabindex="0" (click)="search.emit()" (keyup.enter)="search.emit()" />
+</div>
+
+<!-- Last Updated -->
+<div class="button-wrapper">
+  <div class="button">
+    <img class="famiconstime-outline" src="\assets\im-1-time.svg" alt="" />
+    <div class="container">
+      <div class="container2">
+        <div class="last-updated">Last Updated</div>
+      </div>
+      <div class="container3">
+        <div class="am-28042024">{{ lastUpdated }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page Title -->
+<div class="incident-management">{{ pageTitle }}</div>
+<img class="the-djp-incident-management-item" src="\assets\im-1-playbutton.svg" alt="" />
+
+<!-- Icon buttons -->
+<div class="button2" role="button" tabindex="0" (click)="refreshClick.emit()" (keyup.enter)="refreshClick.emit()">
+  <img class="material-symbolsmenu-rounded-icon" src="\assets\im-1-refresh.svg" alt="Refresh" />
+</div>
+<div class="button3" role="button" tabindex="0" (click)="menuClick.emit()" (keyup.enter)="menuClick.emit()">
+  <img class="material-symbolsmenu-rounded-icon" src="\assets\im-1-menu.svg" alt="Menu" />
+</div>
+
+<!-- Broadcast button -->
+<div class="broadcast-wrapper">
+  <img class="broadcast-icon" src="\assets\im-1-brdct.svg" alt="Broadcast" />
+  <span class="broadcast-label">Broadcast</span>
+</div>

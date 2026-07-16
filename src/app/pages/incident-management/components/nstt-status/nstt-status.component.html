@@ -1,0 +1,64 @@
+<div class="rectangle-parent">
+  <div class="group-item"></div>
+  <div class="group-container">
+
+    <!-- Stat tiles -->
+    <div class="container-parent">
+      <div
+        class="stat-tile"
+        *ngFor="let tile of statTiles; let i = index"
+        [style.left.px]="i * 216"
+        [style.backgroundColor]="tile.bg"
+        [style.borderTopColor]="tile.borderColor"
+        [style.borderRightColor]="tile.borderColor"
+        [style.borderBottomColor]="tile.borderColor"
+        [style.color]="tile.textColor"
+      >
+        <!-- Icon box -->
+        <div class="tile-icon-box" [style.borderColor]="tile.badgeBorderColor">
+          <img class="icon2" [src]="tile.icon" alt="" />
+        </div>
+        <!-- Label -->
+        <div class="tile-label">{{ tile.label }}</div>
+        <!-- Divider bar -->
+        <div class="tile-divider"></div>
+        <!-- Value -->
+        <b class="tile-value" [style.left.px]="tile.valueLeft">{{ tile.value }}</b>
+        <!-- Badge -->
+        <div class="tile-badge-wrap">
+          <div
+            class="tile-badge"
+            [style.borderColor]="tile.badgeBorderColor"
+          >
+            <img class="icon3" [src]="tile.badgeIcon" alt="" />
+            <div class="text">
+              <div class="needs-review">{{ tile.badge }}</div>
+            </div>
+            <div class="text6" *ngIf="tile.badgeExtra">
+              <div class="vs-yesterday">{{ tile.badgeExtra }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator -->
+    <div class="group-inner"></div>
+
+    <!-- NSTT Status Header -->
+    <div class="nstt-status-parent">
+      <b class="nstt-status">NSTT status</b>
+      <div class="container20"></div>
+      <img
+        class="frame-icon"
+        src="\assets\im-2-refresh.svg"
+        alt="Refresh"
+        role="button"
+        tabindex="0"
+        (click)="refreshClick.emit()"
+        (keyup.enter)="refreshClick.emit()"
+      />
+    </div>
+
+  </div>
+</div>

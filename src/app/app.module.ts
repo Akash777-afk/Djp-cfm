@@ -15,6 +15,10 @@ import { SrOverviewComponent } from './pages/landing/components/sr-overview/sr-o
 import { EscalationMatrixCardComponent } from './pages/landing/components/escalation-matrix/escalation-matrix.component';
 import { IncidentManagementCardComponent } from './pages/landing/components/incident-management/incident-management.component';
 import { ChangeManagementCardComponent } from './pages/landing/components/change-management/change-management.component';
+import { SidebarNavComponent } from './pages/incident-management/components/sidebar-nav/sidebar-nav.component';
+import { TopBarComponent } from './pages/incident-management/components/top-bar/top-bar.component';
+import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
+import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import { ChangeManagementCardComponent } from './pages/landing/components/change
     SrOverviewComponent,
     EscalationMatrixCardComponent,
     IncidentManagementCardComponent,
-    ChangeManagementCardComponent
+    ChangeManagementCardComponent,
+    SidebarNavComponent,
+    TopBarComponent,
+    NsttStatusComponent,
+    AllNsttsComponent
   ],
   imports: [
     BrowserModule,
