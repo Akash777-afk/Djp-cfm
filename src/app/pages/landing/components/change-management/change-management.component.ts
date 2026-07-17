@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChangeRow, SectionVariant } from '../../landing.types';
 
 @Component({
@@ -7,6 +8,8 @@ import { ChangeRow, SectionVariant } from '../../landing.types';
   styleUrls: ['./change-management.component.scss']
 })
 export class ChangeManagementCardComponent {
+
+  constructor(private router: Router) {}
 
   @Input() variant: SectionVariant = 'desktop';
 
@@ -26,7 +29,6 @@ export class ChangeManagementCardComponent {
   ];
 
   onExpandCard(): void {
-    console.log('Expand card: change');
-    // TODO: open a full-screen modal / dedicated route for this card
+    this.router.navigate(['/change-management']);
   }
 }

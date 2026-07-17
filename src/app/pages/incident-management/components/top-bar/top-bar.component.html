@@ -10,7 +10,7 @@
     (ngModelChange)="searchQueryChange.emit($event)"
     [placeholder]="searchPlaceholder"
     (keyup.enter)="search.emit()"
-    aria-label="Select bin"
+    aria-label="Search for services"
   />
   <img class="icon" src="\assets\im-1-searchbutton.svg" alt="Search" role="button" tabindex="0" (click)="search.emit()" (keyup.enter)="search.emit()" />
 </div>

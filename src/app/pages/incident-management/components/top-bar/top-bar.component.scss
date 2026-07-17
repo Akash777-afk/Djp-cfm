@@ -29,7 +29,7 @@
   background-color: rgba(100,116,139,0.05);
   border: 1px solid rgba(100,116,139,0.27);
   box-sizing: border-box;
-  width: 609px; height: 66px;
+  width: 760px; height: 66px;
   overflow: hidden;
   color: #99a1af;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -59,8 +59,11 @@
 }
 .icon {
   position: absolute;
-  top: 18px; left: 18px;
-  width: 32px; height: 32px;
+  top: 15px;
+  left: 20px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
   cursor: pointer;
 }
 .button-wrapper {
@@ -129,8 +132,8 @@
   }
   &:active { transform: scale(0.94); }
 }
-.button2 { left: 1819px; }
-.button3 { left: 1728px; }
+.button2 { left: 1728px; }
+.button3 { left: 1819px; }
 .material-symbolsmenu-rounded-icon { height: 32px; width: 32px; }
 .broadcast-wrapper {
   position: absolute;

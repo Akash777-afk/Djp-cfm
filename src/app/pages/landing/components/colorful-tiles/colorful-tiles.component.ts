@@ -31,6 +31,10 @@ export class ColorfulTilesComponent {
       this.router.navigate(['/incident-management']);
       return;
     }
+    if (moduleKey === 'change-management') {
+      this.router.navigate(['/change-management']);
+      return;
+    }
     console.log('Navigate to module:', moduleKey);
     // TODO: replace with real navigation once the other module pages exist
   }

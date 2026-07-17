@@ -1,0 +1,167 @@
+<!-- ===================== PANEL BACKGROUND ===================== -->
+<div class="rectangle-div"></div>
+
+<!-- ===================== SEARCH BAR ===================== -->
+<div class="search-bar-parent">
+  <div class="search-bar">
+    <input class="po-id" type="text" placeholder="CRQ - CRQ0000005963007" [ngModel]="crqSearch" (ngModelChange)="crqSearchChange.emit($event)">
+  </div>
+  <div class="search-bar2">
+    <input class="po-id" type="text" placeholder="PO ID" [ngModel]="poIdSearch" (ngModelChange)="poIdSearchChange.emit($event)">
+  </div>
+  <div class="search-bar3" role="button" tabindex="0" (click)="search.emit()" (keyup.enter)="search.emit()">
+    <div class="search">Search</div>
+  </div>
+  <div class="search-bar4" role="button" tabindex="0" (click)="reset.emit()" (keyup.enter)="reset.emit()">
+    <div class="reset">Reset</div>
+  </div>
+</div>
+
+<!-- ===================== SECTION HEADER ===================== -->
+<div class="planned-outages-3-parent">
+  <b class="planned-outages-3">Planned Outages ({{ plannedOutages.length }})</b>
+  <div class="container4">
+    <img class="container-child" src="/assets/planned outage icon.svg" alt="">
+  </div>
+</div>
+
+<div class="select" role="button" tabindex="0" [attr.aria-expanded]="isSortOpen" (click)="toggleSort()" (keyup.enter)="toggleSort()">
+  <div class="sort-by">{{ sortBy }}</div>
+  <img class="chevrondown-icon" [class.dropdown-open]="isSortOpen" src="/assets/Dropdown-topbar.svg" alt="">
+
+  <div class="sort-panel" *ngIf="isSortOpen" (click)="$event.stopPropagation()">
+    <div
+      class="sort-option"
+      *ngFor="let option of sortOptions"
+      role="button"
+      tabindex="0"
+      [class.is-active]="option === sortBy"
+      (click)="$event.stopPropagation(); selectSort(option)"
+      (keyup.enter)="selectSort(option)"
+    >{{ option }}</div>
+  </div>
+</div>
+
+<div class="button4" role="button" tabindex="0" (click)="createPo.emit()" (keyup.enter)="createPo.emit()">
+  <div class="create-po">Create PO</div>
+  <svg class="material-symbolsadd-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<div class="button5" role="button" tabindex="0" (click)="exportClick.emit()" (keyup.enter)="exportClick.emit()">
+  <div class="export">Export</div>
+</div>
+
+<img class="frame-icon" src="/assets/im-3-refresh.svg" alt="Refresh" role="button" tabindex="0" (click)="refreshClick.emit()" (keyup.enter)="refreshClick.emit()">
+
+<!-- ===================== TABLE ===================== -->
+<div class="the-djp-change-management-child3"></div>
+
+<div class="rectangle-parent">
+  <div class="group-child"></div>
+  <div class="group-item"></div>
+</div>
+
+<div class="mail-po">mail po</div>
+<div class="status">status</div>
+<div class="implementer">implementer</div>
+<div class="description">description</div>
+<div class="start-date">start date</div>
+<div class="end-date">end date</div>
+<div class="reason">reason</div>
+<div class="submission">submission</div>
+<div class="impact">impact</div>
+<div class="change-type">Change type</div>
+<div class="crq">crq</div>
+<div class="planned-outage-id">Planned outage id</div>
+
+<!-- Planned outage id column -->
+<div class="parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.outageId }}
+  </div>
+</div>
+
+<!-- CRQ column -->
+<div class="crq000005963007-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.crq }}
+  </div>
+</div>
+
+<!-- Change type column -->
+<div class="group-parent">
+  <div class="span-parent" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    <div class="span"></div>
+    <div class="link-shifting">{{ outage.changeType }}</div>
+  </div>
+</div>
+
+<!-- Impact column -->
+<div class="service-affecting-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.impact }}
+  </div>
+</div>
+
+<!-- Status column -->
+<div class="planned-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.status }}
+  </div>
+</div>
+
+<!-- Implementer column -->
+<div class="changemgmtairtelcom-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.implementer }}
+  </div>
+</div>
+
+<!-- Description column -->
+<div class="topology-modification-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.description }}
+  </div>
+</div>
+
+<!-- Start date column -->
+<div class="group">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.startDate }}
+  </div>
+</div>
+
+<!-- End date column -->
+<div class="group-div">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.endDate }}
+  </div>
+</div>
+
+<!-- Reason column -->
+<div class="na-parent">
+  <div class="div" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.reason }}
+  </div>
+</div>
+
+<!-- Submission column -->
+<div class="submitted-parent">
+  <div class="submitted" *ngFor="let outage of plannedOutages; let i = index" [style.top.px]="i * 64">
+    {{ outage.submission }}
+  </div>
+</div>
+
+<!-- Row action icons -->
+<div class="phexport-bold-parent">
+  <img class="phexport-bold-icon2" *ngFor="let outage of plannedOutages; let i = index"
+       [style.top.px]="i * 65"
+       src="/assets/mail po icons.svg"
+       alt="View row"
+       role="button"
+       tabindex="0"
+       (click)="selectOutage.emit(outage)"
+       (keyup.enter)="selectOutage.emit(outage)">
+</div>

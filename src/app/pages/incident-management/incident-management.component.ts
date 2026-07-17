@@ -25,7 +25,7 @@ export class IncidentManagementComponent implements OnInit {
   // ---------- Topbar ----------
   lastUpdated = '09.56 am 28.04.2024';
   pageTitle = 'Incident management';
-  searchPlaceholder = 'Select bin...';
+  searchPlaceholder = 'Search for services...';
   searchQuery = '';
 
   onSearch(): void {

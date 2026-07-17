@@ -19,6 +19,10 @@ import { SidebarNavComponent } from './pages/incident-management/components/side
 import { TopBarComponent } from './pages/incident-management/components/top-bar/top-bar.component';
 import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
 import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
+import { CmTopBarComponent } from './pages/change-management/components/top-bar/top-bar.component';
+import { CrqPlannedOutagesComponent } from './pages/change-management/components/crq-planned-outages/crq-planned-outages.component';
+import { PlannedOutageInputComponent } from './pages/change-management/components/planned-outage-input/planned-outage-input.component';
+import { ChangeManagementSidebarNavComponent } from './pages/change-management/components/sidebar-nav/sidebar-nav.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { AllNsttsComponent } from './pages/incident-management/components/all-ns
     SidebarNavComponent,
     TopBarComponent,
     NsttStatusComponent,
-    AllNsttsComponent
+    AllNsttsComponent,
+    CmTopBarComponent,
+    CrqPlannedOutagesComponent,
+    PlannedOutageInputComponent,
+    ChangeManagementSidebarNavComponent
   ],
   imports: [
     BrowserModule,

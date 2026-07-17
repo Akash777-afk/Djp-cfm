@@ -61,6 +61,10 @@ export class AllNsttsComponent {
     console.log('Refresh row:', row.nstt);
   }
 
+  onExport(): void {
+    console.log('Export clicked');
+  }
+
   // ---------- Pagination ----------
   showingText = 'Showing 1–6 of 10 entries';
   pages: PaginationPage[] = [
