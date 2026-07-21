@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { CmTopBarComponent } from './pages/change-management/components/top-bar/
 import { CrqPlannedOutagesComponent } from './pages/change-management/components/crq-planned-outages/crq-planned-outages.component';
 import { PlannedOutageInputComponent } from './pages/change-management/components/planned-outage-input/planned-outage-input.component';
 import { ChangeManagementSidebarNavComponent } from './pages/change-management/components/sidebar-nav/sidebar-nav.component';
+import { UserPreferenceModalComponent } from './pages/landing/components/user-preference-modal/user-preference-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,12 +47,14 @@ import { ChangeManagementSidebarNavComponent } from './pages/change-management/c
     CmTopBarComponent,
     CrqPlannedOutagesComponent,
     PlannedOutageInputComponent,
-    ChangeManagementSidebarNavComponent
+    ChangeManagementSidebarNavComponent,
+    UserPreferenceModalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

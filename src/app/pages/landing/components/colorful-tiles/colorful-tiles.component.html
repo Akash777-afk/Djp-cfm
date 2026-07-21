@@ -17,6 +17,7 @@
   <!-- NOC Portal -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('NOC Portal')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('noc-portal')"
@@ -39,6 +40,7 @@
   <!-- Proactive Automation -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Proactive Automation')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('proactive-automation')"
@@ -61,6 +63,7 @@
   <!-- Incident Management -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Incident Management')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('incident-management')"
@@ -83,6 +86,7 @@
   <!-- Problem Management -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Problem Management')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('problem-management')"
@@ -105,6 +109,7 @@
   <!-- Change Management -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Change Management')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('change-management')"
@@ -127,6 +132,7 @@
   <!-- Rooster Management -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Rooster Management')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('rooster-management')"
@@ -149,6 +155,7 @@
   <!-- Escalation Matrix -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('Escalation Matrix')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('escalation-matrix')"
@@ -171,6 +178,7 @@
   <!-- SR Assign & Reassign -->
   <div
     class="tile-slot module-card"
+    *ngIf="isSelected('SR Assign & Reassign')"
     role="button"
     tabindex="0"
     (click)="navigateToModule('sr-assign-reassign')"
@@ -210,7 +218,7 @@
   <div
     class="m-tile"
     [ngClass]="tile.gradientClass"
-    *ngFor="let tile of moduleTiles"
+    *ngFor="let tile of visibleModuleTiles"
     role="button"
     tabindex="0"
     (click)="navigateToModule(tile.key)"

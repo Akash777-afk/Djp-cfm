@@ -52,6 +52,7 @@ export class PlannedOutageInputComponent {
   readonly benefitOptions = ['To provide better services uptime in future', 'Reduce network latency', 'Improve redundancy', 'Regulatory compliance'];
   readonly categoryOptions = ['Planned', 'Emergency', 'Standard'];
   readonly impactOptions = ['Service affecting', 'Non-service affecting', 'No impact'];
+  readonly statusOptions = ['Planned', 'Submitted', 'In Progress', 'Completed', 'Cancelled'];
 
   // ---------- "YYYY.MM.DD - HH:mm:ss" <-> <input type="datetime-local"> value conversion ----------
   private toDatetimeLocal(value: string): string {

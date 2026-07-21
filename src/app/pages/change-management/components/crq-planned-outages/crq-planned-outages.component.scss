@@ -1,3 +1,13 @@
+// Shifts the whole "Planned Outages" panel (background + header + table) as one
+// block, 36px below the search bar, without touching every child's original
+// page-canvas coordinate — see change-management.component.scss for the pattern.
+.panel-shift {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transform: translateY(-25px);
+}
+
 .rectangle-div {
   position: absolute;
   top: 260px;
@@ -12,12 +22,12 @@
 
 .search-bar-parent {
   position: absolute;
-  top: 163px;
+  top: 151px;
   left: 129px;
   width: 1754px;
-  height: 60px;
+  height: 48px;
   flex-shrink: 0;
-  font-size: 22px;
+  font-size: 18px;
   color: #e20010;
   font-family: Poppins, sans-serif;
 }
@@ -31,9 +41,11 @@
   background-color: #fff;
   border: 1px solid #d1150b;
   box-sizing: border-box;
-  width: 611px;
-  height: 60px;
+  width: 647px;
+  height: 48px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
@@ -47,19 +59,19 @@
 }
 
 .search-bar2 {
-  left: 637px;
+  left: 673px;
 }
 
 .po-id {
-  position: absolute;
-  top: calc(50% - 12px);
-  left: 30px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px;
   letter-spacing: -0.01em;
   font-weight: 500;
   border: none;
   background: transparent;
   outline: none;
-  width: calc(100% - 60px);
   font-family: inherit;
   font-size: inherit;
   color: #4a5565;
@@ -68,19 +80,18 @@
 .search-bar3 {
   position: absolute;
   top: 0px;
-  left: 1275px;
+  left: 1346px;
   border-radius: 33px;
   background-color: #e20010;
-  width: 227px;
-  height: 60px;
+  width: 200px;
+  height: 48px;
   overflow: hidden;
-  font-size: 24px;
+  font-size: 18px;
   color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 
   &:hover {
@@ -101,29 +112,23 @@
   flex-shrink: 0;
 }
 
-.search-bar-child {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-}
-
 .search-bar4 {
   position: absolute;
   top: 0px;
-  left: 1527px;
+  left: 1572px;
   border-radius: 33px;
   background-color: #fff;
   border: 1px solid #d1150b;
   box-sizing: border-box;
-  width: 227px;
-  height: 60px;
+  width: 182px;
+  height: 48px;
   overflow: hidden;
-  font-size: 24px;
+  font-size: 18px;
   color: #bd1010;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 
   &:hover {
@@ -140,9 +145,7 @@
 }
 
 .reset {
-  position: absolute;
-  top: calc(50% - 13px);
-  left: calc(50% - 32.5px);
+  position: relative;
   letter-spacing: -0.01em;
   font-weight: 500;
   transition: color 0.2s ease;
@@ -356,425 +359,109 @@
   &:active { transform: scale(0.92); }
 }
 
-.the-djp-change-management-child3 {
+// ---- Table: fixed-size scroll viewport, real <table> markup so the header
+// can stick and columns can auto-widen to fit 18px text (horizontal/vertical
+// overflow scrolls inside this box instead of growing it). ----
+.table-scroll-container {
   position: absolute;
   top: 366px;
   left: 159px;
+  width: 1698px;
+  height: 279px;
   border-radius: 12px;
   background-color: #fff;
   border: 1px solid rgba(100, 116, 139, 0.22);
   box-sizing: border-box;
-  width: 1698px;
-  height: 279px;
-  flex-shrink: 0;
-}
+  overflow: auto;
 
-.rectangle-parent {
-  position: absolute;
-  top: 366px;
-  left: 159px;
-  width: 1698px;
-  height: 204px;
-  flex-shrink: 0;
-}
+  scrollbar-width: thin;
+  scrollbar-color: #f3f4f6 transparent;
 
-.group-child {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  border-radius: 12px 12px 0px 0px;
-  background-color: rgba(217, 217, 217, 0.22);
-  width: 1698px;
-  height: 64px;
-}
-
-.group-item {
-  position: absolute;
-  top: 140px;
-  left: 0px;
-  background-color: rgba(217, 217, 217, 0.22);
-  width: 1698px;
-  height: 64px;
-}
-
-.mail-po {
-  position: absolute;
-  top: 390px;
-  left: 1769px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 63px;
-  flex-shrink: 0;
-}
-
-.status {
-  position: absolute;
-  top: 390px;
-  left: 748px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 59px;
-  flex-shrink: 0;
-}
-
-.implementer {
-  position: absolute;
-  top: 389px;
-  left: 873px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 108px;
-  flex-shrink: 0;
-}
-
-.description {
-  position: absolute;
-  top: 390px;
-  left: 1066px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 102px;
-  flex-shrink: 0;
-}
-
-.start-date {
-  position: absolute;
-  top: 390px;
-  left: 1256px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 98px;
-  flex-shrink: 0;
-}
-
-.end-date {
-  position: absolute;
-  top: 390px;
-  left: 1441px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 79px;
-  flex-shrink: 0;
-}
-
-.reason {
-  position: absolute;
-  top: 390px;
-  left: 1572px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 62px;
-  flex-shrink: 0;
-}
-
-.submission {
-  position: absolute;
-  top: 390px;
-  left: 1659px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 96px;
-  flex-shrink: 0;
-}
-
-.impact {
-  position: absolute;
-  top: 390px;
-  left: 636px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 58px;
-  flex-shrink: 0;
-}
-
-.change-type {
-  position: absolute;
-  top: 390px;
-  left: 471px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 108px;
-  flex-shrink: 0;
-}
-
-.crq {
-  position: absolute;
-  top: 390px;
-  left: 381px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 32px;
-  flex-shrink: 0;
-}
-
-.planned-outage-id {
-  position: absolute;
-  top: 390px;
-  left: 180px;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
-  width: 158px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-// ---- Table body columns: each is a positioned wrapper whose rows are
-// generated with *ngFor and offset by (index * 64px) ----
-.parent {
-  position: absolute;
-  top: 463px;
-  left: 195px;
-  width: 75px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #f3f4f6;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 
-.crq000005963007-parent {
-  position: absolute;
-  top: 463px;
-  left: 303px;
-  width: 134px;
-  height: 148px;
-  flex-shrink: 0;
+.outage-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
 
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
+  th{
+    padding: 16px 20px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 16px;
   }
+  td {
+    padding: 16px 20px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 18px;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #f3f4f6;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #4a5565;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.22);
+  }
+
+  tbody td {
+    color: #4a5565;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.12);
+  }
+
+  tbody tr:nth-child(even) td {
+    background-color: rgba(217, 217, 217, 0.12);
+  }
+
 }
 
-.group-parent {
-  position: absolute;
-  top: 459px;
-  left: 470px;
-  width: 105px;
-  height: 156px;
-  flex-shrink: 0;
-  color: #136f12;
-
-  .span-parent {
-    position: absolute;
-    left: 0px;
-    width: 105px;
-    height: 28px;
-  }
-}
-
-.span {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.22);
+.change-type-pill {
+  display: inline-block;
+  padding: 6px 14px;
   border-radius: 25px;
   background-color: #e2ffe2;
   border: 1px solid rgba(19, 111, 18, 0.04);
-  box-sizing: border-box;
-  width: 105px;
-  height: 28px;
-}
-
-.link-shifting {
-  position: absolute;
-  top: 6px;
-  left: 13px;
-  line-height: 16px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.22);
+  color: #136f12;
   font-weight: 500;
 }
 
-.service-affecting-parent {
-  position: absolute;
-  top: 463px;
-  left: 608px;
-  width: 113px;
-  height: 148px;
-  flex-shrink: 0;
-  color: #e7000b;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
+.impact-cell {
+  color: #f4848a81;
 }
 
-.planned-parent {
-  position: absolute;
-  top: 463px;
-  left: 754px;
-  width: 54px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
+.mail-po-cell {
+  text-align: center;
 }
 
-.changemgmtairtelcom-parent {
-  position: absolute;
-  top: 463px;
-  left: 841px;
-  width: 168px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
-}
-
-.topology-modification-parent {
-  position: absolute;
-  top: 463px;
-  left: 1042px;
-  width: 159px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
-}
-
-.group {
-  position: absolute;
-  top: 463px;
-  left: 1234px;
-  width: 148px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
-}
-
-.group-div {
-  position: absolute;
-  top: 463px;
-  left: 1415px;
-  width: 148px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
-}
-
-.na-parent {
-  position: absolute;
-  top: 463px;
-  left: 1605px;
-  width: 25px;
-  height: 148px;
-  flex-shrink: 0;
-
-  .div {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-  }
-}
-
-.submitted-parent {
-  position: absolute;
-  top: 463px;
-  left: 1675px;
-  width: 70px;
-  height: 148px;
-  flex-shrink: 0;
+.submission-cell {
   color: rgba(0, 105, 39, 0.8);
-
-  .submitted {
-    position: absolute;
-    left: 0px;
-    line-height: 20px;
-    font-weight: 500;
-  }
+  font-weight: 500;
 }
 
-// Table body text: bumped +1px over the inherited 14px root size for readability.
-.parent .div,
-.crq000005963007-parent .div,
-.link-shifting,
-.service-affecting-parent .div,
-.planned-parent .div,
-.changemgmtairtelcom-parent .div,
-.topology-modification-parent .div,
-.group .div,
-.group-div .div,
-.na-parent .div,
-.submitted-parent .submitted {
-  font-size: 15px;
-}
-
-.phexport-bold-parent {
-  position: absolute;
-  top: 460px;
-  left: 1786px;
-  width: 22px;
-  height: 151px;
-  flex-shrink: 0;
-
-  img {
-    position: absolute;
-    left: 0px;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-  }
+.phexport-bold-icon2 {
+  width: 72px;
+  height: 22px;
+  cursor: pointer;
+  display: block;
 }

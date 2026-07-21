@@ -39,6 +39,34 @@ export class LandingComponent implements OnInit {
   userName = 'Akash.G';
   userRole = 'NOC Lead';
   isUserMenuOpen = false;
+  isUserPreferenceModalOpen = false;
+
+  // ---------- Glanceable preference (customized in the User Preference modal) ----------
+  // Lifted here so the modal and the colorful-tiles row (desktop + mobile
+  // instances) all share the same live arrays. The modal's drag-and-drop
+  // mutates these arrays in place (CDK's moveItemInArray/transferArrayItem),
+  // so no separate save step is needed for the tile row to pick up changes.
+  // Session-only — resets on reload, consistent with the rest of this app
+  // (no persistence layer exists anywhere yet).
+  availableGlanceable: string[] = [
+    'Market Place',
+    'User login activity',
+    'NaaS',
+    'How to?',
+    'EchoPod',
+    'Digitalization Portal',
+  ];
+
+  selectedGlanceable: string[] = [
+    'NOC Portal',
+    'Proactive Automation',
+    'Incident Management',
+    'Change Management',
+    'Problem Management',
+    'Rooster Management',
+    'Escalation Matrix',
+    'SR Assign & Reassign',
+  ];
 
   onSearch(): void {
     const query = this.searchQuery.trim();
@@ -61,7 +89,14 @@ export class LandingComponent implements OnInit {
 
   onUserMenuAction(action: 'preferences' | 'profile' | 'settings' | 'logout'): void {
     console.log('User menu action:', action);
-    // TODO: route to the relevant page or perform logout
+    if (action === 'preferences') {
+      this.isUserPreferenceModalOpen = true;
+    }
+    // TODO: route to the remaining actions (profile / settings) or perform logout
+  }
+
+  closeUserPreferenceModal(): void {
+    this.isUserPreferenceModalOpen = false;
   }
 
   // ---------- Analytics Nav Tabs ----------

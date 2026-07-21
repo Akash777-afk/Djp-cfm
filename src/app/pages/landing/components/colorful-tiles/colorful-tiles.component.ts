@@ -13,6 +13,17 @@ export class ColorfulTilesComponent {
 
   @Input() variant: SectionVariant = 'desktop';
 
+  // Which tiles the user chose to keep in "Selected Glanceable" (User
+  // Preference modal, opened from the header). Matched by the same label
+  // strings used there. Desktop's hardcoded tile blocks each check
+  // isSelected(label); mobile filters moduleTiles the same way. Membership
+  // only — reordering the Selected Glanceable list does not reorder tiles.
+  @Input() selectedGlanceable: string[] = [];
+
+  isSelected(label: string): boolean {
+    return this.selectedGlanceable.includes(label);
+  }
+
   // Drives the mobile/tablet responsive nav grid (.mobile-layout). The
   // desktop canvas keeps its own hardcoded per-tile markup untouched.
   moduleTiles: { key: ModuleKey; label: string; subtitle: string; icon: string; gradientClass: string }[] = [
@@ -25,6 +36,10 @@ export class ColorfulTilesComponent {
     { key: 'escalation-matrix',     label: 'Escalation Matrix',     subtitle: 'Detailed escalation reports',    icon: '/assets/tile-7.svg', gradientClass: 'tile-escalation' },
     { key: 'sr-assign-reassign',    label: 'SR Assign & Reassign',  subtitle: 'View service requests',          icon: '/assets/tile-8.svg', gradientClass: 'tile-sr-assign' },
   ];
+
+  get visibleModuleTiles() {
+    return this.moduleTiles.filter(tile => this.isSelected(tile.label));
+  }
 
   navigateToModule(moduleKey: ModuleKey): void {
     if (moduleKey === 'incident-management') {

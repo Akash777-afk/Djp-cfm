@@ -30,221 +30,165 @@
     >{{ tab.label }}</div>
   </div>
 
-  <div class="container-parent" *ngIf="activeDetailTab === 'plannedOutage'">
+  <div class="field-grid" *ngIf="activeDetailTab === 'plannedOutage'">
 
     <!-- Column 1 -->
-    <div class="container6">
-      <div class="container7">
-        <div class="label">
-          <div class="change-description">Planned outage id</div>
-        </div>
-        <div class="container8">
+    <div class="field-column">
+      <div class="field-row">
+        <div class="field-label">Planned outage id</div>
+        <div class="field-box">
           <input class="field-input" type="text" [(ngModel)]="selectedOutage.outageId">
         </div>
       </div>
 
-      <div class="container9">
-        <div class="label2">
-          <div class="change-description">CHANGE description</div>
-        </div>
-        <div class="container10">
+      <div class="field-row">
+        <div class="field-label">Change description</div>
+        <div class="field-box">
           <input class="field-input" type="text" [(ngModel)]="selectedOutage.description">
         </div>
       </div>
 
-      <div class="container11">
-        <div class="label2">
-          <div class="change-description">Change type</div>
-        </div>
-        <div class="container12">
-          <div class="container13">
-            <select class="field-select" [(ngModel)]="selectedOutage.changeType">
-              <option *ngFor="let opt of changeTypeOptions" [ngValue]="opt">{{ opt }}</option>
-            </select>
-            <img class="teenyiconsdown-solid" src="/assets/Dropdown-topbar.svg" alt="">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Change type</div>
+        <div class="field-box">
+          <select class="field-select" [(ngModel)]="selectedOutage.changeType">
+            <option *ngFor="let opt of changeTypeOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
-      <div class="container14">
-        <div class="label2">
-          <div class="change-description">Outage reason</div>
-        </div>
-        <div class="container12">
-          <div class="container13">
-            <input class="field-input" type="text" [(ngModel)]="selectedOutage.reason">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Outage reason</div>
+        <div class="field-box">
+          <input class="field-input" type="text" [(ngModel)]="selectedOutage.reason">
         </div>
       </div>
 
-      <div class="container17">
-        <div class="label2">
-          <div class="change-description">planned start date</div>
+      <div class="field-row">
+        <div class="field-label">Planned start date</div>
+        <div class="field-box">
+          <input class="field-input" type="datetime-local" [(ngModel)]="startDateInput">
         </div>
-        <div class="container12">
-          <div class="container19">
-            <input class="field-input" type="datetime-local" [(ngModel)]="startDateInput">
-          </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Request crq</div>
+        <div class="field-box">
+          <input class="field-input" type="text" [(ngModel)]="selectedOutage.crq">
         </div>
       </div>
     </div>
 
     <!-- Column 2 -->
-    <div class="container6">
-      <div class="container21">
-        <div class="label">
-          <div class="change-description">Request crq</div>
-        </div>
-        <div class="container22">
-          <input class="field-input" type="text" [(ngModel)]="selectedOutage.crq">
+    <div class="field-column">
+      <div class="field-row">
+        <div class="field-label">Status</div>
+        <div class="field-box">
+          <select class="field-select" [(ngModel)]="selectedOutage.status">
+            <option *ngFor="let opt of statusOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
-      <div class="container23">
-        <div class="label2">
-          <div class="change-description">Request Mail id</div>
-        </div>
-        <div class="container24">
+      <div class="field-row">
+        <div class="field-label">Request mail id</div>
+        <div class="field-box">
           <input class="field-input" type="text" [(ngModel)]="selectedOutage.implementer">
         </div>
       </div>
 
-      <div class="container25">
-        <div class="label2">
-          <div class="change-description">benefit of change</div>
-        </div>
-        <div class="container12">
-          <div class="container27">
-            <select class="field-select" [(ngModel)]="benefitOfChange">
-              <option *ngFor="let opt of benefitOptions" [ngValue]="opt">{{ opt }}</option>
-            </select>
-            <img class="teenyiconsdown-solid2" src="/assets/Dropdown-topbar.svg" alt="">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Benefit of change</div>
+        <div class="field-box">
+          <select class="field-select" [(ngModel)]="benefitOfChange">
+            <option *ngFor="let opt of benefitOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
-      <div class="container28">
-        <div class="label2">
-          <div class="change-description">Duration in min</div>
-        </div>
-        <div class="container12">
-          <div class="container27">
-            <input class="field-input" type="text" [(ngModel)]="durationInMin">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Duration in min</div>
+        <div class="field-box">
+          <input class="field-input" type="text" [(ngModel)]="durationInMin">
         </div>
       </div>
 
-      <div class="container31">
-        <div class="label2">
-          <div class="change-description">planned end date</div>
+      <div class="field-row">
+        <div class="field-label">Planned end date</div>
+        <div class="field-box">
+          <input class="field-input" type="datetime-local" [(ngModel)]="endDateInput">
         </div>
-        <div class="container12">
-          <div class="container33">
-            <input class="field-input" type="datetime-local" [(ngModel)]="endDateInput">
-          </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Change type</div>
+        <div class="field-box">
+          <input class="field-input" type="text" [(ngModel)]="changeTypeCategory">
         </div>
       </div>
     </div>
 
     <!-- Column 3 -->
-    <div class="container6">
-      <div class="container35">
-        <div class="label">
-          <div class="change-description">status</div>
-        </div>
-        <div class="container22">
-          <input class="field-input" type="text" [(ngModel)]="selectedOutage.status">
-        </div>
-      </div>
-
-      <div class="container37">
-        <div class="label2">
-          <div class="change-description">CHANGE type</div>
-        </div>
-        <div class="container24">
-          <input class="field-input" type="text" [(ngModel)]="changeTypeCategory">
+    <div class="field-column">
+      <div class="field-row">
+        <div class="field-label">Category</div>
+        <div class="field-box">
+          <select class="field-select" [(ngModel)]="category">
+            <option *ngFor="let opt of categoryOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
-      <div class="container39">
-        <div class="label2">
-          <div class="change-description">category</div>
-        </div>
-        <div class="container12">
-          <div class="container27">
-            <select class="field-select" [(ngModel)]="category">
-              <option *ngFor="let opt of categoryOptions" [ngValue]="opt">{{ opt }}</option>
-            </select>
-            <img class="teenyiconsdown-solid3" src="/assets/Dropdown-topbar.svg" alt="">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Creation date</div>
+        <div class="field-box">
+          <input class="field-input" type="datetime-local" [(ngModel)]="creationDateInput">
         </div>
       </div>
 
-      <div class="container42">
-        <div class="label2">
-          <div class="change-description">creation date</div>
-        </div>
-        <div class="container12">
-          <div class="container27">
-            <input class="field-input" type="datetime-local" [(ngModel)]="creationDateInput">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Column 4 -->
-    <div class="container46">
-      <div class="container47">
-        <div class="label">
-          <div class="change-description">Activity location</div>
-        </div>
-        <div class="container48">
+      <div class="field-row">
+        <div class="field-label">Activity location</div>
+        <div class="field-box">
           <input class="field-input" type="text" [(ngModel)]="activityLocation">
         </div>
       </div>
 
-      <div class="container49">
-        <div class="label2">
-          <div class="change-description">implementer</div>
-        </div>
-        <div class="container50">
+      <div class="field-row">
+        <div class="field-label">Implementer</div>
+        <div class="field-box">
           <input class="field-input" type="text" [(ngModel)]="selectedOutage.implementer">
         </div>
       </div>
 
-      <div class="container51">
-        <div class="label2">
-          <div class="change-description">impact</div>
-        </div>
-        <div class="container12">
-          <div class="container53">
-            <select class="field-select" [(ngModel)]="selectedOutage.impact">
-              <option *ngFor="let opt of impactOptions" [ngValue]="opt">{{ opt }}</option>
-            </select>
-            <img class="teenyiconsdown-solid6" src="/assets/Dropdown-topbar.svg" alt="">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Impact</div>
+        <div class="field-box">
+          <select class="field-select" [(ngModel)]="selectedOutage.impact">
+            <option *ngFor="let opt of impactOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
-      <div class="container54">
-        <div class="label2">
-          <div class="change-description">Outage reason</div>
-        </div>
-        <div class="container12">
-          <div class="container53">
-            <input class="field-input" type="text" [(ngModel)]="selectedOutage.reason">
-          </div>
+      <div class="field-row">
+        <div class="field-label">Outage reason</div>
+        <div class="field-box">
+          <input class="field-input" type="text" [(ngModel)]="selectedOutage.reason">
         </div>
       </div>
     </div>
 
   </div>
 
-  <div class="container-parent" *ngIf="activeDetailTab === 'additionalDetails'">
+  <div *ngIf="activeDetailTab === 'additionalDetails'">
     <!-- TODO: additional details fields -->
   </div>
 
-  <div class="container-parent" *ngIf="activeDetailTab === 'outageCommunications'">
+  <div *ngIf="activeDetailTab === 'outageCommunications'">
     <!-- TODO: outage communications thread -->
   </div>
 

@@ -19,7 +19,7 @@
     (userMenuAction)="onUserMenuAction($event)"
   ></app-header-part>
 
-  <app-colorful-tiles variant="desktop"></app-colorful-tiles>
+  <app-colorful-tiles variant="desktop" [selectedGlanceable]="selectedGlanceable"></app-colorful-tiles>
 
   <app-analytics-overview
     variant="desktop"
@@ -80,7 +80,7 @@
     (userMenuAction)="onUserMenuAction($event)"
   ></app-header-part>
 
-  <app-colorful-tiles variant="mobile"></app-colorful-tiles>
+  <app-colorful-tiles variant="mobile" [selectedGlanceable]="selectedGlanceable"></app-colorful-tiles>
 
   <app-analytics-overview
     variant="mobile"
@@ -103,3 +103,10 @@
 
   </div>
 </div>
+
+<app-user-preference-modal
+  *ngIf="isUserPreferenceModalOpen"
+  [availableGlanceable]="availableGlanceable"
+  [selectedGlanceable]="selectedGlanceable"
+  (close)="closeUserPreferenceModal()"
+></app-user-preference-modal>

@@ -1,7 +1,7 @@
 .the-djp-change-management-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1381px * var(--djp-scale));
+  height: calc(1634px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -9,7 +9,7 @@
 
 .the-djp-change-management {
   width: 1920px;
-  height: 1381px;
+  height: 1634px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
@@ -23,7 +23,7 @@
 
 .the-main-page {
   position: absolute;
-  top: 1285px;
+  top: 1538px;
   left: 9px;
   width: 125px;
   height: 54px;
