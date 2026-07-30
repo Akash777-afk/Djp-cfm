@@ -1,0 +1,241 @@
+<div class="cm-po-overlay" *ngIf="isOpen" role="presentation" (click)="cancel()">
+  <div class="cm-po-dialog-slot" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <!-- ===================== STEP 1: CRQ NUMBER ===================== -->
+    <div class="container" *ngIf="step === 'crq'">
+      <div class="container2">
+        <div class="heading-2">
+          <div class="create-planned-outage">Create Planned Outage</div>
+        </div>
+        <div class="button-close-modal" role="button" tabindex="0" aria-label="Close" (click)="cancel()" (keyup.enter)="cancel()">
+          <svg class="icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container3">
+        <div class="container4">
+          <div class="label">
+            <div class="crq">CRQ</div>
+            <div class="text">*</div>
+          </div>
+          <div class="container5">
+            <div class="text-input">
+              <input class="enter-crq-number" type="text" placeholder="Enter CRQ number" [(ngModel)]="crqNumber" (keyup.enter)="goToForm()" />
+            </div>
+            <div class="container6" role="button" tabindex="0" aria-label="Continue" (click)="goToForm()" (keyup.enter)="goToForm()">
+              <svg class="icon2" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 9H14M14 9L9.5 4.5M14 9L9.5 13.5" stroke="#e4002b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="paragraph">
+            <div class="enter-the-change">Enter the change request number linked to this planned outage</div>
+          </div>
+        </div>
+
+        <div class="containermargin">
+          <div class="container7">
+            <div class="container8">
+              <button type="button" class="button" (click)="cancel()">
+                <div class="cancel">Cancel</div>
+              </button>
+              <button type="button" class="button2" [disabled]="!crqNumber.trim()" (click)="goToForm()">
+                <div class="next">Next</div>
+                <svg class="icon3" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 7.5H13M13 7.5L8.5 3M13 7.5L8.5 12" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== STEP 2: FULL FORM ===================== -->
+    <div class="form-card" *ngIf="step === 'form'">
+
+      <div class="form-header">
+        <div class="form-title">Create Planned Outage</div>
+        <div class="button-close-modal" role="button" tabindex="0" aria-label="Close" (click)="cancel()" (keyup.enter)="cancel()">
+          <svg class="icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div class="field-grid">
+
+          <!-- Column 1 -->
+          <div class="field-column">
+            <div class="field-row">
+              <div class="field-label">Planned outage id<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="text" [value]="crqNumber" readonly />
+                <svg class="field-arrow" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 9H14M14 9L9.5 4.5M14 9L9.5 13.5" stroke="#e4002b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Change description<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="text" [(ngModel)]="description" placeholder="Enter change description" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Duration (in min)<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="text" [(ngModel)]="durationInMin" placeholder="Enter duration in minutes" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Activity location<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="activityLocation" [class.is-placeholder]="!activityLocation">
+                  <option value="" disabled hidden>Select activity location</option>
+                  <option *ngFor="let opt of activityLocationOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Planned start date<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="datetime-local" [(ngModel)]="startDateInput" [class.is-placeholder]="!startDateInput" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="field-column">
+            <div class="field-row">
+              <div class="field-label">Change type<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="changeType" [class.is-placeholder]="!changeType">
+                  <option value="" disabled hidden>Select change type</option>
+                  <option *ngFor="let opt of changeTypeOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Outage reason<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="outageReason" [class.is-placeholder]="!outageReason">
+                  <option value="" disabled hidden>Select outage reason</option>
+                  <option *ngFor="let opt of outageReasonOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Impact<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="impact" [class.is-placeholder]="!impact">
+                  <option value="" disabled hidden>Select impact</option>
+                  <option *ngFor="let opt of impactOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Benefit of change<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="benefitOfChange" [class.is-placeholder]="!benefitOfChange">
+                  <option value="" disabled hidden>Select benefit</option>
+                  <option *ngFor="let opt of benefitOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Planned end date<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="datetime-local" [(ngModel)]="endDateInput" [class.is-placeholder]="!endDateInput" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="field-column">
+            <div class="field-row">
+              <div class="field-label">Requester email id<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="text" [(ngModel)]="requesterEmail" placeholder="Enter requester email" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Reference number</div>
+              <div class="field-box">
+                <input class="field-input" type="text" [(ngModel)]="referenceNumber" placeholder="Enter Reference number" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Category<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="category" [class.is-placeholder]="!category">
+                  <option value="" disabled hidden>Select category</option>
+                  <option *ngFor="let opt of categoryOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Implementer email<span class="field-required">*</span></div>
+              <div class="field-box">
+                <input class="field-input" type="text" [(ngModel)]="implementerEmail" placeholder="Enter implementer email" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Type of change<span class="field-required">*</span></div>
+              <div class="field-box">
+                <select class="field-select" [(ngModel)]="typeOfChange" [class.is-placeholder]="!typeOfChange">
+                  <option value="" disabled hidden>Select type of change</option>
+                  <option *ngFor="let opt of typeOfChangeOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="step2-cancel-btn" (click)="cancel()">
+          <div class="cancel">Cancel</div>
+        </button>
+        <button type="button" class="step2-submit-btn" (click)="submit()">
+          <div class="submit">Submit</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================== STEP 3: SUCCESS ===================== -->
+    <div class="success-container" *ngIf="step === 'success'">
+      <div class="button-close-modal success-close" role="button" tabindex="0" aria-label="Close" (click)="done()" (keyup.enter)="done()">
+        <svg class="icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="success-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="32" fill="#dcfce7"/>
+          <path d="M20 33L27.5 40.5L44 22" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="success-title">Planned outage created successfully</div>
+      <div class="success-subtext">CRQ {{ crqNumber }} has been submitted and added to the planned outages list.</div>
+
+      <button type="button" class="button2 success-done" (click)="done()">
+        <div class="submit">Done</div>
+      </button>
+    </div>
+
+  </div>
+</div>

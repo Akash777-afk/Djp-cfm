@@ -1,0 +1,350 @@
+:host {
+  display: contents;
+}
+
+// Sits above the fixed header (110) and sidebar (100) so it's unambiguously
+// the only interactive thing on screen while open.
+.si-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+
+  // Scrollable so a tall card can still be reached in full, but the
+  // scrollbar chrome itself stays hidden — scrolling still works via wheel/
+  // trackpad/touch, just without a visible track/thumb.
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.si-card {
+  width: min(1140px, 92vw);
+  // No max-height / internal scroll here on purpose — the card grows to fit
+  // all of its content (header, filter bar, full table for the current
+  // page, pagination) and the overlay itself scrolls if that's taller than
+  // the viewport. margin: auto 0 keeps it vertically centered when it fits,
+  // and falls back to normal top-aligned scrolling when it doesn't (the
+  // standard fix for centered flex items that can overflow their container).
+  margin: auto 0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 22px;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, sans-serif;
+  overflow: hidden;
+}
+
+.si-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px;
+  border-bottom: 1.3px solid #f0f0f0;
+}
+.si-title {
+  font-size: 24px;
+  letter-spacing: -0.22px;
+  line-height: 33px;
+  font-weight: 600;
+  color: #e4002b;
+}
+.si-close {
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  svg { width: 20px; height: 20px; }
+  &:hover { background-color: rgba(0, 0, 0, 0.05); }
+}
+
+.si-filter-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 24px 32px;
+}
+.si-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.si-field-domain { width: 230px; }
+.si-field-node { flex: 1 1 auto; min-width: 0; }
+.si-field-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+.si-field-box {
+  position: relative;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+.si-field-icon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.si-select,
+.si-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: transparent;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 15px;
+  color: #101828;
+  padding: 0px 40px 0px 16px;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder { color: rgba(17, 24, 39, 0.4); }
+  &:hover { background-color: rgba(226, 0, 16, 0.03); }
+  &:focus {
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 2px rgba(226, 0, 16, 0.15) inset;
+  }
+}
+.si-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.si-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.si-reset-btn {
+  height: 48px;
+  padding: 0px 24px;
+  border-radius: 26px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover { background-color: rgba(0, 0, 0, 0.03); }
+}
+.si-search-btn {
+  height: 48px;
+  padding: 0px 28px;
+  border-radius: 26px;
+  background-color: #e4002b;
+  border: none;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+
+  &:hover { filter: brightness(1.08); }
+}
+
+.si-results {
+  display: flex;
+  flex-direction: column;
+  // Horizontal padding is small on purpose: the bordered panel below already
+  // has its own 24px internal padding (see .si-results-header/.si-table/
+  // .si-pagination), so 8px + 24px = 32px total — lining its title/cell/
+  // footer text up with "Domain"/"Service Impact Details" above, which sit
+  // at a flat 32px with no bordered box in between.
+  padding: 24px 8px 32px;
+}
+.si-results-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background-color: #fff;
+}
+.si-results-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #101828;
+}
+.si-results-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.si-filter-lsi {
+  height: 40px;
+  width: 180px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  outline: none;
+  padding: 0px 16px;
+  font: inherit;
+  font-size: 14px;
+  color: #101828;
+  transition: border-color 0.15s ease;
+
+  &::placeholder { color: rgba(17, 24, 39, 0.4); }
+  &:focus { border-color: #e4002b; }
+}
+.si-export-btn {
+  height: 40px;
+  padding: 0px 18px;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 1px solid #e4002b;
+  color: #e4002b;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  svg { width: 15px; height: 15px; }
+  &:hover { background-color: rgba(228, 0, 43, 0.05); }
+}
+
+.si-table-wrap {
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-top: none;
+}
+.si-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #eaecf0;
+    padding: 14px 24px;
+    text-align: left;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.44);
+  }
+  td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eaecf0;
+    font-size: 15px;
+    color: #374151;
+  }
+  tr:last-child td { border-bottom: none; }
+}
+.si-lsi-link {
+  color: #e4002b;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover { text-decoration: underline; }
+}
+
+.si-pagination {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  background-color: #fafafb;
+  font-size: 14px;
+  color: #6b7280;
+  flex-wrap: wrap;
+}
+.si-rows-per-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.si-page-size-box {
+  position: relative;
+  width: 68px;
+  height: 34px;
+
+  .si-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 0px 26px 0px 12px;
+    color: #101828;
+  }
+  .si-field-icon { right: 10px; width: 11px; height: 11px; }
+}
+.si-page-info {
+  white-space: nowrap;
+
+  b { color: #101828; font-weight: 600; }
+}
+.si-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.si-page-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #fff;
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover:not(:disabled) { background-color: rgba(0, 0, 0, 0.04); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+.si-page-of {
+  margin-left: 8px;
+
+  b { color: #101828; font-weight: 600; }
+}

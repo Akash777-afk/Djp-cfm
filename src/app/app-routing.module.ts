@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LandingComponent } from './pages/landing/landing.component';
+import { ChangeManagementLandingComponent } from './pages/change-management/landing/change-management-landing.component';
+import { ChangeManagementCrqComponent } from './pages/change-management/crq/change-management-crq.component';
 import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
-import { ChangeManagementComponent } from './pages/change-management/change-management.component';
-import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
 
 const routes: Routes = [
   {
@@ -12,16 +12,16 @@ const routes: Routes = [
     component: LandingComponent
   },
   {
+    path: 'change-management',
+    component: ChangeManagementLandingComponent
+  },
+  {
+    path: 'change-management/crq',
+    component: ChangeManagementCrqComponent
+  },
+  {
     path: 'incident-management',
     component: IncidentManagementComponent
-  },
-  {
-    path: 'change-management',
-    component: ChangeManagementComponent
-  },
-  {
-    path: 'escalation-matrix',
-    component: EscalationMatrixComponent
   },
   {
     path: '**',

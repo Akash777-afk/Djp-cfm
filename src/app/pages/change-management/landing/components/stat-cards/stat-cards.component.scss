@@ -1,0 +1,100 @@
+:host {
+  display: contents;
+}
+
+// ---------- Stat cards ----------
+.cml-stat-card {
+  position: absolute;
+  top: 281px;
+  width: 267.5px;
+  height: 177px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-bottom: 4px solid var(--stat-color);
+  color: var(--stat-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:not(.cml-stat-card-special) {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0px 2px 12px rgba(0, 0, 0, 0.12),
+        0 0 0 2px color-mix(in srgb, var(--stat-color) 45%, transparent),
+        0 0 26px 4px color-mix(in srgb, var(--stat-color) 40%, transparent);
+    }
+  }
+}
+// Permanent distinct treatment: the table below always reflects this card,
+// so it's visually called out rather than needing a hover/click affordance.
+.cml-stat-card-special {
+  cursor: pointer;
+  border: 1px solid var(--stat-color);
+  border-bottom-width: 8px;
+  box-shadow:
+    0px 2px 12px rgba(0, 0, 0, 0.22),
+    0 0 16px 2px color-mix(in srgb, var(--stat-color) 30%, transparent);
+}
+.cml-stat-label {
+  position: absolute;
+  top: 28px; left: 28.36px;
+  line-height: 26px;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--stat-color);
+}
+.cml-stat-icon-badge {
+  position: absolute;
+  top: 19px; left: 186.17px;
+  width: 57.9px; height: 47px;
+  border-radius: 22px;
+  background-color: var(--stat-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img { height: 26px; width: 26px; object-fit: contain; }
+}
+.cml-stat-count {
+  position: absolute;
+  top: 73px; left: 28.36px;
+  font-size: 38px;
+  letter-spacing: -2px;
+  line-height: 44px;
+  font-weight: 600;
+  color: #111827;
+}
+.cml-stat-view {
+  position: absolute;
+  top: 128px; left: 28.36px;
+  font-size: 16px;
+  line-height: 20px;
+  color: #9ca3af;
+  width: 137px;
+}
+.cml-stat-arrow {
+  position: absolute;
+  top: 121px; left: 203px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background-color: rgba(100, 116, 139, 0.08);
+  border: 0.6px solid rgba(100, 116, 139, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease, background-color 0.15s ease;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover { background-color: rgba(100, 116, 139, 0.16); }
+}
+.cml-stat-arrow-down {
+  transform: rotate(90deg);
+}

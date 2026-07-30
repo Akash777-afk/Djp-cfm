@@ -1,0 +1,32 @@
+<app-cm-sidebar-nav [scale]="scale" (createPoClick)="onCreatePoClick()" (serviceImpactClick)="onServiceImpactClick()" (contactCentreClick)="onContactCentreClick()"></app-cm-sidebar-nav>
+<app-cm-header-bar [scale]="scale"></app-cm-header-bar>
+<app-cm-create-po-modal
+  [isOpen]="isCreatePoModalOpen"
+  (closed)="onCreatePoModalClosed()"
+></app-cm-create-po-modal>
+<app-cm-service-impact-modal
+  [isOpen]="isServiceImpactModalOpen"
+  (closed)="onServiceImpactModalClosed()"
+></app-cm-service-impact-modal>
+<app-cm-contact-centre-modal
+  [isOpen]="isContactCentreModalOpen"
+  (closed)="onContactCentreModalClosed()"
+></app-cm-contact-centre-modal>
+
+<div class="cml-scale-wrapper" [style.--cml-scale]="scale">
+<div class="cml-canvas">
+
+  <app-cml-top-bar
+    [userName]="userName"
+    (callClick)="onCallClick()"
+    (bookClick)="onBookClick()"
+  ></app-cml-top-bar>
+
+  <app-cml-stat-cards [cards]="statCards" (cardClick)="setActiveCard($event)"></app-cml-stat-cards>
+
+  <app-cml-changes-panel
+    [changes]="changes"
+    [statusFilter]="statusFilter"
+    (changeIdClick)="goToCrq($event)"
+  ></app-cml-changes-panel>
+

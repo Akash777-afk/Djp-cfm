@@ -1,0 +1,45 @@
+<app-cm-sidebar-nav [scale]="scale" (createPoClick)="onCreatePo()" (serviceImpactClick)="onServiceImpactClick()" (contactCentreClick)="onContactCentreClick()"></app-cm-sidebar-nav>
+<app-cm-header-bar [scale]="scale"></app-cm-header-bar>
+<app-cm-create-po-modal
+  [isOpen]="isCreatePoModalOpen"
+  (closed)="onCreatePoModalClosed()"
+  (poCreated)="onPoCreated($event)"
+></app-cm-create-po-modal>
+<app-cm-service-impact-modal
+  [isOpen]="isServiceImpactModalOpen"
+  (closed)="onServiceImpactModalClosed()"
+></app-cm-service-impact-modal>
+<app-cm-contact-centre-modal
+  [isOpen]="isContactCentreModalOpen"
+  (closed)="onContactCentreModalClosed()"
+></app-cm-contact-centre-modal>
+
+<div class="the-djp-change-management-scale-wrapper" [style.--djp-scale]="scale">
+<div class="the-djp-change-management">
+
+  <app-crq-planned-outages
+    [plannedOutages]="plannedOutages"
+    [sortBy]="sortBy"
+    (sortByChange)="sortBy = $event"
+    [crqSearch]="crqSearch"
+    (crqSearchChange)="crqSearch = $event"
+    [poIdSearch]="poIdSearch"
+    (poIdSearchChange)="poIdSearch = $event"
+    (search)="onSearch()"
+    (reset)="onReset()"
+    (createPo)="onCreatePo()"
+    (exportClick)="onExport()"
+    (refreshClick)="onToolbarRefresh()"
+    (selectOutage)="selectOutage($event)"
+  ></app-crq-planned-outages>
+
+  <app-planned-outage-input
+    [selectedOutage]="selectedOutage"
+    [activeDetailTab]="activeDetailTab"
+    (activeDetailTabChange)="setDetailTab($event)"
+    (assigneeClick)="onAssigneeClick()"
+    (notifyClick)="onNotifyClick()"
+    (moreOptionsClick)="onMoreOptionsClick()"
+  ></app-planned-outage-input>
+
+  <!-- ===================== FOOTER ===================== -->

@@ -1,0 +1,25 @@
+<!-- ===================== STAT CARDS ===================== -->
+<div
+  class="cml-stat-card"
+  *ngFor="let card of cards; let i = index"
+  [class.cml-stat-card-special]="card.special"
+  [style.left.px]="129 + i * 297.03"
+  [style.--stat-color]="card.color"
+  [style.--stat-bg]="card.bg"
+  role="button"
+  tabindex="0"
+  (click)="cardClick.emit(card.key)"
+  (keyup.enter)="cardClick.emit(card.key)"
+>
+  <div class="cml-stat-label">{{ card.label }}</div>
+  <div class="cml-stat-icon-badge">
+    <img [src]="card.icon" alt="" />
+  </div>
+  <div class="cml-stat-count">{{ card.count }}</div>
+  <div class="cml-stat-view">{{ card.viewText }}</div>
+  <div class="cml-stat-arrow" [class.cml-stat-arrow-down]="card.special">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="si-overlay" *ngIf="isOpen" role="presentation" (click)="close()">
+  <div class="si-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="si-header">
+      <div class="si-title">Service Impact Details</div>
+      <div class="si-close" role="button" tabindex="0" aria-label="Close" (click)="close()" (keyup.enter)="close()">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="si-filter-bar">
+      <div class="si-field si-field-domain">
+        <div class="si-field-label">Domain</div>
+        <div class="si-field-box">
+          <select class="si-select" [(ngModel)]="domain">
+            <option *ngFor="let d of domainOptions" [ngValue]="d">{{ d }}</option>
+          </select>
+          <img class="si-field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+        </div>
+      </div>
+      <div class="si-field si-field-node">
+        <div class="si-field-label">Node</div>
+        <div class="si-field-box">
+          <input class="si-input" type="text" placeholder="Enter node name or ID" [(ngModel)]="nodeQuery" (keyup.enter)="search()" />
+        </div>
+      </div>
+      <div class="si-actions">
+        <button type="button" class="si-reset-btn" (click)="reset()">Reset</button>
+        <button type="button" class="si-search-btn" (click)="search()">Search</button>
+      </div>
+    </div>
+
+    <div class="si-results" *ngIf="hasSearched">
+      <div class="si-results-header">
+        <div class="si-results-title">Impacted LSI</div>
+        <div class="si-results-actions">
+          <input class="si-filter-lsi" type="text" placeholder="Filter LSI" [(ngModel)]="lsiFilter" />
+          <button type="button" class="si-export-btn" (click)="onExport()">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 2V10M8 10L4.5 6.5M8 10L11.5 6.5M2 11.5V12.5C2 13.0523 2.44772 13.5 3 13.5H13C13.5523 13.5 14 13.0523 14 12.5V11.5" stroke="#e4002b" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Export
+          </button>
+        </div>
+      </div>
+
+      <div class="si-table-wrap">
+        <table class="si-table">
+          <thead>
+            <tr>
+              <th>LSI</th>
+              <th>Service Type</th>
+              <th>Customer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of pagedRows">
+              <td><a href="javascript:void(0)" class="si-lsi-link">{{ row.lsi }}</a></td>
+              <td>{{ row.serviceType }}</td>
+              <td>{{ row.customer }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="si-pagination">
+        <div class="si-rows-per-page">
+          <span>Rows per page</span>
+          <div class="si-page-size-box">
+            <select class="si-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+              <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+            </select>
+            <img class="si-field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+          </div>
+        </div>
+
+        <div class="si-page-info">Showing <b>{{ rangeStart }}</b>&ndash;<b>{{ rangeEnd }}</b> of <b>{{ totalRows }}</b></div>
+
+        <div class="si-page-controls">
+          <button type="button" class="si-page-btn" [disabled]="currentPage === 1" (click)="goToPage(1)" aria-label="First page">&laquo;</button>
+          <button type="button" class="si-page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Previous page">&lsaquo;</button>
+          <button type="button" class="si-page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" aria-label="Next page">&rsaquo;</button>
+          <button type="button" class="si-page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(totalPages)" aria-label="Last page">&raquo;</button>
+          <div class="si-page-of">Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

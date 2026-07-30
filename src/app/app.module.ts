@@ -6,49 +6,53 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './pages/landing/landing.component';
-import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
-import { ChangeManagementComponent } from './pages/change-management/change-management.component';
-import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
-import { HeaderPartComponent } from './pages/landing/components/header-part/header-part.component';
-import { ColorfulTilesComponent } from './pages/landing/components/colorful-tiles/colorful-tiles.component';
-import { AnalyticsOverviewComponent } from './pages/landing/components/analytics-overview/analytics-overview.component';
 import { SrOverviewComponent } from './pages/landing/components/sr-overview/sr-overview.component';
-import { EscalationMatrixCardComponent } from './pages/landing/components/escalation-matrix/escalation-matrix.component';
 import { IncidentManagementCardComponent } from './pages/landing/components/incident-management/incident-management.component';
 import { ChangeManagementCardComponent } from './pages/landing/components/change-management/change-management.component';
+import { EscalationMatrixCardComponent } from './pages/landing/components/escalation-matrix/escalation-matrix.component';
+import { ChangeManagementLandingComponent } from './pages/change-management/landing/change-management-landing.component';
+import { ChangeManagementLandingTopBarComponent } from './pages/change-management/landing/components/top-bar/top-bar.component';
+import { ChangeManagementLandingStatCardsComponent } from './pages/change-management/landing/components/stat-cards/stat-cards.component';
+import { ChangeManagementLandingChangesPanelComponent } from './pages/change-management/landing/components/changes-panel/changes-panel.component';
+import { ChangeManagementCrqComponent } from './pages/change-management/crq/change-management-crq.component';
+import { CrqPlannedOutagesComponent } from './pages/change-management/crq/components/crq-planned-outages/crq-planned-outages.component';
+import { PlannedOutageInputComponent } from './pages/change-management/crq/components/planned-outage-input/planned-outage-input.component';
+import { ChangeManagementSidebarNavComponent } from './pages/change-management/shared/sidebar-nav/sidebar-nav.component';
+import { ChangeManagementHeaderBarComponent } from './pages/change-management/shared/header-bar/header-bar.component';
+import { CreatePoModalComponent } from './pages/change-management/shared/create-po-modal/create-po-modal.component';
+import { ServiceImpactModalComponent } from './pages/change-management/shared/service-impact-modal/service-impact-modal.component';
+import { ContactCentreModalComponent } from './pages/change-management/shared/contact-centre-modal/contact-centre-modal.component';
+import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
 import { SidebarNavComponent } from './pages/incident-management/components/sidebar-nav/sidebar-nav.component';
 import { TopBarComponent } from './pages/incident-management/components/top-bar/top-bar.component';
 import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
 import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
-import { CmTopBarComponent } from './pages/change-management/components/top-bar/top-bar.component';
-import { CrqPlannedOutagesComponent } from './pages/change-management/components/crq-planned-outages/crq-planned-outages.component';
-import { PlannedOutageInputComponent } from './pages/change-management/components/planned-outage-input/planned-outage-input.component';
-import { ChangeManagementSidebarNavComponent } from './pages/change-management/components/sidebar-nav/sidebar-nav.component';
-import { UserPreferenceModalComponent } from './pages/landing/components/user-preference-modal/user-preference-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
-    IncidentManagementComponent,
-    ChangeManagementComponent,
-    EscalationMatrixComponent,
-    HeaderPartComponent,
-    ColorfulTilesComponent,
-    AnalyticsOverviewComponent,
     SrOverviewComponent,
-    EscalationMatrixCardComponent,
     IncidentManagementCardComponent,
     ChangeManagementCardComponent,
+    EscalationMatrixCardComponent,
+    ChangeManagementLandingComponent,
+    ChangeManagementLandingTopBarComponent,
+    ChangeManagementLandingStatCardsComponent,
+    ChangeManagementLandingChangesPanelComponent,
+    ChangeManagementCrqComponent,
+    ChangeManagementSidebarNavComponent,
+    ChangeManagementHeaderBarComponent,
+    CrqPlannedOutagesComponent,
+    PlannedOutageInputComponent,
+    CreatePoModalComponent,
+    ServiceImpactModalComponent,
+    ContactCentreModalComponent,
+    IncidentManagementComponent,
     SidebarNavComponent,
     TopBarComponent,
     NsttStatusComponent,
-    AllNsttsComponent,
-    CmTopBarComponent,
-    CrqPlannedOutagesComponent,
-    PlannedOutageInputComponent,
-    ChangeManagementSidebarNavComponent,
-    UserPreferenceModalComponent
+    AllNsttsComponent
   ],
   imports: [
     BrowserModule,

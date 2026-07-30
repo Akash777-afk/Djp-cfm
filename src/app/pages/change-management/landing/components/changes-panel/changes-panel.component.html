@@ -1,0 +1,101 @@
+<!-- ===================== CHANGES PANEL ===================== -->
+<div class="cml-panel">
+
+  <!-- Filters -->
+  <div class="cml-filter-bar">
+    <div class="cml-date-field" (click)="openDatePicker(fromDateInput)">
+      <input #fromDateInput type="date" [(ngModel)]="fromDate" />
+      <span class="cml-date-label" [class.cml-date-label-filled]="fromDate">{{ fromDate || 'From Date' }}</span>
+      <img class="cml-date-icon" src="/assets/uil_calender.png" alt="" />
+    </div>
+    <div class="cml-date-field cml-date-field2" (click)="openDatePicker(toDateInput)">
+      <input #toDateInput type="date" [(ngModel)]="toDate" />
+      <span class="cml-date-label" [class.cml-date-label-filled]="toDate">{{ toDate || 'To Date' }}</span>
+      <img class="cml-date-icon" src="/assets/uil_calender.png" alt="" />
+    </div>
+    <button type="button" class="cml-search-btn" (click)="onSearch()">Search</button>
+    <button type="button" class="cml-export-btn" (click)="onExport()">Export</button>
+    <div class="cml-filter-select" role="button" tabindex="0" [attr.aria-expanded]="isFilterOpen" (click)="toggleFilter()">
+      <img src="/assets/iconoir_filter.png" alt="" />
+      <span>{{ filterLabel }}</span>
+
+      <div class="cml-filter-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">
+        <div
+          class="cml-filter-option"
+          *ngFor="let option of filterOptions"
+          role="button"
+          tabindex="0"
+          [class.cml-filter-option-active]="option === 'All' ? (manualFilter === null || manualFilter === 'all') : manualFilter === option"
+          (click)="selectFilter(option)"
+        >{{ option }}</div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="filteredChanges.length > 0; else emptyState">
+
+    <!-- Table -->
+    <div class="cml-table-wrap">
+      <table class="cml-table">
+        <thead>
+          <tr>
+            <th class="cml-col-changeid">Change ID</th>
+            <th>Planned Outage ID</th>
+            <th>Status</th>
+            <th>Created On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of pagedChanges">
+            <td class="cml-col-changeid">
+              <a href="javascript:void(0)" class="cml-change-link" (click)="changeIdClick.emit(row.changeId)">{{ row.changeId }}</a>
+            </td>
+            <td>{{ row.plannedOutageId }}</td>
+            <td>
+              <span class="cml-status-badge" [ngClass]="'cml-status-' + row.status.toLowerCase().replace(' ', '-')">{{ row.status }}</span>
+            </td>
+            <td>{{ row.createdOn }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="cml-pagination">
+      <div class="cml-pagination-info">Showing {{ rangeStart }}–{{ rangeEnd }} of {{ filteredChanges.length }} entries</div>
+      <div class="cml-pagination-controls">
+        <button type="button" class="cml-page-btn cml-page-prev" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+
+        <ng-container *ngIf="!pagesExpanded && totalPages > 3; else allPages">
+          <button type="button" class="cml-page-btn cml-page-num" [class.cml-page-active]="currentPage === 1" (click)="goToPage(1)">1</button>
+          <button type="button" class="cml-page-btn cml-page-num" [class.cml-page-active]="currentPage === 2" (click)="goToPage(2)">2</button>
+          <button type="button" class="cml-page-btn cml-page-num cml-page-ellipsis" (click)="expandPages()">…</button>
+          <button type="button" class="cml-page-btn cml-page-num" [class.cml-page-active]="currentPage === totalPages" (click)="goToPage(totalPages)">{{ totalPages }}</button>
+        </ng-container>
+
+        <ng-template #allPages>
+          <button
+            type="button"
+            class="cml-page-btn cml-page-num"
+            *ngFor="let p of [].constructor(totalPages); let i = index"
+            [class.cml-page-active]="currentPage === i + 1"
+            (click)="goToPage(i + 1)"
+          >{{ i + 1 }}</button>
+        </ng-template>
+
+        <button type="button" class="cml-page-btn cml-page-next" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="cml-empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="cml-empty-text">No data available</div>
+    </div>
+  </ng-template>
+
+</div>

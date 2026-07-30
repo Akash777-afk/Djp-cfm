@@ -1,0 +1,24 @@
+:host {
+  display: contents;
+}
+
+.cml-scale-wrapper {
+  --cml-scale: 1;
+  width: calc(1920px * var(--cml-scale));
+  height: calc(1310px * var(--cml-scale));
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cml-canvas {
+  position: relative;
+  width: 1920px;
+  height: 1310px;
+  background-color: #f7f8f9;
+  overflow: hidden;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  transform: scale(var(--cml-scale));
+  transform-origin: top left;
+}
