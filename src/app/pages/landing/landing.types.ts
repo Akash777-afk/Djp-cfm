@@ -1,7 +1,16 @@
-export interface NavTab {
+export interface NavTabItem {
   label: string;
   active: boolean;
 }
+
+export interface GlanceTile {
+  label: string;
+  action: () => void;
+}
+
+export type MainCardKey = 'sr' | 'incident' | 'change' | 'escalation';
+
+export type SectionVariant = 'desktop' | 'mobile';
 
 export interface IncidentStat {
   value: string;
@@ -46,21 +55,3 @@ export interface ChangeRow {
   submitted: boolean;
   isLast: boolean;
 }
-
-export type ModuleKey =
-  | 'noc-portal'
-  | 'proactive-automation'
-  | 'incident-management'
-  | 'problem-management'
-  | 'change-management'
-  | 'rooster-management'
-  | 'escalation-matrix'
-  | 'sr-assign-reassign';
-
-export type CardKey = 'sr' | 'incident' | 'change' | 'escalation';
-
-// Which layout half of a section component to render — each of the 7 landing
-// section components contains both its desktop (absolute-canvas) markup and
-// its mobile (flowing) markup, and is instantiated once per variant so the
-// two stay bound to the same lifted-up state from LandingComponent.
-export type SectionVariant = 'desktop' | 'mobile';

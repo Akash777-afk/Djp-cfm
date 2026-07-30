@@ -1,90 +1,260 @@
-// =========================================================
-// CMF DJ Portal – Landing Page shell SCSS
-// Section-specific styling now lives in each of the 7 child components
-// under ./components/; this file only owns the responsive canvas shell
-// (desktop 1920x1444 scaled canvas vs. mobile flowing layout) that all of
-// them render into.
-// =========================================================
+:host {
+  display: contents;
+}
 
 // =========================================================
-// Responsive strategy
+// Responsive strategy — same approach as LandingComponent:
+// >= 1024px: the pixel-perfect 1920x1220 canvas below, scaled to fit the
+//   window (--aop-scale, computed in the component).
+// <  1024px: .aop-mobile-layout takes over instead.
+// The two show/hide media queries live at the BOTTOM of this file (see end)
+// so they win the cascade over the unconditional `display` rules below,
+// which share the same specificity and would otherwise override them.
 // =========================================================
-// >= 1024px (laptop/desktop): the pixel-perfect 1920x1444 canvas below,
-//   scaled to fit the window (--djp-scale, computed in the component).
-// <  1024px (phone/tablet): .mobile-layout takes over instead — a
-//   natively-flowing rebuild sharing the same component data/handlers.
-// Both stay in the DOM; CSS `display` picks the active one.
 $breakpoint-desktop: 1024px;
 
-:host {
-  display: block;
-  width: 100%;
-  background-color: #f7f8f9;
-}
-
-@media (min-width: $breakpoint-desktop) {
-  .mobile-layout { display: none; }
-}
-
-@media (max-width: #{$breakpoint-desktop - 1px}) {
-  .the-djp-scale-wrapper { display: none; }
-}
-
-// The wrapper reserves exactly the *scaled* footprint (1920*scale x 1444*scale)
-// since `transform: scale` doesn't affect layout size — without this wrapper
-// the parent would reserve the full 1920x1444px, leaving blank space below/right.
-// --djp-scale is fit to the window's *width only* (component computes
-// min(vw/1920, 1)) so the canvas always fills the window edge-to-edge with
-// no left/right/bottom letterboxing; the page scrolls vertically like any
-// normal webpage if the scaled height exceeds the viewport.
-.the-djp-scale-wrapper {
-  --djp-scale: 1; // fallback for first paint, before JS runs
-  width: calc(1920px * var(--djp-scale));
-  height: calc(1444px * var(--djp-scale));
+.aop-scale-wrapper {
+  --aop-scale: 1;
+  width: calc(1920px * var(--aop-scale));
+  height: calc(1493px * var(--aop-scale));
   max-width: 100%;
   overflow: hidden;
-  margin: 0 auto; // centers only in the rare case scale is capped at 1 on a screen wider than 1920px
+  margin: 0 auto;
 }
 
-.the-djp {
-  width: 1920px;
-  height: 1444px;
+.aop-canvas {
   position: relative;
+  width: 1920px;
+  height: 1493px;
   background-color: #f7f8f9;
   overflow: hidden;
   text-align: left;
-  font-size: 22px;
-  color: #fff;
   font-family: 'Inter', sans-serif;
-  transform: scale(var(--djp-scale));
+  transform: scale(var(--aop-scale));
   transform-origin: top left;
 }
 
-// =========================================================
-// Responsive layout (< 1024px) — natively-flowing rebuild.
-// =========================================================
-.mobile-layout {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f7f8f9;
-  font-family: 'Inter', sans-serif;
-  color: #1e2939;
-  padding: 16px;
-
-  * , *::before, *::after { box-sizing: border-box; }
-
-  @media (min-width: 640px) { padding: 20px 24px; }
-  @media (min-width: 900px) { padding: 24px 32px; }
+// ---------- Top bar ----------
+.landing-topbar {
+  position: absolute;
+  top: -1px;
+  left: 0px;
+  width: 1920px;
+  height: 106px;
+  box-shadow: 0px 4px 45px rgba(0, 0, 0, 0.16);
+  background-color: #f9fafb;
+  border-bottom: 1px solid #EAECF0;
+}
+.landing-topbar-logo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 163px;
+  height: 56px;
+  object-fit: cover;
+}
+.landing-topbar-banner {
+  position: absolute;
+  top: 1px;
+  left: 1464px;
+  width: 469px;
+  height: 96px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-// Grid container wrapping the 4 reorderable mobile analytics cards.
-.m-cards {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
-  gap: 16px;
-  padding-bottom: 24px;
+// ---------- Glanceable tiles ----------
+.glance-tile {
+  position: absolute;
+  top: 132px;
+  width: 357.7px;
+  height: 143px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #de1319;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.44);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 36px;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-  @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+  &:hover { transform: translateY(-3px); box-shadow: 1px 8px 16px rgba(0, 0, 0, 0.5); }
+  &:active { transform: translateY(-1px); }
+  &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+}
+.glance-tile-label {
+  line-height: 16px;
+  font-weight: 800;
+  text-align: center;
+  padding: 0 20px;
+}
+.glance-tile-divider {
+  margin-top: 35.65px;
+  width: 339.4px;
+  border-top: 0.7px solid #fff;
+  box-sizing: border-box;
+}
+
+// ---------- Header (Analytics Overview section) ----------
+.aop-header {
+  position: absolute;
+  top: 305px; left: 12px;
+  width: 1892px;
+  box-sizing: border-box;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.aop-header-icon { width: 57px; height: 57px; flex-shrink: 0; }
+.aop-header-text { display: flex; flex-direction: column; align-items: flex-start; flex: 1; min-width: 0; }
+.aop-title { font-size: 28px; line-height: 36px; font-weight: 600; color: #101828; }
+.aop-subtitle { font-size: 16px; line-height: 28px; color: #717182; }
+
+.aop-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+.aop-icon-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  width: 44px; height: 44px;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+
+  img { width: 29px; height: 29px; }
+
+  &:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.08); }
+  &:active { transform: scale(0.94); }
+  &:focus-visible { outline: 2px solid #e60012; outline-offset: 2px; }
+}
+
+// ---------- Tab bar (shared visual style for both the main and applications rows) ----------
+.aop-tab-bar {
+  position: absolute;
+  top: 402px; left: 12px;
+  width: 1892px; height: 59px;
+  display: flex;
+  align-items: stretch;
+  text-align: center;
+}
+.aop-tab-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  flex: 1;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 8px 16px;
+  font-size: 22px;
+  color: #718096;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover:not(.aop-tab-active) { color: #4a5565; }
+}
+.aop-tab-active {
+  border-bottom-color: #e40000;
+  color: #e40000;
+  font-weight: 500;
+}
+
+.aop-separator {
+  position: absolute;
+  top: 460.5px; left: -0.5px;
+  border-top: 1px solid #dde1e7;
+  box-sizing: border-box;
+  width: 1921px; height: 1px;
+}
+
+// ---------- Mobile ----------
+.aop-mobile-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  background-color: #f7f8f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.landing-m-topbar {
+  display: flex;
+  align-items: center;
+}
+.landing-m-topbar-logo { width: 110px; height: auto; }
+
+.landing-m-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.glance-tile-m {
+  flex: 1 1 calc(50% - 10px);
+  min-width: 140px;
+  border-radius: 10px;
+  background-color: #de1319;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.44);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  padding: 18px 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:active { transform: scale(0.97); }
+}
+
+.aop-m-header { display: flex; flex-direction: column; gap: 8px; }
+.aop-m-header-row { display: flex; align-items: center; gap: 10px; }
+.aop-m-header-icon { width: 36px; height: 36px; flex-shrink: 0; }
+.aop-m-title { font-size: 20px; font-weight: 600; color: #101828; }
+.aop-m-subtitle { font-size: 13px; color: #717182; }
+
+.aop-m-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  border-bottom: 1px solid #dde1e7;
+  padding-bottom: 4px;
+}
+.aop-m-tab-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: #718096;
+  padding: 6px 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.aop-m-tab-active { border-bottom-color: #e40000; color: #e40000; font-weight: 600; }
+
+.aop-m-cards { display: flex; flex-direction: column; gap: 16px; }
+
+// ---------- Show/hide switch between the two layouts ----------
+// Declared last so it wins the cascade over the unconditional `display`
+// rules above, which share the same specificity.
+@media (min-width: $breakpoint-desktop) {
+  .aop-mobile-layout { display: none; }
+}
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .aop-scale-wrapper { display: none; }
 }

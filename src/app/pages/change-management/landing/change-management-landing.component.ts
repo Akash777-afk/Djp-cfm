@@ -47,7 +47,7 @@ export class ChangeManagementLandingComponent implements OnInit {
     for (let i = 0; i < total; i++) {
       const outageId = 1100461492 + i;
       rows.push({
-        changeId: i === 0 ? '1234567890' : `CRQ0000${(6792249 + i).toString()}`,
+        changeId: i === 0 ? 'CRQ000005963007' : `CRQ0000${(6792249 + i).toString()}`,
         plannedOutageId: outageId.toString(),
         status: statuses[i % statuses.length],
         createdOn: '01 July 2026, 09:23 AM',

@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { CardKey, NavTab } from './landing.types';
+import { Router } from '@angular/router';
+import { GlanceTile, MainCardKey, NavTabItem } from './landing.types';
 
 @Component({
   selector: 'app-landing',
@@ -8,14 +9,12 @@ import { CardKey, NavTab } from './landing.types';
 })
 export class LandingComponent implements OnInit {
 
+  constructor(private router: Router) {}
+
   // ---------- Responsive scale-to-fit (desktop canvas, >= 1024px) ----------
-  // The desktop canvas is a fixed 1920x1444 design. Scale to the window's
-  // WIDTH only (capped at 100% so it never upscales/blurs on huge displays)
-  // so the canvas always fills the window edge-to-edge with no left/right
-  // blank margins; the page scrolls vertically for the rest, same as any
-  // normal webpage. (Fitting height too would leave letterboxing whenever
-  // the window's aspect ratio isn't exactly 1920:1444, which is most
-  // monitors.) Below 1024px the canvas is hidden in favor of .mobile-layout.
+  // A fixed 1920-wide design, scaled to the window's width only (capped at
+  // 100%) so the canvas fills edge-to-edge with no left/right letterboxing;
+  // the page scrolls vertically past that.
   private static readonly DESIGN_WIDTH = 1920;
   scale = 1;
 
@@ -28,130 +27,98 @@ export class LandingComponent implements OnInit {
     this.scale = Math.min(window.innerWidth / LandingComponent.DESIGN_WIDTH, 1);
   }
 
-  // ---------- Topbar ----------
-  // Lifted here (rather than owned by HeaderPartComponent) so the desktop
-  // and mobile instances of that component share the same live state.
-  portalTitle    = 'Welcome to CMF DJ Portal..!';
-  portalSubtitle = 'Walk through our exclusive Digital Journey portal';
-  searchPlaceholder = 'Search services, devices, or alerts...';
-  searchQuery = '';
-  userInitials = 'AG';
-  userName = 'Akash.G';
-  userRole = 'NOC Lead';
-  isUserMenuOpen = false;
-  isUserPreferenceModalOpen = false;
+  analyticsTitle = 'Analytics Overview';
+  analyticsSubtitle = 'Real-time insights and performance metrics';
 
-  // ---------- Glanceable preference (customized in the User Preference modal) ----------
-  // Lifted here so the modal and the colorful-tiles row (desktop + mobile
-  // instances) all share the same live arrays. The modal's drag-and-drop
-  // mutates these arrays in place (CDK's moveItemInArray/transferArrayItem),
-  // so no separate save step is needed for the tile row to pick up changes.
-  // Session-only — resets on reload, consistent with the rest of this app
-  // (no persistence layer exists anywhere yet).
-  availableGlanceable: string[] = [
-    'Market Place',
-    'User login activity',
-    'NaaS',
-    'How to?',
-    'EchoPod',
-    'Digitalization Portal',
+  // No destination exists yet for any of these 3 actions.
+  onSettingsClick(): void {
+    console.log('Analytics overview: settings clicked');
+  }
+  onAddClick(): void {
+    console.log('Analytics overview: add clicked');
+  }
+  onExternalLinkClick(): void {
+    console.log('Analytics overview: external-link clicked');
+  }
+
+  // ---------- Glanceable tiles (top of page) ----------
+  glanceTiles: GlanceTile[] = [
+    { label: 'NOC Portal', action: () => this.onNocPortalClick() },
+    { label: 'Problem Managent', action: () => this.onProblemManagementClick() },
+    { label: 'Change Management', action: () => this.goToChangeManagement() },
+    { label: 'SR Overview', action: () => this.jumpToAnalyticsTab('SR Overview') },
+    { label: 'Escalation Matrix', action: () => this.jumpToAnalyticsTab('Escalation matrix') },
   ];
 
-  selectedGlanceable: string[] = [
-    'NOC Portal',
-    'Proactive Automation',
-    'Incident Management',
-    'Change Management',
-    'Problem Management',
-    'Rooster Management',
-    'Escalation Matrix',
-    'SR Assign & Reassign',
+  // No destination exists yet for these two.
+  onNocPortalClick(): void {
+    console.log('Landing: NOC Portal clicked');
+  }
+  onProblemManagementClick(): void {
+    console.log('Landing: Problem management clicked');
+  }
+
+  goToChangeManagement(): void {
+    this.router.navigate(['/change-management']);
+  }
+
+  // Brings the Analytics Overview section's matching tab to the front and
+  // scrolls it into view, since it now sits below the glanceable tiles.
+  jumpToAnalyticsTab(label: string): void {
+    this.activateTabByLabel(label);
+    document.getElementById('analytics-overview-section')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ---------- Main nav tabs + 2x2 grid (Analytics Overview section) ----------
+  navTabs: NavTabItem[] = [
+    { label: 'SR Overview',          active: true  },
+    { label: 'Incident management',  active: false },
+    { label: 'Change management',    active: false },
+    { label: 'Escalation matrix',    active: false },
+    { label: 'Problem management',   active: false },
+    { label: 'Proactive automation', active: false },
   ];
 
-  onSearch(): void {
-    const query = this.searchQuery.trim();
-    if (!query) {
-      return;
-    }
-    console.log('Searching for:', query);
-    // TODO: wire this up to your real search endpoint / router query params
-  }
-
-  onDocumentsClick(): void {
-    console.log('Documents icon clicked');
-    // TODO: open documents panel or navigate to /documents
-  }
-
-  onNotificationsClick(): void {
-    console.log('Notifications icon clicked');
-    // TODO: open notifications panel or navigate to /notifications
-  }
-
-  onUserMenuAction(action: 'preferences' | 'profile' | 'settings' | 'logout'): void {
-    console.log('User menu action:', action);
-    if (action === 'preferences') {
-      this.isUserPreferenceModalOpen = true;
-    }
-    // TODO: route to the remaining actions (profile / settings) or perform logout
-  }
-
-  closeUserPreferenceModal(): void {
-    this.isUserPreferenceModalOpen = false;
-  }
-
-  // ---------- Analytics Nav Tabs ----------
-  // Lifted here (rather than owned by AnalyticsOverviewComponent) because
-  // the active tab also drives the 2x2 grid card reordering below, which is
-  // shared across the desktop/mobile instances of 4 sibling card components.
-  navTabs: NavTab[] = [
-    { label: 'SR overview',        active: false },
-    { label: 'Incident management',active: false },
-    { label: 'Change management',  active: false },
-    { label: 'Escalation matrix',  active: true  },
+  private readonly mainCardCycle: MainCardKey[] = ['sr', 'incident', 'change', 'escalation'];
+  private readonly mainGridPositions: { top: number; left: number }[] = [
+    { top: 491, left: 30 },   // top-left
+    { top: 491, left: 976 },  // top-right
+    { top: 975, left: 30 },   // bottom-left
+    { top: 975, left: 976 },  // bottom-right
   ];
-  setActiveTab(tab: NavTab): void {
-    this.navTabs.forEach(t => (t.active = false));
-    tab.active = true;
-  }
-
-  activeInterface: 'classic' | 'enhanced' = 'enhanced';
-  setInterface(mode: 'classic' | 'enhanced'): void {
-    this.activeInterface = mode;
-  }
-
-  // ---------- Grid card reordering (SR overview / Incident / Change / Escalation) ----------
-  // Fixed cycle order used to fill positions 2, 3, 4 after the selected card takes position 1.
-  private readonly cardCycle: CardKey[] = ['sr', 'incident', 'change', 'escalation'];
-
-  // Pixel positions for the 2x2 grid slots (top-left, top-right, bottom-left, bottom-right)
-  private readonly gridPositions: { top: number; left: number }[] = [
-    { top: 453, left: 33 },   // slot 0: top-left
-    { top: 453, left: 973 },  // slot 1: top-right
-    { top: 933, left: 33 },   // slot 2: bottom-left
-    { top: 933, left: 973 },  // slot 3: bottom-right
-  ];
-
-  private readonly tabLabelToCardKey: Record<string, CardKey> = {
-    'SR overview': 'sr',
+  private readonly mainTabLabelToCardKey: Record<string, MainCardKey> = {
+    'SR Overview': 'sr',
     'Incident management': 'incident',
     'Change management': 'change',
     'Escalation matrix': 'escalation',
   };
 
-  get activeCardKey(): CardKey {
+  setActiveTab(tab: NavTabItem): void {
+    this.navTabs.forEach(t => (t.active = false));
+    tab.active = true;
+  }
+
+  activateTabByLabel(label: string): void {
+    const tab = this.navTabs.find(t => t.label === label);
+    if (tab) { this.setActiveTab(tab); }
+  }
+
+  get activeMainCardKey(): MainCardKey | undefined {
     const activeTab = this.navTabs.find(t => t.active);
-    return this.tabLabelToCardKey[activeTab?.label ?? 'Escalation matrix'];
+    return activeTab ? this.mainTabLabelToCardKey[activeTab.label] : undefined;
   }
 
-  // Rotates the fixed cycle so the selected card is first, keeping the other
-  // three in the same relative SR -> Incident -> Change -> Escalation order.
-  get cardOrder(): CardKey[] {
-    const idx = this.cardCycle.indexOf(this.activeCardKey);
-    return [...this.cardCycle.slice(idx), ...this.cardCycle.slice(0, idx)];
+  // 'Problem management' / 'Proactive automation' have no card yet, so there's
+  // nothing to bring forward — fall back to the default cycle order instead.
+  get mainCardOrder(): MainCardKey[] {
+    const key = this.activeMainCardKey;
+    if (!key) { return this.mainCardCycle; }
+    const idx = this.mainCardCycle.indexOf(key);
+    return [...this.mainCardCycle.slice(idx), ...this.mainCardCycle.slice(0, idx)];
   }
 
-  getCardPosition(key: CardKey): { top: number; left: number } {
-    const slot = this.cardOrder.indexOf(key);
-    return this.gridPositions[slot];
+  getMainCardPosition(key: MainCardKey): { top: number; left: number } {
+    const slot = this.mainCardOrder.indexOf(key);
+    return this.mainGridPositions[slot];
   }
 }

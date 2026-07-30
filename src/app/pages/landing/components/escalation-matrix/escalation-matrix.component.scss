@@ -5,7 +5,11 @@
 // Shared class applied to all 4 reorderable grid cards so their top/left
 // position animates smoothly when the analytics tab changes.
 .grid-card {
-  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(230, 0, 18, 0.35), 0 0 18px 2px rgba(230, 0, 18, 0.3);
+  }
 }
 
 // ---------- Escalation Matrix Card (desktop) ----------
@@ -42,6 +46,7 @@
   position: relative;
   line-height: 36px;
   font-weight: 600;
+  font-size: 22px;
 }
 .manage-service-requests {
   align-self: stretch;
@@ -92,7 +97,7 @@
 
 // Escalation level table (column-major)
 .text { display: flex; flex-direction: column; align-items: flex-start; }
-.ag { position: relative; line-height: 16.5px; font-weight: 600; }
+.ag { position: relative; line-height: 16.5px; font-weight: 400; }
 .incident-management {
   position: relative;
   line-height: 16.5px;
@@ -112,9 +117,9 @@
 .column8 { width: 135px; display: flex; flex-direction: column; align-items: flex-start; color: rgba(15,23,42,0.77); }
 .column9 { width: 137px; display: flex; flex-direction: column; align-items: flex-start; color: #64748b; }
 
-.table-header-cell7 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; border-left: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; color: rgba(0,0,0,0.75); font-size: 15px; }
-.table-header-cell8 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 13px; text-align: left; color: rgba(0,0,0,0.75); font-size: 15px; }
-.table-header-cell9 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-right: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 10px; text-align: left; color: rgba(0,0,0,0.75); font-size: 15px; }
+.table-header-cell7 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; border-left: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; color: rgba(0,0,0,0.75); font-size: 14px; text-transform: uppercase; font-weight: 600; }
+.table-header-cell8 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 13px; text-align: left; color: rgba(0,0,0,0.75); font-size: 14px; text-transform: uppercase; font-weight: 600; }
+.table-header-cell9 { align-self: stretch; height: 48px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-right: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 10px; text-align: left; color: rgba(0,0,0,0.75); font-size: 14px; text-transform: uppercase; font-weight: 600; }
 
 .table-cell25 { align-self: stretch; height: 48px; border-bottom: 1px solid #eaecf0; border-left: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 15px; }
 .table-cell31 { align-self: stretch; height: 48px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 45px; font-size: 15px; }

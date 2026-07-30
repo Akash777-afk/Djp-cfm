@@ -1,112 +1,130 @@
-<div class="the-djp-scale-wrapper" [style.--djp-scale]="scale">
-<div class="the-djp">
+<div class="aop-scale-wrapper" [style.--aop-scale]="scale">
+<div class="aop-canvas">
 
-  <app-header-part
-    variant="desktop"
-    [portalTitle]="portalTitle"
-    [portalSubtitle]="portalSubtitle"
-    [searchPlaceholder]="searchPlaceholder"
-    [searchQuery]="searchQuery"
-    (searchQueryChange)="searchQuery = $event"
-    (search)="onSearch()"
-    [userInitials]="userInitials"
-    [userName]="userName"
-    [userRole]="userRole"
-    [isUserMenuOpen]="isUserMenuOpen"
-    (isUserMenuOpenChange)="isUserMenuOpen = $event"
-    (documentsClick)="onDocumentsClick()"
-    (notificationsClick)="onNotificationsClick()"
-    (userMenuAction)="onUserMenuAction($event)"
-  ></app-header-part>
+  <!-- ===== Top bar ===== -->
+  <div class="landing-topbar">
+    <img class="landing-topbar-logo" src="/assets/Airtel-logo 5.png" alt="Airtel logo" />
+    <img class="landing-topbar-banner" src="/assets/header-topright2.png" alt="" />
+  </div>
 
-  <app-colorful-tiles variant="desktop" [selectedGlanceable]="selectedGlanceable"></app-colorful-tiles>
+  <!-- ===== Glanceable tiles ===== -->
+  <div
+    class="glance-tile"
+    *ngFor="let tile of glanceTiles; let i = index"
+    [style.left.px]="31 + i * 374.83"
+    role="button"
+    tabindex="0"
+    (click)="tile.action()"
+    (keyup.enter)="tile.action()"
+  >
+    <div class="glance-tile-label">{{ tile.label }}</div>
+    <div class="glance-tile-divider"></div>
+  </div>
 
-  <app-analytics-overview
-    variant="desktop"
-    [navTabs]="navTabs"
-    (tabSelect)="setActiveTab($event)"
-    [activeInterface]="activeInterface"
-    (interfaceSelect)="setInterface($event)"
-  ></app-analytics-overview>
+  <!-- ===== Analytics Overview section ===== -->
+  <div class="aop-header" id="analytics-overview-section">
+    <img class="aop-header-icon" src="/assets/Icon-5.svg" alt="" />
+    <div class="aop-header-text">
+      <div class="aop-title">{{ analyticsTitle }}</div>
+      <div class="aop-subtitle">{{ analyticsSubtitle }}</div>
+    </div>
 
+    <div class="aop-header-actions">
+      <button type="button" class="aop-icon-btn" aria-label="Settings" (click)="onSettingsClick()">
+        <img src="/assets/Icon-4.svg" alt="" />
+      </button>
+      <button type="button" class="aop-icon-btn" aria-label="Add" (click)="onAddClick()">
+        <img src="/assets/Icon-3.svg" alt="" />
+      </button>
+      <button type="button" class="aop-icon-btn" aria-label="Open externally" (click)="onExternalLinkClick()">
+        <img src="/assets/Icon-2.svg" alt="" />
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Main nav tabs ===== -->
+  <div class="aop-tab-bar">
+    <button
+      type="button"
+      class="aop-tab-btn"
+      *ngFor="let tab of navTabs"
+      [class.aop-tab-active]="tab.active"
+      (click)="setActiveTab(tab)"
+    >{{ tab.label }}</button>
+  </div>
+  <div class="aop-separator"></div>
+
+  <!-- ===== Main 2x2 grid ===== -->
   <app-sr-overview
     variant="desktop"
-    [top]="getCardPosition('sr').top"
-    [left]="getCardPosition('sr').left"
+    [top]="getMainCardPosition('sr').top"
+    [left]="getMainCardPosition('sr').left"
   ></app-sr-overview>
 
   <app-landing-incident-management
     variant="desktop"
-    [top]="getCardPosition('incident').top"
-    [left]="getCardPosition('incident').left"
+    [top]="getMainCardPosition('incident').top"
+    [left]="getMainCardPosition('incident').left"
   ></app-landing-incident-management>
-
-  <app-landing-escalation-matrix
-    variant="desktop"
-    [top]="getCardPosition('escalation').top"
-    [left]="getCardPosition('escalation').left"
-  ></app-landing-escalation-matrix>
 
   <app-landing-change-management
     variant="desktop"
-    [top]="getCardPosition('change').top"
-    [left]="getCardPosition('change').left"
+    [top]="getMainCardPosition('change').top"
+    [left]="getMainCardPosition('change').left"
   ></app-landing-change-management>
+
+  <app-landing-escalation-matrix
+    variant="desktop"
+    [top]="getMainCardPosition('escalation').top"
+    [left]="getMainCardPosition('escalation').left"
+  ></app-landing-escalation-matrix>
 
 </div>
 </div>
 
 <!-- =========================================================
-     Responsive layout (< 1024px) — natively-flowing rebuild of the
-     canvas above, sharing the same lifted-up state/handlers.
+     Responsive layout (< 1024px) — natively-flowing rebuild.
      ========================================================= -->
-<div class="mobile-layout">
+<div class="aop-mobile-layout">
 
-  <app-header-part
-    variant="mobile"
-    [portalTitle]="portalTitle"
-    [portalSubtitle]="portalSubtitle"
-    [searchPlaceholder]="searchPlaceholder"
-    [searchQuery]="searchQuery"
-    (searchQueryChange)="searchQuery = $event"
-    (search)="onSearch()"
-    [userInitials]="userInitials"
-    [userName]="userName"
-    [userRole]="userRole"
-    [isUserMenuOpen]="isUserMenuOpen"
-    (isUserMenuOpenChange)="isUserMenuOpen = $event"
-    (documentsClick)="onDocumentsClick()"
-    (notificationsClick)="onNotificationsClick()"
-    (userMenuAction)="onUserMenuAction($event)"
-  ></app-header-part>
-
-  <app-colorful-tiles variant="mobile" [selectedGlanceable]="selectedGlanceable"></app-colorful-tiles>
-
-  <app-analytics-overview
-    variant="mobile"
-    [navTabs]="navTabs"
-    (tabSelect)="setActiveTab($event)"
-    [activeInterface]="activeInterface"
-    (interfaceSelect)="setInterface($event)"
-  ></app-analytics-overview>
-
-  <!-- ===== Analytics Cards ===== -->
-  <div class="m-cards">
-
-    <app-sr-overview variant="mobile" [order]="cardOrder.indexOf('sr')"></app-sr-overview>
-
-    <app-landing-incident-management variant="mobile" [order]="cardOrder.indexOf('incident')"></app-landing-incident-management>
-
-    <app-landing-escalation-matrix variant="mobile" [order]="cardOrder.indexOf('escalation')"></app-landing-escalation-matrix>
-
-    <app-landing-change-management variant="mobile" [order]="cardOrder.indexOf('change')"></app-landing-change-management>
-
+  <div class="landing-m-topbar">
+    <img class="landing-m-topbar-logo" src="/assets/Airtel-logo 5.png" alt="Airtel logo" />
   </div>
-</div>
 
-<app-user-preference-modal
-  *ngIf="isUserPreferenceModalOpen"
-  [availableGlanceable]="availableGlanceable"
-  [selectedGlanceable]="selectedGlanceable"
-  (close)="closeUserPreferenceModal()"
-></app-user-preference-modal>
+  <div class="landing-m-tiles">
+    <div
+      class="glance-tile-m"
+      *ngFor="let tile of glanceTiles"
+      role="button"
+      tabindex="0"
+      (click)="tile.action()"
+      (keyup.enter)="tile.action()"
+    >{{ tile.label }}</div>
+  </div>
+
+  <div class="aop-m-header" id="analytics-overview-section-m">
+    <div class="aop-m-header-row">
+      <img class="aop-m-header-icon" src="/assets/Icon-5.svg" alt="" />
+      <div class="aop-m-title">{{ analyticsTitle }}</div>
+    </div>
+    <div class="aop-m-subtitle">{{ analyticsSubtitle }}</div>
+  </div>
+
+  <div class="aop-m-tabs">
+    <button
+      type="button"
+      class="aop-m-tab-btn"
+      *ngFor="let tab of navTabs"
+      [class.aop-m-tab-active]="tab.active"
+      (click)="setActiveTab(tab)"
+    >{{ tab.label }}</button>
+  </div>
+
+  <div class="aop-m-cards">
+    <app-sr-overview variant="mobile" [order]="mainCardOrder.indexOf('sr')"></app-sr-overview>
+    <app-landing-incident-management variant="mobile" [order]="mainCardOrder.indexOf('incident')"></app-landing-incident-management>
+    <app-landing-escalation-matrix variant="mobile" [order]="mainCardOrder.indexOf('escalation')"></app-landing-escalation-matrix>
+    <app-landing-change-management variant="mobile" [order]="mainCardOrder.indexOf('change')"></app-landing-change-management>
+  </div>
+
+</div>
