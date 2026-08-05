@@ -23,10 +23,14 @@ import { CreatePoModalComponent } from './pages/change-management/shared/create-
 import { ServiceImpactModalComponent } from './pages/change-management/shared/service-impact-modal/service-impact-modal.component';
 import { ContactCentreModalComponent } from './pages/change-management/shared/contact-centre-modal/contact-centre-modal.component';
 import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
-import { SidebarNavComponent } from './pages/incident-management/components/sidebar-nav/sidebar-nav.component';
-import { TopBarComponent } from './pages/incident-management/components/top-bar/top-bar.component';
+import { IncidentManagementHeaderBarComponent } from './pages/incident-management/components/header-bar/header-bar.component';
 import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
 import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
+import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
+import { EscalationLevelsComponent } from './pages/escalation-matrix/components/escalation-levels/escalation-levels.component';
+import { EscalatedSrsComponent } from './pages/escalation-matrix/components/escalated-srs/escalated-srs.component';
+import { NocPortalComponent } from './pages/noc-portal/noc-portal.component';
+import { NocHealthIndexComponent } from './pages/noc-portal/components/health-index/health-index.component';
 
 @NgModule({
   declarations: [
@@ -49,10 +53,14 @@ import { AllNsttsComponent } from './pages/incident-management/components/all-ns
     ServiceImpactModalComponent,
     ContactCentreModalComponent,
     IncidentManagementComponent,
-    SidebarNavComponent,
-    TopBarComponent,
+    IncidentManagementHeaderBarComponent,
     NsttStatusComponent,
-    AllNsttsComponent
+    AllNsttsComponent,
+    EscalationMatrixComponent,
+    EscalationLevelsComponent,
+    EscalatedSrsComponent,
+    NocPortalComponent,
+    NocHealthIndexComponent
   ],
   imports: [
     BrowserModule,

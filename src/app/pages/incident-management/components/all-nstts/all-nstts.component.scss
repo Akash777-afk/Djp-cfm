@@ -4,8 +4,8 @@
 
 .rectangle-group {
   position: absolute;
-  top: 490px; left: 129px;
-  width: 1754px; height: 772px;
+  top: 603px; left: 37px;
+  width: 1846px; height: 696px;
   text-align: center;
   font-size: 19.25px;
   color: rgba(0,0,0,0.6);
@@ -16,7 +16,7 @@
   box-shadow: 0px 2px 12px rgba(0,0,0,0.22);
   border-radius: 22px;
   background-color: #fff;
-  width: 1754px; height: 772px;
+  width: 1846px; height: 696px;
 }
 
 // Pagination
@@ -25,8 +25,8 @@
 // edges instead of floating at fixed pixel positions.
 .line-parent {
   position: absolute;
-  top: 676px; left: 0;
-  width: 1754px; height: 69.8px;
+  top: 600px; left: 0;
+  width: 1846px; height: 69.8px;
   box-sizing: border-box;
   padding: 0 30px;
   display: flex;
@@ -37,7 +37,7 @@
   position: absolute;
   top: 0; left: 0;
   border-top: 1px solid rgba(100,116,139,0.22);
-  width: 1755px; height: 1px;
+  width: 1847px; height: 1px;
 }
 .showing-16-of {
   line-height: 27.5px;
@@ -73,12 +73,47 @@
   white-space: nowrap;
 }
 
+// "SR without NSTT" reduced view — shown instead of the full column set
+// while the toolbar toggle is on. There's no real data source for it yet,
+// just the single mock count from the design.
+.sr-without-nstt-view {
+  position: absolute;
+  top: 106px; left: 0;
+  width: 1792px; height: 507px;
+  box-sizing: border-box;
+  padding: 28px;
+}
+.sr-without-nstt-view .sr-count-header {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+.sr-without-nstt-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sr-without-nstt-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.85);
+}
+.sr-without-nstt-icon {
+  width: 33px; height: 33px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.4s ease;
+
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: rotate(90deg); }
+}
+
 // Table header background stripe
 .group-child2 {
   position: absolute;
   top: 106px; left: 0;
   background-color: rgba(176,174,174,0.77);
-  width: 1754px; height: 55px;
+  width: 1846px; height: 55px;
   opacity: 0.13;
 }
 
@@ -86,7 +121,7 @@
 .group-div {
   position: absolute;
   top: 30px; left: 30px;
-  width: 1700px; height: 613px;
+  width: 1792px; height: 613px;
   text-align: left;
   font-size: 16px;
 }
@@ -99,7 +134,7 @@
   font-size: 24px;
   color: #111010;
 }
-.all-nstts { position: absolute; top: 10px; left: 71.5px; line-height: 27.5px; }
+.all-nstts { position: absolute; top: 10px; left: 71.5px; line-height: 27.5px; white-space: nowrap; }
 .container21 {
   position: absolute;
   top: 0; left: 0;
@@ -117,64 +152,115 @@
 .vector-icon { width: 40px; height: 40px; position: absolute; margin: 0 !important; top: 6px; left: 6px; z-index: 1; }
 
 // Controls toolbar
+// Flex-based (rather than each control carrying a hand-tuned absolute left
+// offset) so controls can be inserted/reordered without recomputing every
+// sibling's position. The 3 dropdown controls (Select bin / Current owner /
+// Filter by Group) intentionally have no fixed width — they shrink-wrap to
+// their label text so a 26px gap can't force any of them to truncate;
+// Search/Export keep fixed widths since their text never changes.
 .frame-parent {
   position: absolute;
-  top: 0; left: 654px;
+  top: 0; left: 746px;
   width: 1030px; height: 46px;
   font-size: 19.25px;
   color: rgba(15,23,42,0.5);
+  display: flex;
+  align-items: center;
+  gap: 26px;
 }
-.group-child3,
-.group-child4 {
-  position: absolute;
-  top: 0;
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
 
-  &:hover { background-color: rgba(15, 23, 42, 0.06); }
-  &:active { transform: scale(0.92); }
-}
-.group-child3 { left: 838px; }
-.group-child4 { left: 909px; }
-.rectangle-container,
-.rectangle-parent2 {
+// ---- Shared dropdown control (Select bin / Current owner / Filter by Group) ----
+.dropdown-control {
+  position: relative;
+  flex: 0 0 auto;
+  height: 46px;
   cursor: pointer;
 }
-.rectangle-container { position: absolute; top: 0; left: 240px; width: 163px; height: 46px; }
-.group-child5 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; width: 163px; height: 46px; transition: background-color 0.2s ease; }
-.rectangle-container:hover .group-child5 { background-color: #f0f1f2; }
-.filter-by { position: absolute; top: 11.02px; left: 27px; display: inline-block; width: 74px; height: 20px; }
-.gridiconsdropdown { position: absolute; top: 12px; left: 116px; width: 22.4px; height: 22.4px; transition: transform 0.2s ease; }
-.gridiconsdropdown.dropdown-open { transform: rotate(180deg); }
-.rectangle-parent2 { position: absolute; top: 0; left: 0; width: 214px; height: 46px; font-size: 18px; }
-.group-child6 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; width: 214px; height: 46px; transition: background-color 0.2s ease; }
-.rectangle-parent2:hover .group-child6 { background-color: #f0f1f2; }
-.current-owner { position: absolute; top: 11.8px; left: 28.64px; }
-.gridiconsdropdown2 { position: absolute; top: 11px; left: 165px; width: 24.3px; height: 24.3px; transition: transform 0.2s ease; }
-.gridiconsdropdown2.dropdown-open { transform: rotate(180deg); }
-
-// Placeholder dropdown panel shown under "Filter by" / "Current owner" until
-// real filter options exist.
-.filter-panel {
+.dropdown-pill {
   position: absolute;
-  top: 54px; left: 0;
-  min-width: 200px;
+  inset: 0; z-index: 0;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  transition: background-color 0.2s ease;
+}
+.dropdown-control:hover .dropdown-pill { background-color: #f0f1f2; }
+.dropdown-label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 46px;
+  line-height: 46px;
+  box-sizing: border-box;
+  padding: 0 34px 0 16px;
+  white-space: nowrap;
+  font-size: 18px;
+}
+.dropdown-caret {
+  position: absolute;
+  top: 12px; right: 12px; z-index: 1;
+  width: 22px; height: 22px;
+  transition: transform 0.2s ease;
+  &.dropdown-open { transform: rotate(180deg); }
+}
+
+// Dropdown panel shared by all three controls above
+.dropdown-panel {
+  position: absolute;
+  top: 54px; left: 0; z-index: 30;
+  min-width: 220px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-sizing: border-box;
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
   padding: 14px 16px;
-  font-size: 14px;
-  color: #94a3b8;
-  z-index: 30;
+  font-size: 16px;
+  color: #1f2937;
   white-space: normal;
+  cursor: default;
+}
+.checkbox-list { max-height: 220px; overflow-y: auto; }
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  cursor: pointer;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.75);
+
+  input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 16px; height: 16px;
+    accent-color: #e20010;
+    cursor: pointer;
+  }
+}
+.owner-id { color: #94a3b8; font-size: 13px; }
+.panel-search {
+  display: block;
+  width: 100%;
+  height: 34px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  border: 1px solid #cfd4dc;
+  border-radius: 8px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  &:focus { border-color: #e60023; }
 }
 
-.group-parent2 { position: absolute; top: 0; left: 429px; width: 223px; height: 46px; }
-.rectangle-frame { position: absolute; top: 0; left: 0; width: 223px; height: 46px; }
-.group-child7 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; width: 223px; height: 46px; transition: border-color 0.2s ease, background-color 0.2s ease; }
+// ---- Search ----
+.group-parent2 { position: relative; flex: 0 0 auto; width: 160px; height: 46px; }
+.rectangle-frame { position: absolute; top: 0; left: 0; width: 160px; height: 46px; }
+.group-child7 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; width: 160px; height: 46px; transition: border-color 0.2s ease, background-color 0.2s ease; }
 .group-parent2:focus-within .group-child7 {
   border-color: #e60023;
   background-color: #fff;
@@ -182,7 +268,7 @@
 .search-results {
   position: absolute;
   top: 13px; left: 61px;
-  width: 148px; height: 20px;
+  width: 76px; height: 20px;
   border: none;
   outline: none;
   background: transparent;
@@ -194,9 +280,15 @@
   &::placeholder { color: inherit; }
 }
 .group-child8 { position: absolute; top: 13.02px; left: 23px; width: 28px; height: 21.7px; cursor: pointer; }
+
+// ---- Toggle ----
+.toggle-wrapper {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
 .latoggle-on-icon {
-  position: absolute;
-  top: 11px; left: 984px;
   width: 44px; height: 24px;
   border-radius: 999px;
   background-color: #22c55e;
@@ -220,16 +312,83 @@
 .latoggle-off .latoggle-knob {
   margin-left: 0;
 }
-.group-parent3 {
+.toggle-tooltip {
   position: absolute;
-  top: 0; left: 687px;
-  width: 126px; height: 46px;
+  bottom: 56px; left: 50%;
+  transform: translateX(-50%);
+  background-color: #111827;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 40;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #111827;
+  }
+}
+.toggle-wrapper:hover .toggle-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+// ---- Export ----
+.group-parent3 {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100px; height: 46px;
   font-size: 20px;
   color: #fff;
 }
-.rectangle-wrapper2 { position: absolute; top: 0; left: 0; width: 126px; height: 46px; }
-.group-child9 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #e20010; width: 126px; height: 46px; }
-.export { position: absolute; top: 11px; left: 29px; font-weight: 600; cursor: pointer; }
+.rectangle-wrapper2 { position: absolute; top: 0; left: 0; width: 100px; height: 46px; }
+.group-child9 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #e20010; width: 100px; height: 46px; }
+.export { position: absolute; top: 11px; left: 16px; font-weight: 600; cursor: pointer; }
+
+// ---- Settings ----
+.settings-control { position: relative; flex: 0 0 auto; }
+.group-child4 {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+}
+.settings-panel {
+  position: absolute;
+  top: 54px; right: 0;
+  min-width: 220px;
+  color: #94a3b8;
+}
+
+// ---- Refresh ----
+.group-child3 {
+  flex: 0 0 auto;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+  &.spinning { animation: djp-toolbar-spin 0.7s linear; }
+}
+@keyframes djp-toolbar-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 // ================================
 // Table header — base + modifiers
@@ -249,22 +408,22 @@
 
 // Offset modifiers — each aligns its header label with the matching
 // column's data-cell content below it.
-.sr-count-header         { left: -28px; }
-.vip-flag-header          { left: 13px; }
-.nstt-ageing-header       { left: 6px; }
-.actual-incident-header   { left: 10px; }
+.sr-count-header          { left: -8px; }
+.vip-flag-header          { left: 23px; }
+.nstt-ageing-header       { left: 0px;  }
+.actual-incident-header   { left: 15px; }
 .assigned-group-header    { left: 19px; }
-.nstt-header              { left: 29px; }
-.last-ert-time-header     { left: 29px; }
-.site-header              { left: 29px; }
-.status-header             { left: 10px; }
-.up-time-header             { left: 29px; }
+.nstt-header              { left: 33px; }
+.last-ert-time-header     { left: 16px; }
+.site-header              { left: 0px;  }
+.status-header            { left: 0px;  }
+.up-time-header           { left: 0px;  }
 
 // SR Count column
 .frame-group {
   position: absolute;
-  top: 92px; left: 1612px;
-  width: 88px; height: 521px;
+  top: 92px; left: 1697.9px;
+  width: 94.3px; height: 521px;
 }
 .sr-count-icon {
   position: absolute;
@@ -282,7 +441,7 @@
 .vip-flag-parent {
   position: absolute;
   top: 92px; left: 12px;
-  width: 77px; height: 518px;
+  width: 82.5px; height: 518px;
 }
 .icbaseline-diamond-parent {
   position: absolute;
@@ -293,17 +452,17 @@
 .vip-icon-account { width: 30px; height: 30px; left: 1px; }
 
 // NSTT column
-.nstt-parent { position: absolute; top: 92px; left: 133px; width: 116px; height: 518px; }
+.nstt-parent { position: absolute; top: 92px; left: 138.5px; width: 124.3px; height: 518px; }
 .network-outage-in-east-coast-d-parent {
   position: absolute;
   top: 65px; left: 0;
-  width: 116px; height: 453px;
+  width: 124.3px; height: 453px;
   font-size: 19.25px;
   color: #0284c7;
 }
 
 // NSTT Ageing column
-.nstt-ageing-parent { position: absolute; top: 92px; left: 293px; width: 115px; height: 518px; }
+.nstt-ageing-parent { position: absolute; top: 92px; left: 306.8px; width: 123.2px; height: 518px; }
 .parent {
   position: absolute;
   top: 65px; left: 16px;
@@ -313,57 +472,77 @@
 }
 
 // Site column
-.site-parent { position: absolute; top: 92px; left: 452px; width: 100px; height: 518px; }
+.site-parent { position: absolute; top: 92px; left: 474px; width: 107.1px; height: 518px; }
 .network-outage-in-east-coast-d-group {
   position: absolute;
   top: 65px; left: 0;
-  width: 100px; height: 453px;
+  width: 107.1px; height: 453px;
   font-size: 19.25px;
   color: rgba(0,0,0,0.85);
 }
 
 // Status column
-.status-parent { position: absolute; top: 92px; left: 596px; width: 102px; height: 518px; }
+.status-parent { position: absolute; top: 92px; left: 625.1px; width: 109.3px; height: 518px; }
 .network-outage-in-east-coast-d-container {
   position: absolute;
   top: 65px; left: 0;
-  width: 102px; height: 453px;
+  width: 109.3px; height: 453px;
   font-size: 19.25px;
   color: rgba(0,0,0,0.85);
 }
 
 // Actual Incident Time column
-.actual-incident-time-parent { position: absolute; top: 92px; left: 742px; width: 201px; height: 518px; }
+.actual-incident-time-parent { position: absolute; top: 92px; left: 778.4px; width: 215.3px; height: 518px; }
 .network-outage-in-east-coast-d-parent2 {
   position: absolute;
   top: 65px; left: 15px;
-  width: 171px; height: 453px;
+  width: 185px; height: 453px;
   font-size: 19.25px;
   color: rgba(0,0,0,0.85);
 }
 
 // Assigned Group column
-.assigned-group-parent { position: absolute; top: 92px; left: 987px; width: 151px; height: 518px; }
+.assigned-group-parent { position: absolute; top: 92px; left: 1037.7px; width: 161.8px; height: 518px; }
 .network-outage-in-east-coast-d-parent3 {
   position: absolute;
   top: 65px; left: 39px;
-  width: 73px; height: 453px;
+  width: 88px; height: 453px;
   font-size: 19.25px;
   color: rgba(0,0,0,0.85);
 }
 
 // Last ERT Time column
-.last-ert-time-parent { position: absolute; top: 92px; left: 1182px; width: 171px; height: 519px; }
+.last-ert-time-parent { position: absolute; top: 92px; left: 1243.5px; width: 183.2px; height: 519px; }
 .network-outage-in-east-coast-d-parent4 {
   position: absolute;
   top: 65px; left: 0;
-  width: 171px; height: 454px;
+  width: 183.2px; height: 454px;
   font-size: 19.25px;
   color: rgba(0,0,0,0.85);
 }
 
 // Up Time column
-.up-time-parent { position: absolute; top: 92px; left: 1397px; width: 171px; height: 519px; }
+.up-time-parent { position: absolute; top: 92px; left: 1470.7px; width: 183.2px; height: 519px; }
+
+// Empty state — shown in place of the columns when the active stat tile's
+// filter matches no rows.
+.nstt-empty-state {
+  position: absolute;
+  top: 106px; left: 0px;
+  width: 1792px; height: 507px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+.nstt-empty-text {
+  font-size: 18px;
+  font-weight: 500;
+  color: #9ca3af;
+}
 
 // Shared column cell — replaces network-outage-inN classes
 .col-cell {
@@ -374,4 +553,4 @@
   display: inline-block;
   width: 100%;
 }
-.nstt-cell { width: 116px; }
+.nstt-cell { width: 124.3px; }

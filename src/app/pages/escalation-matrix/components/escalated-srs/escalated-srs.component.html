@@ -1,0 +1,262 @@
+<div class="rectangle-group">
+  <div class="rectangle-div"></div>
+
+  <!-- Table toolbar -->
+  <div class="group-div">
+
+    <!-- Title -->
+    <div class="escalated-srs-parent">
+      <img class="escalatedicon" src="\assets/escalation-matrix/Escalatedicon.png" alt="" />
+      <b class="escalated-srs">{{ tableTitle }}</b>
+    </div>
+
+    <!-- Search -->
+    <div class="group-parent7">
+      <div class="rectangle-wrapper"><div class="group-child5"></div></div>
+      <input
+        type="text"
+        class="search-requests"
+        [(ngModel)]="tableSearchQuery"
+        placeholder="Search requests.."
+        (keyup.enter)="onTableSearch()"
+        aria-label="Search escalated SRs"
+      />
+      <img
+        class="group-child6"
+        src="\assets/shared/Search-topbar.svg"
+        alt="Search"
+        role="button"
+        tabindex="0"
+        (click)="onTableSearch()"
+        (keyup.enter)="onTableSearch()"
+      />
+    </div>
+
+    <!-- Sort by -->
+    <div
+      class="rectangle-parent2"
+      role="button"
+      tabindex="0"
+      [attr.aria-expanded]="isSortOpen"
+      (click)="toggleSort()"
+      (keyup.enter)="toggleSort()"
+    >
+      <div class="group-child4"></div>
+      <div class="sort-by">Sort by</div>
+      <img class="gridiconsdropdown" [class.dropdown-open]="isSortOpen" src="\assets/shared/Dropdown-topbar.svg" alt="" />
+      <div class="dropdown-panel" *ngIf="isSortOpen" (click)="$event.stopPropagation()">
+        <div
+          class="sort-option"
+          *ngFor="let opt of sortOptions"
+          [class.sort-option-active]="opt === activeSort"
+          (click)="setSort(opt)"
+        >{{ opt }}</div>
+      </div>
+    </div>
+
+    <!-- Icon actions -->
+    <div class="frame-parent">
+
+      <!-- Export / download -->
+      <div class="icon-btn" role="button" tabindex="0" aria-label="Download" (click)="onExport()" (keyup.enter)="onExport()">
+        <img src="\assets/escalation-matrix/Download.png" alt="" />
+      </div>
+
+      <!-- Refresh -->
+      <img
+        class="icon-btn refresh-icon"
+        [class.spinning]="isTableRefreshing"
+        src="\assets/escalation-matrix/Refresh.png"
+        alt="Refresh"
+        role="button"
+        tabindex="0"
+        (click)="onToolbarRefresh()"
+        (keyup.enter)="onToolbarRefresh()"
+      />
+
+      <!-- Settings -->
+      <div class="icon-btn-wrap">
+        <img
+          class="icon-btn"
+          src="\assets/escalation-matrix/Settings.png"
+          alt="Settings"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="isSettingsOpen"
+          (click)="toggleSettings()"
+          (keyup.enter)="toggleSettings()"
+        />
+        <div class="dropdown-panel settings-panel" *ngIf="isSettingsOpen" (click)="$event.stopPropagation()">Table settings — coming soon</div>
+      </div>
+
+      <!-- Filter -->
+      <div class="icon-btn-wrap">
+        <div class="icon-btn" role="button" tabindex="0" [attr.aria-expanded]="isFilterOpen" (click)="toggleFilter()" (keyup.enter)="toggleFilter()">
+          <img src="\assets/escalation-matrix/Filter.png" alt="" />
+        </div>
+        <div class="dropdown-panel settings-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">Filters — coming soon</div>
+      </div>
+
+      <!-- Expand -->
+      <div class="icon-btn" role="button" tabindex="0" aria-label="Expand" (click)="onExpand()" (keyup.enter)="onExpand()">
+        <img src="\assets/escalation-matrix/Expansion.png" alt="" />
+      </div>
+
+    </div>
+
+    <ng-container *ngIf="filteredRows.length > 0; else srEmptyState">
+
+    <!-- SR Numbers column -->
+    <div class="sr-numbers-parent">
+      <div class="col-header sr-numbers-header">Sr numbers</div>
+      <div class="sr-numbers-values">
+        <a
+          class="col-cell sr-number-cell"
+          *ngFor="let row of pagedRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+          role="button"
+          tabindex="0"
+          (click)="onRowClick(row)"
+          (keyup.enter)="onRowClick(row)"
+        >{{ row.srNumber }}</a>
+      </div>
+    </div>
+
+    <!-- LSI column -->
+    <div class="lsi-parent">
+      <div class="col-header lsi-header">Lsi</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.lsi }}</div>
+      </div>
+    </div>
+
+    <!-- Factory column -->
+    <div class="factory-parent">
+      <div class="col-header factory-header">Factory</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.factory }}</div>
+      </div>
+    </div>
+
+    <!-- Circle column -->
+    <div class="circle-parent">
+      <div class="col-header circle-header">Circle</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.circle }}</div>
+      </div>
+    </div>
+
+    <!-- Cluster column -->
+    <div class="cluster-parent">
+      <div class="col-header cluster-header">Cluster</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.cluster }}</div>
+      </div>
+    </div>
+
+    <!-- Customer column -->
+    <div class="customer-parent">
+      <div class="col-header customer-header">Customer</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.customer }}</div>
+      </div>
+    </div>
+
+    <!-- Level column -->
+    <div class="level-parent">
+      <div class="col-header level-header">Level</div>
+      <div class="values-group">
+        <div
+          class="col-cell level-cell"
+          *ngFor="let row of pagedRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+          [style.color]="levelColor(row.level)"
+        >{{ row.level }}</div>
+      </div>
+    </div>
+
+    <!-- SR Type column -->
+    <div class="sr-type-parent">
+      <div class="col-header sr-type-header">Sr type</div>
+      <div class="badge-group">
+        <div
+          class="sr-type-badge"
+          *ngFor="let row of pagedRows; let i = index"
+          [style.top.px]="i * ROW_GAP"
+          [style.color]="srTypeStyle(row.srType).color"
+          [style.backgroundColor]="srTypeStyle(row.srType).bg"
+          [style.borderColor]="srTypeStyle(row.srType).border"
+        >{{ row.srType }}</div>
+      </div>
+    </div>
+
+    <!-- SR Counts column -->
+    <div class="sr-counts-parent">
+      <div class="col-header sr-counts-header">Sr counts</div>
+      <div class="values-group">
+        <div class="col-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.srCounts }}</div>
+      </div>
+    </div>
+
+    <!-- Escalated Time column -->
+    <div class="escalated-time-parent">
+      <div class="col-header escalated-time-header">Escalated time</div>
+      <div class="values-group">
+        <div class="col-cell time-cell" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">{{ row.escalatedTime }}</div>
+      </div>
+    </div>
+
+    <!-- Escalation Tracking column -->
+    <div class="escalation-tracking-parent">
+      <div class="col-header escalation-tracking-header">Escalation tracking</div>
+      <div class="tracking-group">
+        <div class="tracking-row" *ngFor="let row of pagedRows; let i = index" [style.top.px]="i * ROW_GAP">
+          <div class="tracking-pill" [style.color]="levelColor(row.level)" [style.borderColor]="levelColor(row.level)">
+            <span class="tracking-level">Level {{ row.level }}</span>
+          </div>
+          <div class="tracking-dots">
+            <span
+              class="dot"
+              *ngFor="let d of dotSlots"
+              [class.dot-filled]="d < row.level"
+              [style.backgroundColor]="d < row.level ? levelColor(row.level) : null"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </ng-container>
+
+    <ng-template #srEmptyState>
+      <div class="sr-empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="sr-empty-text">No data available</div>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <!-- Header background row -->
+  <div class="group-child3"></div>
+
+  <!-- Pagination -->
+  <div class="line-parent" *ngIf="filteredRows.length > 0">
+    <div class="line-div"></div>
+    <div class="showing-text">{{ showingText }}</div>
+    <div class="pagination-buttons">
+      <div
+        class="page-btn"
+        *ngFor="let page of pages"
+        [class.page-btn-active]="page.active"
+        [class.page-btn-disabled]="page.disabled"
+        (click)="setPage(page)"
+      >
+        <div class="previous">{{ page.label }}</div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,377 @@
+// =========================================================
+// NOC Portal — same canvas-shell + design-system convention as every other
+// page (Escalation Matrix, Incident Management, Change Management): a fixed
+// 1920px canvas scaled to fit via transform, header/sidebar reused as
+// position:fixed siblings. Card/nav content below uses flex/grid rather than
+// literal per-element absolute positioning — same "data-driven, not a 1:1
+// Figma port" approach already used throughout this codebase — but every
+// color, radius, shadow and spacing value matches the design system exactly.
+//
+// Design tokens are plain SCSS variables (compile-time), not CSS custom
+// properties — a component-scoped `:root { --x: ... }` block silently
+// defines nothing (Angular rewrites it to `[_ngcontent-xxx]:root`, which
+// never matches <html>), which is what broke the very first NOC Portal
+// attempt. SCSS variables have no such problem: they're inlined at build
+// time, so there's nothing for Angular's style scoping to interfere with.
+
+$font-family: Inter, sans-serif;
+$font-family-alt: 'Albert Sans', sans-serif;
+$font-family-poppins: Poppins, sans-serif;
+
+$fs-page-title: 24px;
+$fs-card-title: 22px;
+$fs-section-heading: 18px;
+$fs-body: 16px;
+$fs-caption: 14px;
+$fs-micro: 12px;
+
+$radius-card: 22px;
+$radius-pill: 999px;
+$shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
+$space-major: 37px;
+
+$color-brand-red: #d1150b;
+
+.the-djp-noc-portal-scale-wrapper {
+  --djp-scale: 1;
+  width: calc(1920px * var(--djp-scale));
+  // Must cover the inner canvas's own height PLUS its margin-top (the
+  // margin is what clears the fixed header) — missing the margin here
+  // was clipping the bottom of the page (footer included) via overflow.
+  height: calc((2020px + 120px) * var(--djp-scale));
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.the-djp-noc-portal {
+  width: 1920px;
+  height: 2020px;
+  // Clears the fixed app-im-header-bar (170px: 106px topbar + 64px
+  // breadcrumb) — same technique as Escalation Matrix's page shell.
+  margin-top: 120px;
+  position: relative;
+  background-color: #f7f8f9;
+  text-align: left;
+  font-size: $fs-body;
+  color: #101828;
+  font-family: $font-family;
+  transform: scale(var(--djp-scale));
+  transform-origin: top left;
+  box-sizing: border-box;
+  // Left: sidebar width (92px) + 37px gap. Right: 37px gap from the page
+  // edge. Both match the design system's 37px spacing unit exactly.
+  padding: $space-major 37px 60px calc(92px + 37px);
+}
+
+// ---------- Top search bar ----------
+// Fixed widths + uniform 27px gap, matching the design system exactly.
+.np-search-row {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  margin-bottom: $space-major;
+}
+.np-search-bar {
+  width: 552px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: #fff;
+  border: 1px solid $color-brand-red;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+.np-search-bar-po { width: 505px; }
+.np-search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: #66686c;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.np-search-btn {
+  width: 200px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: $radius-pill;
+  background-color: $color-brand-red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-family: $font-family-poppins;
+  font-weight: 500;
+  font-size: $fs-section-heading;
+}
+.np-reset-btn {
+  width: 150px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: $radius-pill;
+  background-color: #fff;
+  border: 1px solid $color-brand-red;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #bd1010;
+  font-family: $font-family-poppins;
+  font-weight: 500;
+  font-size: $fs-section-heading;
+}
+.np-top-icons {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  margin-left: auto;
+
+  img {
+    // Width/height come from each icon's own natural size (bound inline
+    // per-icon via [style.width.px]/[style.height.px] in the template) —
+    // not a shared class rule, since they aren't uniform.
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    &:hover { transform: scale(1.1); }
+  }
+}
+
+// ---------- Primary nav ----------
+.np-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: $space-major;
+}
+.np-nav-pill {
+  flex: 1 1 auto;
+  height: 55px;
+  box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.36) inset, 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: $radius-card;
+  background-color: rgba(226, 0, 16, 0.77);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  color: #fff;
+  font-family: $font-family-alt;
+  transition: background-color 0.15s ease;
+  &:hover { background-color: rgba(226, 0, 16, 0.9); }
+}
+.np-nav-pill-icon { width: 30px; height: 30px; flex-shrink: 0; filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.22)); }
+.np-nav-pill-label { font-weight: 600; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.22); white-space: nowrap; font-size: $fs-card-title; }
+.np-nav-icon-btn {
+  flex: 0 0 auto;
+  width: 55px;
+  height: 55px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: $radius-card;
+  background-color:  rgba(226, 0, 16, 0.77);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img { width: 22px; height: 22px; }
+}
+
+// ---------- SR Notifications bar ----------
+.np-notif-bar {
+  height: 65px;
+  box-shadow: $shadow-card;
+  border-radius: $radius-pill;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 106px;
+  padding: 0 34px;
+  box-sizing: border-box;
+  margin-bottom: $space-major;
+  font-family: $font-family-alt;
+}
+.np-notif-title { font-size: $fs-page-title; font-weight: 600; letter-spacing: -0.01em; color: $color-brand-red; white-space: nowrap; }
+.np-notif-chevron { width: 24px; height: 24px; color: rgba(0, 0, 0, 0.35); cursor: pointer; flex-shrink: 0; }
+.np-notif-tabs { display: flex; align-items: center; gap: 109px; flex: 1 1 auto; font-size: $fs-section-heading; color: rgba(57, 57, 57, 0.73); font-weight: 500; }
+.np-notif-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.np-notif-dot { width: 15px; height: 15px; border-radius: 50%; background-color: rgba(228, 0, 0, 0.22); flex-shrink: 0; }
+.np-notif-tab.active {
+  color: $color-brand-red;
+  .np-notif-dot { background-color: $color-brand-red; }
+}
+.np-notif-filter { width: 24px; height: 24px; cursor: pointer; flex-shrink: 0; }
+
+// ---------- Summary cards panel ----------
+// Card heights (232px row 1, 257px row 2) and row gaps (37px row 1, 20px
+// row 2, 37px between the rows) are fixed, exact values from the design —
+// not auto-sized from content, which is what made everything read as too
+// loose/tall before.
+.np-cards-panel {
+  box-shadow: $shadow-card;
+  border-radius: $radius-card;
+  background-color: #fff;
+  padding: 37px 38px 37px 37px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 37px;
+  margin-bottom: $space-major;
+}
+.np-cards-row { display: flex; align-items: stretch; }
+.np-cards-row-1 { gap: 37px; }
+.np-cards-row-1 > .np-card { flex: 1.1 1 0; height: 232px; }
+.np-cards-row-1 > .np-card-otn { flex: 1 1 0; }
+.np-cards-row-2 { gap: 20px; }
+.np-cards-row-2 > .np-card { height: 257px; }
+.np-cards-row-2 > .np-card-status { flex: 0.65 1 0; }
+.np-cards-row-2 > .np-card-product { flex: 1 1 0; }
+
+.np-card {
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: $fs-body;
+  overflow: hidden;
+}
+.np-card-profile { border: 1px solid #4b91f8; box-shadow: 0px 0px 33px rgba(80, 149, 248, 0.22) inset; }
+.np-card-alarms  { border: 1px solid #c2410c; box-shadow: 0px 0px 22px rgba(194, 65, 12, 0.22) inset; justify-content: center; padding: 20px 34px; gap: 40px; }
+.np-card-otn     { border: 1px solid #9a83fb; box-shadow: 0px 0px 22px rgba(154, 131, 251, 0.33) inset; color: #b91c1c; }
+.np-card-status  { border: 1px solid #15803d; box-shadow: 0px 0px 22px rgba(21, 128, 61, 0.22) inset; color: #2b2c2c; }
+.np-card-product { border: 1px solid #ab0900; box-shadow: 0px 0px 22px rgba(171, 9, 0, 0.22) inset; color: #2b2c2c; }
+
+// Card 1: Profile — two columns: name/bank/phone/email on the left, the
+// LSI tag pinned top-right and the button pinned bottom-right (achieved
+// with justify-content:space-between + stretch, rather than the design's
+// fixed 95px gap, so it stays correct if content height ever changes).
+.np-profile-row { display: flex; align-items: stretch; gap: 43px; flex: 1; min-height: 0; }
+.np-profile-left { width: 250px; flex-shrink: 0; display: flex; flex-direction: column; gap: 18px; }
+.np-profile-head { display: flex; align-items: center; gap: 15px; }
+.np-profile-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.np-profile-name { font-size: $fs-card-title; font-weight: 600; color: #0f172a; }
+.np-profile-info { display: flex; flex-direction: column; gap: 22px; font-size: $fs-body; color: #64748b; }
+.np-profile-bank { color: #475569; font-weight: 500; }
+.np-profile-contact { display: flex; align-items: center; gap: 13px; color: #64748b; img { width: 18px; height: 18px; } }
+
+.np-profile-right { width: 176px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+.np-profile-tag {
+  width: 146px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: $radius-pill;
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 20px;
+  font-weight: 500;
+  box-sizing: border-box;
+  position: relative;
+  top: 7px;
+}
+
+.np-btn {
+  align-self: flex-start;
+  margin-top: auto;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: $fs-section-heading;
+  font-weight: 500;
+  cursor: pointer;
+}
+.np-btn-blue { background: linear-gradient(135deg, #589ef9, #0649ae); }
+.np-btn-purple { background: linear-gradient(135deg, #b18fff 2.4%, #6366f1 81.73%); font-size: $fs-body; height: 35px; }
+// Profile card's button lives in a flex column using space-between, so it
+// doesn't need the shared .np-btn's flex-start/margin-top:auto positioning.
+.np-profile-btn { align-self: stretch; margin-top: 0; position: relative; top: -20px; }
+
+// Card 2: Alarms — each block stacks the icon+title above a 3-column grid
+// of badges (not beside it), so the badges land in fixed, evenly-spaced
+// positions instead of drifting with the title's text length.
+.np-alarms-block { display: flex; flex-direction: column; gap: 21px; }
+.np-alarms-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  img { width: 26px; height: 26px; }
+}
+.np-alarms-title { font-size: $fs-card-title; font-weight: 600; opacity: 0.8; white-space: nowrap; }
+.np-alarms-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 33px;
+  justify-items: start;
+  font-size: $fs-caption;
+}
+.np-alarm-badge {
+  height: 28px;
+  border-radius: $radius-pill;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+// Card 3: OTN Span Loss
+.np-otn-head { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #0f172a; img { width: 22px; height: 22px; } }
+.np-otn-head .np-btn-purple { margin-left: auto; margin-top: 0; align-self: center; }
+.np-otn-row {
+  border-radius: 16px;
+  border: 1px solid;
+  box-sizing: border-box;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-weight: 500;
+}
+
+// Card 4/5 shared heading
+.np-card-heading { display: flex; align-items: center; gap: 12px; font-size: $fs-card-title; font-weight: 600; color: #0f172a; }
+.np-card-heading-icon { width: 24px; height: 24px; }
+.np-card-heading-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; img { width: 24px; height: 24px; cursor: pointer; &.spinning { animation: djp-noc-spin 0.7s linear; } } }
+@keyframes djp-noc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.np-card-divider { height: 1px; background-color: rgba(0, 0, 0, 0.08); }
+
+// Card 4: Status
+.np-status-grid { display: grid; grid-template-columns: 1fr 1fr; row-gap: 10px; column-gap: 20px; }
+.np-status-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.np-status-label { color: #2b2c2c; }
+.np-status-pill { border-radius: 18px; border: 1px solid; box-sizing: border-box; padding: 4px 16px; font-weight: 500; font-size: $fs-caption; white-space: nowrap; }
+
+// Card 5: Product Details
+.np-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 10px; column-gap: 16px; }
+.np-product-field { display: flex; flex-direction: column; gap: 6px; }
+.np-product-label { color: #9b9c9d; font-size: $fs-caption; }
+.np-product-pill { border-radius: 6px; background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.33); box-sizing: border-box; padding: 4px 10px; color: #9b9c9d; font-size: $fs-caption; width: fit-content; }
+
+// ---------- Footer ----------
+.the-main-page { font-size: $fs-caption; color: #b5b7c0; font-family: $font-family-poppins; }
+.tier-1 { display: flex; flex-direction: column; align-items: flex-start; }
+.powered-by { letter-spacing: -0.01em; font-weight: 500; }
+.t1-4-icon { width: 107px; height: 36px; object-fit: cover; margin-top: 6px; }

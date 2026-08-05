@@ -1,6 +1,30 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
+// A bounded catalog of inline icon glyphs (drawn once here) plus a generic
+// 'img' escape hatch for pages that have a real asset — new pages add items
+// to this list rather than hardcoding a fixed 5-button menu, so this one
+// sidebar shell can be reused (pixel-identical shape/shadow/hover) across
+// every page that needs the red pill nav, not just Change Management.
+export type SidebarIconKind = 'dashboard' | 'search' | 'alerts' | 'trending' | 'exit' | 'img';
+
+export interface SidebarNavItem {
+  key: string;
+  label: string;
+  icon: SidebarIconKind;
+  iconSrc?: string; // required when icon === 'img'
+}
+
+// Shared by both Change Management pages (landing + CRQ) so their sidebars
+// can't drift apart.
+export const CM_SIDEBAR_ITEMS: SidebarNavItem[] = [
+  { key: 'dashboard',       label: 'Dashboard',       icon: 'dashboard' },
+  { key: 'lsi-search',      label: 'LSI Search',      icon: 'search' },
+  { key: 'create-po',       label: 'Create PO',       icon: 'img', iconSrc: '/assets/change-management/plus.png' },
+  { key: 'service-impact',  label: 'Service impact',  icon: 'img', iconSrc: '/assets/change-management/graph.png' },
+  { key: 'contact-centre',  label: 'Contact centre',  icon: 'img', iconSrc: '/assets/change-management/contact.png' },
+];
+
 @Component({
   selector: 'app-cm-sidebar-nav',
   templateUrl: './sidebar-nav.component.html',
@@ -16,28 +40,23 @@ export class ChangeManagementSidebarNavComponent {
   // of staying full-size and drifting out of place.
   @Input() scale = 1;
 
-  @Output() createPoClick = new EventEmitter<void>();
-  @Output() serviceImpactClick = new EventEmitter<void>();
-  @Output() contactCentreClick = new EventEmitter<void>();
+  // Distance from the viewport top, in px at scale 1 — matches whichever
+  // fixed header bar sits above the sidebar on the host page (Change
+  // Management's own header is 134px tall; other hosts pass their own).
+  @Input() top = 134;
 
-  goToDashboard(): void {
-    this.router.navigate(['/']);
-  }
+  @Input() items: SidebarNavItem[] = [];
 
-  onLsiSearch(): void {
-    console.log('LSI Search clicked');
-    // TODO: wire up once the LSI Search destination is defined
-  }
+  // 'dashboard' always means "go to the landing page" everywhere it's used,
+  // so that one's handled here directly; everything else is page-specific
+  // and bubbles up for the host page to decide what it means.
+  @Output() itemClick = new EventEmitter<string>();
 
-  onCreatePoClick(): void {
-    this.createPoClick.emit();
-  }
-
-  onServiceImpactClick(): void {
-    this.serviceImpactClick.emit();
-  }
-
-  onContactCentreClick(): void {
-    this.contactCentreClick.emit();
+  onItemClick(item: SidebarNavItem): void {
+    if (item.key === 'dashboard') {
+      this.router.navigate(['/']);
+      return;
+    }
+    this.itemClick.emit(item.key);
   }
 }

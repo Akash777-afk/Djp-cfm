@@ -9,7 +9,7 @@
   <!-- Card header -->
   <div class="frame-parent">
     <div class="frame-group">
-      <img class="frame-child" src="\assets\Vector-4.svg" alt="" />
+      <img class="frame-child" src="\assets/landing/Vector-4.svg" alt="" />
       <div class="sr-overview-parent">
         <div class="sr-overview2">{{ srCardTitle }}</div>
         <div class="manage-service-requests">{{ srCardSubtitle }}</div>
@@ -17,7 +17,7 @@
     </div>
     <img
       class="icon-parkfull-screen-one"
-      src="\assets\Expand.svg"
+      src="\assets/landing/Expand.svg"
       alt="Expand SR overview"
       role="button"
       tabindex="0"
@@ -93,9 +93,14 @@
         [ngClass]="row.isLast ? 'table-cell4' : 'table-cell17'"
         class="esc-cell"
       >
-        <div [ngClass]="row.badgeClass">
-          <div [ngClass]="row.badgeDotClass"></div>
-          <div class="ag">{{ row.escalationLevel }}</div>
+        <div
+          class="level-badge"
+          [style.backgroundColor]="levelBg(row.level)"
+          [style.borderColor]="levelBorder(row.level)"
+          [style.color]="levelColor(row.level)"
+        >
+          <div class="priority-dot" [style.backgroundColor]="levelColor(row.level)"></div>
+          <div class="ag">Level {{ row.level }}</div>
         </div>
       </div>
     </div>
@@ -115,7 +120,7 @@
               <div
                 class="tracking-fill"
                 [style.width.px]="(row.trackingPercent / 100) * 60"
-                [style.backgroundColor]="row.trackingColor"
+                [style.backgroundColor]="levelColor(row.level)"
               ></div>
             </div>
             <div class="text">
@@ -132,7 +137,7 @@
 <!-- ===== SR overview (mobile) ===== -->
 <div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
   <div class="m-card-header">
-    <img class="m-card-icon" src="/assets/Vector-4.svg" alt="" />
+    <img class="m-card-icon" src="/assets/landing/Vector-4.svg" alt="" />
     <div>
       <div class="m-card-title">{{ srCardTitle }}</div>
       <div class="m-card-subtitle">{{ srCardSubtitle }}</div>
@@ -161,15 +166,20 @@
             </span>
           </td>
           <td>
-            <span [ngClass]="row.badgeClass">
-              <span [ngClass]="row.badgeDotClass"></span>
-              <span class="ag">{{ row.escalationLevel }}</span>
+            <span
+              class="level-badge"
+              [style.backgroundColor]="levelBg(row.level)"
+              [style.borderColor]="levelBorder(row.level)"
+              [style.color]="levelColor(row.level)"
+            >
+              <span class="priority-dot" [style.backgroundColor]="levelColor(row.level)"></span>
+              <span class="ag">Level {{ row.level }}</span>
             </span>
           </td>
           <td>
             <div class="m-tracking">
               <div class="m-tracking-track">
-                <div class="m-tracking-fill" [style.width.%]="row.trackingPercent" [style.backgroundColor]="row.trackingColor"></div>
+                <div class="m-tracking-fill" [style.width.%]="row.trackingPercent" [style.backgroundColor]="levelColor(row.level)"></div>
               </div>
               <span>{{ row.trackingPercent }}%</span>
             </div>

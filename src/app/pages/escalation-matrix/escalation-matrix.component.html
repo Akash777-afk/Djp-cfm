@@ -1,0 +1,34 @@
+<app-im-header-bar
+  [scale]="scale"
+  breadcrumbImage="/assets/escalation-matrix/E1m.png"
+  breadcrumbAlt="Escalation Matrix"
+></app-im-header-bar>
+
+<div class="the-djp-escalation-matrix-scale-wrapper" [style.--djp-scale]="scale">
+<div class="the-djp-escalation-matrix">
+
+  <!-- ===== Welcome banner ===== -->
+  <div class="im-welcome">Welcome back, {{ userName }} !</div>
+  <button type="button" class="im-quick-btn im-quick-book" aria-label="Documentation" (click)="onBookClick()">
+    <img src="/assets/shared/famicons_book.png" alt="" />
+  </button>
+
+  <app-escalation-levels
+    [tiles]="levelTiles"
+    [activeKey]="activeCardKey"
+    (refreshClick)="onLevelsRefresh()"
+    (tileClick)="setActiveCard($event)"
+  ></app-escalation-levels>
+
+  <app-escalated-srs [rows]="srRows" [levelFilter]="levelFilter"></app-escalated-srs>
+
+  <!-- ===== Footer ===== -->
+  <div class="the-main-page">
+    <div class="tier-1">
+      <div class="powered-by">Powered by</div>
+      <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
+    </div>
+  </div>
+
+</div>
+</div>

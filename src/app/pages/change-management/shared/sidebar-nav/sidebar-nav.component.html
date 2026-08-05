@@ -1,42 +1,42 @@
-<nav class="sidebar-nav" aria-label="Change management quick actions" [style.--sidebar-scale]="scale">
+<nav class="sidebar-nav" aria-label="Quick actions" [style.--sidebar-scale]="scale" [style.top.px]="top">
 
-  <button type="button" class="sidebar-nav-item" (click)="goToDashboard()">
-    <span class="sidebar-nav-icon">
-      <svg viewBox="70 112 42 41" xmlns="http://www.w3.org/2000/svg">
+  <button
+    type="button"
+    class="sidebar-nav-item"
+    *ngFor="let item of items"
+    (click)="onItemClick(item)"
+  >
+    <span class="sidebar-nav-icon" [ngSwitch]="item.icon">
+
+      <svg *ngSwitchCase="'dashboard'" viewBox="70 112 42 41" xmlns="http://www.w3.org/2000/svg">
         <path d="M77.7778 149C76.7389 149 75.8499 148.641 75.1107 147.924C74.3715 147.206 74.0013 146.343 74 145.333V133.875H87.2222V149H77.7778ZM91 149V133.875H108V145.333C108 146.342 107.63 147.205 106.891 147.924C106.152 148.642 105.262 149.001 104.222 149H91ZM74 130.208V119.667C74 118.658 74.3702 117.795 75.1107 117.078C75.8511 116.361 76.7401 116.001 77.7778 116H104.222C105.261 116 106.151 116.359 106.891 117.078C107.632 117.797 108.001 118.66 108 119.667V130.208H74Z" fill="currentColor"/>
       </svg>
-    </span>
-    <span class="sidebar-nav-label">Dashboard</span>
-  </button>
 
-  <button type="button" class="sidebar-nav-item" (click)="onLsiSearch()">
-    <span class="sidebar-nav-icon">
-      <svg viewBox="68 230 44 44" xmlns="http://www.w3.org/2000/svg">
+      <svg *ngSwitchCase="'search'" viewBox="68 230 44 44" xmlns="http://www.w3.org/2000/svg">
         <path d="M93.4998 236.376C95.2315 237.375 96.729 238.734 97.8915 240.361C99.054 241.988 99.8545 243.845 100.239 245.807C100.624 247.769 100.584 249.791 100.122 251.737C99.6594 253.682 98.7859 255.506 97.5598 257.085L106.987 266.512C107.306 266.843 107.482 267.285 107.478 267.743C107.474 268.202 107.29 268.641 106.966 268.966C106.641 269.29 106.202 269.474 105.744 269.478C105.285 269.482 104.843 269.306 104.513 268.987L95.0836 259.56C93.0781 261.116 90.6873 262.097 88.1669 262.4C85.6466 262.702 83.0915 262.313 80.7751 261.275C78.4588 260.236 76.4682 258.588 75.0165 256.506C73.5648 254.423 72.7065 251.986 72.5335 249.453C72.3605 246.921 72.8793 244.389 74.0344 242.128C75.1895 239.868 76.9374 237.964 79.0911 236.621C81.2448 235.277 83.7233 234.545 86.2613 234.501C88.7993 234.458 91.3014 235.107 93.4998 236.376Z" fill="currentColor"/>
       </svg>
-    </span>
-    <span class="sidebar-nav-label">LSI Search</span>
-  </button>
 
-  <button type="button" class="sidebar-nav-item" (click)="onCreatePoClick()">
-    <span class="sidebar-nav-icon">
-      <img src="/assets/plus.png" alt="" />
-    </span>
-    <span class="sidebar-nav-label">Create PO</span>
-  </button>
+      <svg *ngSwitchCase="'alerts'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
 
-  <button type="button" class="sidebar-nav-item" (click)="onServiceImpactClick()">
-    <span class="sidebar-nav-icon">
-      <img src="/assets/graph.png" alt="" />
-    </span>
-    <span class="sidebar-nav-label">Service impact</span>
-  </button>
+      <svg *ngSwitchCase="'trending'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg>
 
-  <button type="button" class="sidebar-nav-item" (click)="onContactCentreClick()">
-    <span class="sidebar-nav-icon">
-      <img src="/assets/contact.png" alt="" />
+      <svg *ngSwitchCase="'exit'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+
+      <img *ngSwitchCase="'img'" [src]="item.iconSrc" alt="" />
+
     </span>
-    <span class="sidebar-nav-label">Contact centre</span>
+    <span class="sidebar-nav-label">{{ item.label }}</span>
   </button>
 
 </nav>

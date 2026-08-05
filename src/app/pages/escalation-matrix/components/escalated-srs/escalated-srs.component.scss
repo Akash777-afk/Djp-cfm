@@ -1,0 +1,358 @@
+:host {
+  display: contents;
+}
+
+.rectangle-group {
+  position: absolute;
+  top: 396px; left: 37px;
+  width: 1847px; height: 688px;
+  text-align: left;
+  font-size: 16.5px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.rectangle-div {
+  position: absolute;
+  top: 0; left: 0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 22px;
+  background-color: #fff;
+  width: 1847px; height: 688px;
+}
+
+// Table content wrapper
+.group-div {
+  position: absolute;
+  top: 30px; left: 0;
+  width: 1847px; height: 543px;
+  font-size: 16px;
+}
+
+// Title
+.escalated-srs-parent {
+  position: absolute;
+  top: 0; left: 31.59px;
+  width: 279.6px; height: 52px;
+  font-size: 26px;
+  color: rgba(17, 16, 16, 0.79);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.escalatedicon { width: 44px; height: 44px; object-fit: contain; }
+.escalated-srs { line-height: 27.5px; white-space: nowrap; }
+
+// ---- Search ----
+// Positions of search / sort / icon-actions are anchored back from the
+// table's right edge (1847px) so each control sits exactly 26px from the
+// next, with the last icon 26px from the table edge itself.
+.group-parent7 { position: absolute; top: 0; left: 1008.6px; width: 254.8px; height: 46px; font-size: 19.25px; color: rgba(15, 23, 42, 0.5); }
+.rectangle-wrapper { position: absolute; top: 0; left: 0; width: 254.8px; height: 46px; }
+.group-child5 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; box-sizing: border-box; width: 254.8px; height: 46px; transition: border-color 0.2s ease, background-color 0.2s ease; }
+.group-parent7:focus-within .group-child5 { border-color: #e60023; background-color: #fff; }
+.search-requests {
+  position: absolute;
+  top: 11px; left: 65.29px;
+  width: 167.4px; height: 24px;
+  border: none; outline: none; background: transparent;
+  font: inherit; color: inherit; padding: 0; margin: 0;
+  &::placeholder { color: inherit; }
+}
+.group-child6 { position: absolute; top: 13.02px; left: 25.27px; width: 29.5px; height: 21.7px; cursor: pointer; }
+
+// ---- Sort by ----
+.rectangle-parent2 {
+  position: absolute;
+  top: 0; left: 1289.4px;
+  width: 171.6px; height: 46px;
+  font-size: 19.25px;
+  color: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+}
+.group-child4 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; box-sizing: border-box; width: 171.6px; height: 46px; }
+.sort-by { position: absolute; top: 11.02px; left: 28.43px; }
+.gridiconsdropdown {
+  position: absolute;
+  top: 11.71px; left: 122.45px;
+  width: 22.9px; height: 22.9px;
+  transition: transform 0.2s ease;
+  &.dropdown-open { transform: rotate(180deg); }
+}
+
+// ---- Icon actions ----
+.frame-parent {
+  position: absolute;
+  top: 0; left: 1487px;
+  width: 334px; height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  color: rgba(15, 23, 42, 0.6);
+}
+.icon-btn-wrap { position: relative; flex: 0 0 auto; }
+.icon-btn {
+  flex: 0 0 auto;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  svg, img { width: 46px; height: 46px; }
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+}
+.refresh-icon {
+  width: 46px; height: 46px;
+  &.spinning { animation: djp-escalated-spin 0.7s linear; }
+}
+@keyframes djp-escalated-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Shared dropdown panel (sort / settings / filter)
+.dropdown-panel {
+  position: absolute;
+  top: 54px; right: 0; z-index: 30;
+  min-width: 220px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
+  padding: 10px;
+  font-size: 15px;
+  color: #1f2937;
+  white-space: nowrap;
+  cursor: default;
+}
+.rectangle-parent2 .dropdown-panel { left: 0; right: auto; white-space: nowrap; }
+.settings-panel { color: #94a3b8; padding: 14px 16px; }
+.sort-option {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+  &:hover { background-color: rgba(15, 23, 42, 0.05); }
+  &.sort-option-active { color: #e20010; font-weight: 600; background-color: rgba(226, 0, 16, 0.06); }
+}
+
+// ================================
+// Table header — base + modifiers
+// ================================
+.col-header {
+  position: absolute;
+  top: 0; left: 0;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sr-numbers-header          { left: 3.16px; }
+.lsi-header                 { left: 22.11px; }
+.factory-header              { left: 0; }
+.circle-header                { left: 0; }
+.cluster-header               { left: 0; }
+.customer-header               { left: 0; }
+.level-header                    { left: 0; }
+.sr-type-header               { left: 6.32px; }
+.sr-counts-header             { left: 0; }
+.escalated-time-header         { left: 4.21px; }
+.escalation-tracking-header     { left: 3.04px; }
+
+// Shared column cell
+.col-cell {
+  position: absolute;
+  left: 0; top: 0;
+  line-height: 27.5px;
+  white-space: pre-wrap;
+  display: inline-block;
+  width: 100%;
+}
+.time-cell { color: rgba(0, 0, 0, 0.85); }
+.level-cell { font-weight: 700; font-size: 19.25px; }
+
+.values-group {
+  position: absolute;
+  top: 65px; left: 0;
+  width: 100%; height: 453px;
+  font-size: 19.25px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+// SR Numbers column
+.sr-numbers-parent { position: absolute; top: 92px; left: 66.34px; width: 122.2px; height: 451px; }
+.sr-numbers-values { position: absolute; top: 65px; left: 0; width: 122.2px; height: 453px; font-size: 19.25px; }
+.sr-number-cell {
+  color: #0284c7;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+// LSI column
+.lsi-parent { position: absolute; top: 92px; left: 236.93px; width: 72.7px; height: 451px; }
+
+// Factory column
+.factory-parent { position: absolute; top: 92px; left: 368.56px; width: 85.3px; height: 451px; }
+.factory-parent .values-group { left: 6.32px; width: 72.7px; }
+
+// Circle column
+.circle-parent { position: absolute; top: 92px; left: 512.82px; width: 66.3px; height: 451px; }
+
+// Cluster column
+.cluster-parent { position: absolute; top: 92px; left: 638.13px; width: 84.2px; height: 451px; }
+.cluster-parent .values-group { left: 8.42px; width: 75.8px; }
+
+// Customer column
+.customer-parent { position: absolute; top: 92px; left: 779.24px; width: 104.2px; height: 451px; }
+.customer-parent .values-group { left: 15.8px; width: 73.7px; }
+
+// Level column
+.level-parent { position: absolute; top: 92px; left: 939.3px; width: 62.1px; height: 451px; }
+.level-parent .values-group { left: 15.8px; width: 30px; }
+
+// SR Type column
+.sr-type-parent { position: absolute; top: 92px; left: 1048.81px; width: 122.2px; height: 451px; }
+.badge-group { position: absolute; top: 60.5px; left: 0; width: 122.2px; height: 453px; }
+.sr-type-badge {
+  position: absolute;
+  left: 0;
+  height: 32px;
+  box-sizing: border-box;
+  border-radius: 22369600px;
+  border: 0.7px solid;
+  box-shadow: 0px 0px 3px currentColor inset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 17px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+// SR Counts column
+// left shifted from 1182.54 -> 1211.01: the gap after SR Type was only
+// 11.53px (vs ~55-60px between every other column pair in this table) —
+// normalized it to 40px, matching the escalated-time gap next to it, without
+// moving the Escalation Tracking column or the table's right edge.
+.sr-counts-parent { position: absolute; top: 92px; left: 1211.01px; width: 107.4px; height: 451px; }
+.sr-counts-parent .values-group { left: 35.8px; width: 35.8px; }
+
+// Escalated Time column
+.escalated-time-parent { position: absolute; top: 92px; left: 1358.41px; width: 168.5px; height: 451px; }
+
+// Escalation Tracking column
+.escalation-tracking-parent { position: absolute; top: 92px; left: 1566.9px; width: 280.1px; height: 451px; color: #07841b; }
+.tracking-group { position: absolute; top: 65px; left: 0; width: 279.1px; height: 453px; }
+.tracking-row {
+  position: absolute;
+  left: 1.01px;
+  width: 279.1px; height: 28.5px;
+  display: flex;
+  align-items: center;
+  gap: 16.5px;
+}
+.tracking-pill {
+  height: 38.5px;
+  box-sizing: border-box;
+  padding: 0 16.5px;
+  border-radius: 22369600px;
+  background-color: #fff;
+  border: 0.7px solid;
+  box-shadow: 0px 0px 2.5px currentColor, 0px 1px 0px rgba(255, 255, 255, 0) inset;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.tracking-level { font-weight: 600; line-height: 22px; font-size: 16px; }
+.tracking-dots {
+  height: 11px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8.3px;
+}
+.dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+  flex-shrink: 0;
+}
+
+// Empty state
+.sr-empty-state {
+  position: absolute;
+  top: 106px; left: 0;
+  width: 1847px; height: 437px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.sr-empty-text { font-size: 18px; font-weight: 500; color: #9ca3af; }
+
+// Header background stripe
+.group-child3 {
+  position: absolute;
+  top: 106px; left: 0;
+  background-color: rgba(176, 174, 174, 0.77);
+  width: 1847px; height: 55px;
+  opacity: 0.13;
+}
+
+// Pagination
+.line-parent {
+  position: absolute;
+  top: 598px; left: 0;
+  width: 1847px; height: 69.8px;
+  box-sizing: border-box;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  font-size: 19.25px;
+}
+.line-div {
+  position: absolute;
+  top: 0; left: 0;
+  border-top: 1px solid rgba(100, 116, 139, 0.22);
+  width: 1847px; height: 1px;
+}
+.showing-text { line-height: 27.5px; color: rgba(0, 0, 0, 0.5); text-align: left; }
+.pagination-buttons { display: flex; align-items: center; gap: 8px; }
+.page-btn {
+  height: 49.5px;
+  min-width: 55px;
+  box-sizing: border-box;
+  padding: 0 22px;
+  border-radius: 13.75px;
+  background-color: rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  &.page-btn-active {
+    box-shadow: 0px 0px 10px rgba(220, 38, 38, 0.3);
+    background: linear-gradient(135deg, #ca3a3a, rgba(242, 24, 24, 0.54));
+    color: #fff;
+  }
+  &.page-btn-disabled {
+    cursor: default;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.35);
+  }
+}
+.previous { line-height: 27.5px; font-weight: 500; white-space: nowrap; }

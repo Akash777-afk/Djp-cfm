@@ -4,13 +4,17 @@
   *ngIf="variant === 'desktop'"
   [style.top.px]="top"
   [style.left.px]="left"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
 >
   <div class="frame-parent2">
 
     <!-- Card header -->
     <div class="frame-div">
       <div class="frame-group">
-        <img class="frame-child" src="\assets\Vector.svg" alt="" />
+        <img class="frame-child" src="\assets/landing/Vector.svg" alt="" />
         <div class="escalation-matrix-parent">
           <div class="sr-overview2">{{ escalationCardTitle }}</div>
           <div class="manage-service-requests">{{ escalationCardSubtitle }}</div>
@@ -18,12 +22,12 @@
       </div>
       <img
         class="icon-parkfull-screen-one"
-        src="\assets\Expand.svg"
+        src="\assets/landing/Expand.svg"
         alt="Expand Escalation matrix"
         role="button"
         tabindex="0"
-        (click)="onExpandCard()"
-        (keyup.enter)="onExpandCard()"
+        (click)="$event.stopPropagation(); onExpandCard()"
+        (keyup.enter)="$event.stopPropagation(); onExpandCard()"
       />
     </div>
 
@@ -128,9 +132,17 @@
 </div>
 
 <!-- ===== Escalation matrix (mobile) ===== -->
-<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+<div
+  class="m-card"
+  *ngIf="variant === 'mobile'"
+  [style.order]="order"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
+>
   <div class="m-card-header">
-    <img class="m-card-icon" src="/assets/Vector.svg" alt="" />
+    <img class="m-card-icon" src="/assets/landing/Vector.svg" alt="" />
     <div>
       <div class="m-card-title">{{ escalationCardTitle }}</div>
       <div class="m-card-subtitle">{{ escalationCardSubtitle }}</div>

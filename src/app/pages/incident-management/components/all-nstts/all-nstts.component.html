@@ -6,72 +6,108 @@
 
     <!-- Title -->
     <div class="all-nstts-parent">
-      <b class="all-nstts">All NSTTs</b>
+      <b class="all-nstts">{{ tableTitle }}</b>
       <div class="container21">
         <div class="ixcustomer"></div>
-        <img class="vector-icon" src="\assets\SR-overview.svg" alt="" />
+        <img class="vector-icon" src="\assets/incident-management/SR-overview.svg" alt="" />
       </div>
     </div>
 
     <!-- Controls -->
     <div class="frame-parent">
-      <img
-        class="group-child3"
-        src="\assets\im-3-refresh.svg"
-        alt="Refresh"
-        role="button"
-        tabindex="0"
-        (click)="onToolbarRefresh()"
-        (keyup.enter)="onToolbarRefresh()"
-      />
-      <img
-        class="group-child4"
-        src="\assets\im-3-settings.svg"
-        alt="Settings"
-        role="button"
-        tabindex="0"
-        (click)="onToolbarSettings()"
-        (keyup.enter)="onToolbarSettings()"
-      />
+
+      <!-- Select bin -->
       <div
-        class="rectangle-container"
+        class="dropdown-control bin-control"
         role="button"
         tabindex="0"
-        [attr.aria-expanded]="isFilterOpen"
-        (click)="toggleFilter()"
-        (keyup.enter)="toggleFilter()"
+        [attr.aria-expanded]="isBinOpen"
+        (click)="toggleBin()"
+        (keyup.enter)="toggleBin()"
       >
-        <div class="group-child5"></div>
-        <div class="filter-by">Filter by</div>
-        <img class="gridiconsdropdown" [class.dropdown-open]="isFilterOpen" src="\assets\Dropdown-topbar.svg" alt="" />
-        <div class="filter-panel" *ngIf="isFilterOpen">No filters available yet</div>
+        <div class="dropdown-pill"></div>
+        <div class="dropdown-label">Select bin</div>
+        <img class="dropdown-caret" [class.dropdown-open]="isBinOpen" src="\assets/shared/Dropdown-topbar.svg" alt="" />
+        <div class="dropdown-panel checkbox-panel" *ngIf="isBinOpen" (click)="$event.stopPropagation()">
+          <label class="checkbox-row" *ngFor="let opt of binOptions">
+            <input type="checkbox" [checked]="opt.checked" (change)="toggleBinOption(opt)" />
+            <span>{{ opt.label }}</span>
+          </label>
+        </div>
       </div>
+
+      <!-- Current owner -->
       <div
-        class="rectangle-parent2"
+        class="dropdown-control owner-control"
         role="button"
         tabindex="0"
         [attr.aria-expanded]="isOwnerOpen"
         (click)="toggleOwner()"
         (keyup.enter)="toggleOwner()"
       >
-        <div class="group-child6"></div>
-        <div class="current-owner">Current owner</div>
-        <img class="gridiconsdropdown2" [class.dropdown-open]="isOwnerOpen" src="\assets\Dropdown-topbar.svg" alt="" />
-        <div class="filter-panel" *ngIf="isOwnerOpen">No owners available yet</div>
+        <div class="dropdown-pill"></div>
+        <div class="dropdown-label">Current owner</div>
+        <img class="dropdown-caret" [class.dropdown-open]="isOwnerOpen" src="\assets/shared/Dropdown-topbar.svg" alt="" />
+        <div class="dropdown-panel search-panel" *ngIf="isOwnerOpen" (click)="$event.stopPropagation()">
+          <input
+            type="text"
+            class="panel-search"
+            placeholder="Search..."
+            [(ngModel)]="ownerSearchQuery"
+            aria-label="Search owners"
+          />
+          <div class="checkbox-list">
+            <label class="checkbox-row" *ngFor="let opt of filteredOwnerOptions">
+              <input type="checkbox" [checked]="opt.checked" (change)="toggleOwnerOption(opt)" />
+              <span>{{ opt.label }} <span class="owner-id">({{ opt.id }})</span></span>
+            </label>
+          </div>
+        </div>
       </div>
+
+      <!-- Filter by Group -->
+      <div
+        class="dropdown-control filter-control"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="isFilterOpen"
+        (click)="toggleFilter()"
+        (keyup.enter)="toggleFilter()"
+      >
+        <div class="dropdown-pill"></div>
+        <div class="dropdown-label">Filter by Group</div>
+        <img class="dropdown-caret" [class.dropdown-open]="isFilterOpen" src="\assets/shared/Dropdown-topbar.svg" alt="" />
+        <div class="dropdown-panel search-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">
+          <input
+            type="text"
+            class="panel-search"
+            placeholder="Search..."
+            [(ngModel)]="groupSearchQuery"
+            aria-label="Search groups"
+          />
+          <div class="checkbox-list">
+            <label class="checkbox-row" *ngFor="let opt of filteredGroupOptions">
+              <input type="checkbox" [checked]="opt.checked" (change)="toggleGroupOption(opt)" />
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
       <div class="group-parent2">
         <div class="rectangle-frame"><div class="group-child7"></div></div>
         <input
           type="text"
           class="search-results"
           [(ngModel)]="tableSearchQuery"
-          placeholder="Search results.."
+          placeholder="Search..."
           (keyup.enter)="onTableSearch()"
           aria-label="Search NSTT results"
         />
         <img
           class="group-child8"
-          src="\assets\Search-topbar.svg"
+          src="\assets/shared/Search-topbar.svg"
           alt="Search"
           role="button"
           tabindex="0"
@@ -79,29 +115,84 @@
           (keyup.enter)="onTableSearch()"
         />
       </div>
-      <div
-        class="latoggle-on-icon"
-        [class.latoggle-off]="!toggleOn"
-        role="switch"
-        tabindex="0"
-        [attr.aria-checked]="toggleOn"
-        (click)="onToggleClick()"
-        (keyup.enter)="onToggleClick()"
-      >
-        <div class="latoggle-knob"></div>
-      </div>
+
+      <!-- Export -->
       <div class="group-parent3">
         <div class="rectangle-wrapper2"><div class="group-child9"></div></div>
         <div class="export" role="button" tabindex="0" (click)="onExport()" (keyup.enter)="onExport()">Export</div>
       </div>
+
+      <!-- Refresh -->
+      <img
+        class="group-child3"
+        [class.spinning]="isTableRefreshing"
+        src="\assets/shared/im-3-refresh.svg"
+        alt="Refresh"
+        role="button"
+        tabindex="0"
+        (click)="onToolbarRefresh()"
+        (keyup.enter)="onToolbarRefresh()"
+      />
+
+      <!-- Settings -->
+      <div class="settings-control">
+        <img
+          class="group-child4"
+          src="\assets/incident-management/im-3-settings.svg"
+          alt="Settings"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="isSettingsOpen"
+          (click)="onToolbarSettings()"
+          (keyup.enter)="onToolbarSettings()"
+        />
+        <div class="dropdown-panel settings-panel" *ngIf="isSettingsOpen" (click)="$event.stopPropagation()">Table settings — coming soon</div>
+      </div>
+
+      <!-- Toggle -->
+      <div class="toggle-wrapper">
+        <div
+          class="latoggle-on-icon"
+          [class.latoggle-off]="!toggleOn"
+          role="switch"
+          tabindex="0"
+          [attr.aria-checked]="toggleOn"
+          (click)="onToggleClick()"
+          (keyup.enter)="onToggleClick()"
+        >
+          <div class="latoggle-knob"></div>
+        </div>
+        <div class="toggle-tooltip">View SR without NSTT Details</div>
+      </div>
+
     </div>
+
+    <!-- ===== Reduced "SR without NSTT" view: only the SR count column ===== -->
+    <ng-container *ngIf="toggleOn">
+      <div class="sr-without-nstt-view">
+        <div class="col-header sr-count-header">sr count</div>
+        <div class="sr-without-nstt-row">
+          <span class="sr-without-nstt-value">{{ srWithoutNsttCount }}</span>
+          <img
+            class="sr-without-nstt-icon"
+            src="\assets/incident-management/im-3-tablerefresh.svg"
+            alt="Refresh"
+            role="button"
+            tabindex="0"
+          />
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!toggleOn">
+    <ng-container *ngIf="filteredRows.length > 0; else nsttEmptyState">
 
     <!-- SR Count column (icons) -->
     <div class="frame-group">
-      <img *ngFor="let row of nsttRows; let i = index"
+      <img *ngFor="let row of pagedRows; let i = index"
         class="sr-count-icon"
         [style.top.px]="62 + i * 71"
-        src="\assets\im-3-tablerefresh.svg"
+        src="\assets/incident-management/im-3-tablerefresh.svg"
         alt="Refresh row"
         role="button"
         tabindex="0"
@@ -114,18 +205,18 @@
     <div class="vip-flag-parent">
       <div class="col-header vip-flag-header">VIP flag</div>
       <div class="icbaseline-diamond-parent">
-        <ng-container *ngFor="let row of nsttRows; let i = index">
+        <ng-container *ngFor="let row of pagedRows; let i = index">
           <img
             *ngIf="row.vipType === 'diamond'"
             class="vip-icon"
             [style.top.px]="i * 70"
-            src="\assets\im-3-vipflag1.svg"
+            src="\assets/incident-management/im-3-vipflag1.svg"
             alt="Diamond VIP" />
           <img
             *ngIf="row.vipType === 'account'"
             class="vip-icon vip-icon-account"
             [style.top.px]="i * 70"
-            src="\assets\im-3-vipflag2.svg"
+            src="\assets/incident-management/im-3-vipflag2.svg"
             alt="Account VIP" />
         </ng-container>
       </div>
@@ -137,7 +228,7 @@
       <div class="network-outage-in-east-coast-d-parent">
         <div
           class="col-cell nstt-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.nstt }}</div>
       </div>
@@ -149,7 +240,7 @@
       <div class="parent">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.nsttAgeing }}</div>
       </div>
@@ -161,7 +252,7 @@
       <div class="network-outage-in-east-coast-d-group">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.site }}</div>
       </div>
@@ -173,7 +264,7 @@
       <div class="network-outage-in-east-coast-d-container">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.status }}</div>
       </div>
@@ -185,7 +276,7 @@
       <div class="network-outage-in-east-coast-d-parent2">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.actualIncidentTime }}</div>
       </div>
@@ -197,7 +288,7 @@
       <div class="network-outage-in-east-coast-d-parent3">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.assignedGroup }}</div>
       </div>
@@ -209,7 +300,7 @@
       <div class="network-outage-in-east-coast-d-parent4">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.lastErtTime }}</div>
       </div>
@@ -221,11 +312,23 @@
       <div class="network-outage-in-east-coast-d-parent4">
         <div
           class="col-cell"
-          *ngFor="let row of nsttRows; let i = index"
+          *ngFor="let row of pagedRows; let i = index"
           [style.top.px]="i * ROW_GAP"
         >{{ row.upTime }}</div>
       </div>
     </div>
+
+    </ng-container>
+    </ng-container>
+
+    <ng-template #nsttEmptyState>
+      <div class="nstt-empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="nstt-empty-text">No data available</div>
+      </div>
+    </ng-template>
 
   </div>
 
@@ -233,7 +336,7 @@
   <div class="group-child2"></div>
 
   <!-- Pagination -->
-  <div class="line-parent">
+  <div class="line-parent" *ngIf="!toggleOn && filteredRows.length > 0">
     <div class="line-div"></div>
     <div class="showing-16-of">{{ showingText }}</div>
     <div class="pagination-buttons">

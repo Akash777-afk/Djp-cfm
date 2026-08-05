@@ -2,13 +2,13 @@
 <div class="the-djp-change-management-child2"></div>
 
 <div class="button6" role="button" tabindex="0" (click)="assigneeClick.emit()" (keyup.enter)="assigneeClick.emit()">
-  <img class="icon2" src="/assets/cm-3-ic1.svg" alt="Assignee">
+  <img class="icon2" src="/assets/change-management/cm-3-ic1.svg" alt="Assignee">
 </div>
 <div class="button7" role="button" tabindex="0" (click)="notifyClick.emit()" (keyup.enter)="notifyClick.emit()">
-  <img class="icon2" src="/assets/cm-3-ic2.svg" alt="Notifications">
+  <img class="icon2" src="/assets/change-management/cm-3-ic2.svg" alt="Notifications">
 </div>
 <div class="button8" role="button" tabindex="0" (click)="moreOptionsClick.emit()" (keyup.enter)="moreOptionsClick.emit()">
-  <img class="icon2" src="/assets/cm-3-ic3.svg" alt="More options">
+  <img class="icon2" src="/assets/change-management/cm-3-ic3.svg" alt="More options">
 </div>
 
 <!-- ===================== DETAIL PANEL ===================== -->
@@ -54,7 +54,7 @@
           <select class="field-select" [(ngModel)]="selectedOutage.changeType">
             <option *ngFor="let opt of changeTypeOptions" [ngValue]="opt">{{ opt }}</option>
           </select>
-          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
+          <img class="field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
@@ -88,7 +88,7 @@
           <select class="field-select" [(ngModel)]="selectedOutage.status">
             <option *ngFor="let opt of statusOptions" [ngValue]="opt">{{ opt }}</option>
           </select>
-          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
+          <img class="field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
@@ -105,7 +105,7 @@
           <select class="field-select" [(ngModel)]="benefitOfChange">
             <option *ngFor="let opt of benefitOptions" [ngValue]="opt">{{ opt }}</option>
           </select>
-          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
+          <img class="field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
@@ -139,7 +139,7 @@
           <select class="field-select" [(ngModel)]="category">
             <option *ngFor="let opt of categoryOptions" [ngValue]="opt">{{ opt }}</option>
           </select>
-          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
+          <img class="field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 
@@ -170,7 +170,7 @@
           <select class="field-select" [(ngModel)]="selectedOutage.impact">
             <option *ngFor="let opt of impactOptions" [ngValue]="opt">{{ opt }}</option>
           </select>
-          <img class="field-icon" src="/assets/Dropdown-topbar.svg" alt="">
+          <img class="field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="">
         </div>
       </div>
 

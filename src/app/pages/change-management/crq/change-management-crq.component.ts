@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PlannedOutage } from '../shared/types';
 import { DetailTab } from './components/planned-outage-input/planned-outage-input.component';
+import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav.component';
 
 @Component({
   selector: 'app-change-management-crq',
@@ -48,7 +50,7 @@ export class ChangeManagementCrqComponent implements OnInit {
   isServiceImpactModalOpen = false;
   isContactCentreModalOpen = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.selectedOutage = this.plannedOutages[0];
@@ -94,6 +96,21 @@ export class ChangeManagementCrqComponent implements OnInit {
 
   onContactCentreModalClosed(): void {
     this.isContactCentreModalOpen = false;
+  }
+
+  sidebarItems: SidebarNavItem[] = CM_SIDEBAR_ITEMS;
+
+  onSidebarItemClick(key: string): void {
+    switch (key) {
+      case 'lsi-search':      this.onLsiSearch(); break;
+      case 'create-po':       this.onCreatePo(); break;
+      case 'service-impact':  this.onServiceImpactClick(); break;
+      case 'contact-centre':  this.onContactCentreClick(); break;
+    }
+  }
+
+  onLsiSearch(): void {
+    this.router.navigate(['/noc-portal']);
   }
 
   onExport(): void {

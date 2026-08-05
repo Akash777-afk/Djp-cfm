@@ -1,0 +1,92 @@
+// position:fixed relative to the *browser viewport*, not the page canvas —
+// the canvas uses transform: scale() for responsive fit, which creates a new
+// containing block for any position:fixed descendant nested inside it (the
+// same quirk already solved for the sidebar in other pages). This component
+// is rendered as a sibling of that canvas specifically so the header stays
+// pinned while only the body underneath it scrolls.
+:host {
+  display: contents;
+}
+
+.im-header-fixed {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 1920px;
+  z-index: 110;
+  transform: scale(var(--header-scale));
+  transform-origin: top left;
+}
+
+// ---------- Top bar ----------
+.im-topbar {
+  position: absolute;
+  top: 0px; left: 0px;
+  width: 1920px;
+  height: 106px;
+  background-color: #fff;
+}
+.im-topbar-divider {
+  position: absolute;
+  top: 98px; left: 0px;
+  width: 1920px;
+  height: 1px;
+  background-color: rgba(210, 210, 210, 0.3);
+}
+.im-topbar-logo {
+  position: absolute;
+  top: 25px; left: 25px;
+  width: 163px; height: 56px;
+  object-fit: cover;
+}
+.im-topbar-banner {
+  position: absolute;
+  top: 7px; left: 1464px;
+  width: 448px; height: 92px;
+  object-fit: cover;
+}
+
+// ---------- Breadcrumb bar ----------
+.im-breadcrumb {
+  position: absolute;
+  top: 106px; left: 0px;
+  width: 1920px;
+  height: 64px;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+}
+.im-breadcrumb-label {
+  position: absolute;
+  top: 6px; left: 14px;
+  width: 305px; height: 52.5px;
+  // contain (not cover) so an unknown future asset isn't cropped
+  object-fit: contain;
+  object-position: left center;
+}
+// Text-based alternative to im-breadcrumb-label, for pages with no
+// pre-rendered breadcrumb image — same position/color/icon language.
+.im-breadcrumb-label-text {
+  position: absolute;
+  top: 6px; left: 14px;
+  height: 52.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #29a3d4;
+  font-size: 26px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    color: #a9d9ec;
+    flex-shrink: 0;
+  }
+}
+.im-breadcrumb-actions {
+  position: absolute;
+  top: 5px; left: 1789px;
+  width: 114.5px; height: 55.5px;
+  object-fit: cover;
+}

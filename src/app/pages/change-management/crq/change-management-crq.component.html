@@ -1,4 +1,4 @@
-<app-cm-sidebar-nav [scale]="scale" (createPoClick)="onCreatePo()" (serviceImpactClick)="onServiceImpactClick()" (contactCentreClick)="onContactCentreClick()"></app-cm-sidebar-nav>
+<app-cm-sidebar-nav [scale]="scale" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
 <app-cm-header-bar [scale]="scale"></app-cm-header-bar>
 <app-cm-create-po-modal
   [isOpen]="isCreatePoModalOpen"

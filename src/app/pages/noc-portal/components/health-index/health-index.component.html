@@ -1,0 +1,24 @@
+<div class="nhi-card">
+
+  <div class="nhi-heading">
+    <span>LSI Health Index</span>
+    <img class="nhi-heading-icon" [src]="refreshIcon" alt="Refresh" role="button" tabindex="0" (click)="onRefresh()" (keyup.enter)="onRefresh()" />
+  </div>
+
+  <div class="nhi-row">
+    <div class="nhi-chart-card">
+      <div class="nhi-chart-title">Latency &amp; packet loss</div>
+      <img class="nhi-chart-img" [src]="latencyGraph" alt="Latency and packet loss graph" />
+    </div>
+    <div class="nhi-chart-card">
+      <div class="nhi-chart-title">Bandwidth Throughput</div>
+      <img class="nhi-chart-img" [src]="bandwidthGraph" alt="Bandwidth throughput graph" />
+    </div>
+  </div>
+
+  <div class="nhi-chart-card nhi-chart-card-wide">
+    <div class="nhi-chart-title">Traffic Utilization</div>
+    <img class="nhi-chart-img nhi-chart-img-wide" [src]="trafficGraph" alt="Traffic utilization graph" />
+  </div>
+
+</div>

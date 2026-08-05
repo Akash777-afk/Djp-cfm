@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlanceTile, MainCardKey, NavTabItem } from './landing.types';
+import { GlanceTile, MainCardKey, NavTabItem, SectionVariant } from './landing.types';
 
 @Component({
   selector: 'app-landing',
@@ -44,22 +44,32 @@ export class LandingComponent implements OnInit {
   // ---------- Glanceable tiles (top of page) ----------
   glanceTiles: GlanceTile[] = [
     { label: 'NOC Portal', action: () => this.onNocPortalClick() },
-    { label: 'Problem Managent', action: () => this.onProblemManagementClick() },
+    { label: 'Incident management', action: () => this.goToIncidentManagement() },
     { label: 'Change Management', action: () => this.goToChangeManagement() },
     { label: 'SR Overview', action: () => this.jumpToAnalyticsTab('SR Overview') },
-    { label: 'Escalation Matrix', action: () => this.jumpToAnalyticsTab('Escalation matrix') },
+    { label: 'Escalation Matrix', action: (variant) => this.onEscalationMatrixTileClick(variant) },
   ];
 
-  // No destination exists yet for these two.
-  onNocPortalClick(): void {
-    console.log('Landing: NOC Portal clicked');
+  // Desktop: navigate straight to the full escalation matrix page.
+  // Mobile: keep the existing scroll-to-tab behavior (unchanged for now).
+  onEscalationMatrixTileClick(variant?: SectionVariant): void {
+    if (variant === 'desktop') {
+      this.router.navigate(['/escalation-matrix']);
+    } else {
+      this.jumpToAnalyticsTab('Escalation matrix');
+    }
   }
-  onProblemManagementClick(): void {
-    console.log('Landing: Problem management clicked');
+
+  onNocPortalClick(): void {
+    this.router.navigate(['/noc-portal']);
   }
 
   goToChangeManagement(): void {
     this.router.navigate(['/change-management']);
+  }
+
+  goToIncidentManagement(): void {
+    this.router.navigate(['/incident-management']);
   }
 
   // Brings the Analytics Overview section's matching tab to the front and

@@ -219,14 +219,10 @@
 .div { height: 28px; width: 74px; position: relative; box-shadow: 0px 0px 6px rgba(168,85,247,0.2) inset; border-radius: 22369600px; background-color: rgba(168,85,247,0.15); border: 0.7px solid rgba(168,85,247,0.3); box-sizing: border-box; }
 .div2 { height: 28px; width: 65px; position: relative; box-shadow: 0px 0px 6px rgba(85,107,247,0.2) inset; border-radius: 22369600px; background-color: #e2ecfe; border: 0.7px solid #a6c6fb; box-sizing: border-box; }
 .parent { position: absolute; top: 3px; left: 14px; letter-spacing: 0.41px; line-height: 22px; font-weight: 500; font-size: 16px; }
-.badge  { height: 28px; border-radius: 22369600px; background-color: #e2ffed; border: 0.7px solid #54ba7d; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #2a9655; }
-.badge2 { height: 28px; border-radius: 22369600px; background-color: #eefff4; border: 0.7px solid rgba(99,181,130,0.8); box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #65a87d; }
-.badge3 { height: 28px; border-radius: 22369600px; background-color: #fffaf0; border: 0.7px solid #f1c16f; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #f59e0b; }
-.badge4 { height: 28px; border-radius: 22369600px; background-color: #fef2f2; border: 0.7px solid #ffa5a5; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; color: #e7000b; }
-.prioritybadge  { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #2a9655; }
-.prioritybadge2 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #65a87d; }
-.prioritybadge3 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #f59e0b; }
-.prioritybadge4 { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; background-color: #fb2c36; }
+// Structural styling only — background/border/text color are bound inline
+// per row from LEVEL_COLORS (see levelBg/levelBorder/levelColor).
+.level-badge { height: 28px; border-radius: 22369600px; border: 0.7px solid; box-sizing: border-box; display: flex; align-items: center; padding: 1.9px 9.4px; gap: 3.8px; }
+.priority-dot { height: 5.6px; width: 5.6px; position: relative; border-radius: 22369600px; }
 .badge5 { display: flex; align-items: flex-start; mix-blend-mode: multiply; flex-shrink: 0; }
 .container12 { width: 121.9px; display: flex; align-items: center; gap: 7.5px; }
 .container13 { height: 8px; width: 60px; border-radius: 22369600px; background-color: #f3f4f6; overflow: hidden; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; }

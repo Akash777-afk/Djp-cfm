@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 export interface StatTile {
+  key: string;
   label: string;
   value: string;
   badge: string;
@@ -23,5 +24,7 @@ export interface StatTile {
 export class NsttStatusComponent {
 
   @Input() statTiles: StatTile[] = [];
+  @Input() activeKey = '';
   @Output() refreshClick = new EventEmitter<void>();
+  @Output() tileClick = new EventEmitter<string>();
 }

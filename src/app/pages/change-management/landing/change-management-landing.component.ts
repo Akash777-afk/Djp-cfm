@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardChangeRow, DashboardChangeStatus, StatCard } from './change-management-landing.types';
+import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav.component';
 
 interface StatCardMeta {
   key: string;
@@ -61,12 +62,12 @@ export class ChangeManagementLandingComponent implements OnInit {
   activeCardKey = 'all';
 
   private readonly cardMeta: StatCardMeta[] = [
-    { key: 'all',          label: 'All Changes', viewText: 'View all changes', color: '#ed7199', bg: 'rgba(237, 113, 153, 0.08)', icon: '/assets/Icon-6.png' },
-    { key: 'scheduled',    label: 'Scheduled',   viewText: 'View scheduled',   color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)',  icon: '/assets/Iconsch.png' },
-    { key: 'rejected',     label: 'Rejected',    viewText: 'View rejected',    color: '#e60012', bg: '#fef2f2',                    icon: '/assets/Icon-5.png' },
-    { key: 'in-progress',  label: 'In Progress', viewText: 'View in progress', color: '#4664aa', bg: 'rgba(70, 100, 170, 0.08)',  icon: '/assets/Icon-4.png' },
-    { key: 'completed',    label: 'Completed',   viewText: 'View completed',   color: '#22c55e', bg: 'rgba(99, 205, 90, 0.08)',   icon: '/assets/Icon-3.png' },
-    { key: 'cancelled',    label: 'Cancelled',   viewText: 'View cancelled',   color: '#ff9900', bg: 'rgba(255, 153, 0, 0.08)',   icon: '/assets/Icon-2.png' },
+    { key: 'all',          label: 'All Changes', viewText: 'View all changes', color: '#ed7199', bg: 'rgba(237, 113, 153, 0.08)', icon: '/assets/change-management/Icon-6.png' },
+    { key: 'scheduled',    label: 'Scheduled',   viewText: 'View scheduled',   color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)',  icon: '/assets/change-management/Iconsch.png' },
+    { key: 'rejected',     label: 'Rejected',    viewText: 'View rejected',    color: '#e60012', bg: '#fef2f2',                    icon: '/assets/change-management/Icon-5.png' },
+    { key: 'in-progress',  label: 'In Progress', viewText: 'View in progress', color: '#4664aa', bg: 'rgba(70, 100, 170, 0.08)',  icon: '/assets/change-management/Icon-4.png' },
+    { key: 'completed',    label: 'Completed',   viewText: 'View completed',   color: '#22c55e', bg: 'rgba(99, 205, 90, 0.08)',   icon: '/assets/change-management/Icon-3.png' },
+    { key: 'cancelled',    label: 'Cancelled',   viewText: 'View cancelled',   color: '#ff9900', bg: 'rgba(255, 153, 0, 0.08)',   icon: '/assets/change-management/Icon-2.png' },
   ];
 
   private readonly keyToStatus: Record<string, DashboardChangeStatus> = {
@@ -143,5 +144,20 @@ export class ChangeManagementLandingComponent implements OnInit {
 
   goToCrq(changeId: string): void {
     this.router.navigate(['/change-management/crq']);
+  }
+
+  sidebarItems: SidebarNavItem[] = CM_SIDEBAR_ITEMS;
+
+  onSidebarItemClick(key: string): void {
+    switch (key) {
+      case 'lsi-search':      this.onLsiSearch(); break;
+      case 'create-po':       this.onCreatePoClick(); break;
+      case 'service-impact':  this.onServiceImpactClick(); break;
+      case 'contact-centre':  this.onContactCentreClick(); break;
+    }
+  }
+
+  onLsiSearch(): void {
+    this.router.navigate(['/noc-portal']);
   }
 }

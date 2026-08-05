@@ -9,7 +9,7 @@
   <!-- Card header -->
   <div class="frame-parent5">
     <div class="frame-group">
-      <img class="frame-child" src="\assets\Vector-3.svg" alt="" />
+      <img class="frame-child" src="\assets/landing/Vector-3.svg" alt="" />
       <div class="change-management-parent">
         <div class="sr-overview2">{{ changeCardTitle }}</div>
         <div class="manage-service-requests">{{ changeCardSubtitle }}</div>
@@ -17,7 +17,7 @@
     </div>
     <img
       class="icon-parkfull-screen-one"
-      src="\assets\Expand.svg"
+      src="\assets/landing/Expand.svg"
       alt="Expand Change management"
       role="button"
       tabindex="0"
@@ -30,7 +30,7 @@
   <div class="content-wrapper">
     <div class="content3">
 
-      <!-- Column 10: Outage ID (labelled CRQ in original) -->
+      <!-- Column 10: CRQ -->
       <div class="column10">
         <div class="table-header-cell10">
           <div class="sr-number">crq</div>
@@ -39,20 +39,21 @@
           *ngFor="let row of changeRows"
           [ngClass]="row.isLast ? 'table-cell46' : 'table-cell43'"
         >
-          <div class="text"><div class="div26">{{ row.outageId }}</div></div>
+          <div class="text"><div class="div26">{{ row.crq }}</div></div>
         </div>
       </div>
 
-      <!-- Column 11a: Planned Outage ID (CRQ numbers) -->
+      <!-- Column 11a: Planned Outage ID -->
       <div class="column11">
         <div class="table-header-cell11">
           <div class="planned-outage-id">planned outage id</div>
         </div>
         <div
           *ngFor="let row of changeRows"
+          class="po-id-cell"
           [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
         >
-          <div class="div27">{{ row.crq }}</div>
+          <div class="div27">{{ row.outageId }}</div>
         </div>
       </div>
 
@@ -92,13 +93,13 @@
 
             <!-- Submitted -->
             <div *ngIf="row.submitted" class="status-badge badge-submitted">
-              <img class="status-icon" src="assets/submitted.svg" alt="" />
+              <img class="status-icon" src="assets/landing/submitted.svg" alt="" />
               <span>Submitted</span>
             </div>
 
             <!-- Not submitted -->
             <div *ngIf="!row.submitted" class="status-badge badge-not-submitted">
-              <img class="status-icon" src="\assets\not-submitted.svg" alt="" />
+              <img class="status-icon" src="\assets/landing/not-submitted.svg" alt="" />
               <span>Not submitted</span>
             </div>
 
@@ -112,7 +113,7 @@
 <!-- ===== Change management (mobile) ===== -->
 <div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
   <div class="m-card-header">
-    <img class="m-card-icon" src="/assets/Vector-3.svg" alt="" />
+    <img class="m-card-icon" src="/assets/landing/Vector-3.svg" alt="" />
     <div>
       <div class="m-card-title">{{ changeCardTitle }}</div>
       <div class="m-card-subtitle">{{ changeCardSubtitle }}</div>
@@ -125,17 +126,17 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of changeRows">
-          <td>{{ row.outageId }}</td>
           <td>{{ row.crq }}</td>
+          <td>{{ row.outageId }}</td>
           <td class="m-cell-danger">{{ row.impact }}</td>
           <td>{{ row.implementor }}</td>
           <td>
             <span *ngIf="row.submitted" class="status-badge badge-submitted">
-              <img class="status-icon" src="/assets/submitted.svg" alt="" />
+              <img class="status-icon" src="/assets/landing/submitted.svg" alt="" />
               <span>Submitted</span>
             </span>
             <span *ngIf="!row.submitted" class="status-badge badge-not-submitted">
-              <img class="status-icon" src="/assets/not-submitted.svg" alt="" />
+              <img class="status-icon" src="/assets/landing/not-submitted.svg" alt="" />
               <span>Not submitted</span>
             </span>
           </td>

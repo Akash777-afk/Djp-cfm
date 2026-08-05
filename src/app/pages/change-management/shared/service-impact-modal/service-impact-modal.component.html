@@ -17,7 +17,7 @@
           <select class="si-select" [(ngModel)]="domain">
             <option *ngFor="let d of domainOptions" [ngValue]="d">{{ d }}</option>
           </select>
-          <img class="si-field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+          <img class="si-field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
         </div>
       </div>
       <div class="si-field si-field-node">
@@ -72,7 +72,7 @@
             <select class="si-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
               <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
             </select>
-            <img class="si-field-icon" src="/assets/Dropdown-topbar.svg" alt="" />
+            <img class="si-field-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
           </div>
         </div>
 

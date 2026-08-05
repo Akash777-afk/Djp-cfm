@@ -1,0 +1,177 @@
+:host {
+  display: contents;
+}
+
+.rectangle-parent {
+  position: absolute;
+  // 106px = 37px (welcome banner) + 69px (its own height + the 37px gap
+  // convention below it), matching Incident Management's vertical rhythm.
+  top: 106px; left: 37px;
+  width: 1847px; height: 253px;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.82);
+}
+.group-child {
+  position: absolute;
+  top: 0; left: 0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 22px;
+  background-color: #fff;
+  width: 1847px; height: 253px;
+}
+.group-parent {
+  position: absolute;
+  top: 20px; left: 14px;
+  width: 1822px; height: 207px;
+}
+.group-container {
+  position: absolute;
+  top: 0; left: 16px;
+  width: 1787px; height: 207px;
+}
+
+// ---------- Heading row ----------
+.group-div {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1787px; height: 43px;
+}
+.escalation-levels-parent {
+  position: absolute;
+  top: 10px; left: 0;
+  width: 208.9px; height: 29px;
+}
+.escalation-levels {
+  position: absolute;
+  top: 0; left: 15.88px;
+  letter-spacing: -0.01em;
+}
+.container {
+  position: absolute;
+  top: 0; left: 0;
+  border-radius: 22369600px;
+  background-color: #e60023;
+  width: 3.7px; height: 26.2px;
+}
+.frame-icon {
+  position: absolute;
+  top: 0; left: 1744px;
+  width: 43px; height: 43px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.4s ease;
+
+  &:hover { background-color: rgba(230, 0, 35, 0.08); }
+  &:active { transform: rotate(90deg); }
+}
+
+// ---------- Tiles row ----------
+.container-parent {
+  position: absolute;
+  top: 80px; left: 0;
+  width: 1787px; height: 127px;
+}
+
+.level-tile {
+  position: absolute;
+  top: 0;
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  border-top: 0.5px solid;
+  border-right: 0.5px solid;
+  border-bottom: 0.5px solid;
+  border-left: 4px solid;
+  box-sizing: border-box;
+  width: 233px; height: 127px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:not(.level-tile-active):hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0px 16px 28px -6px rgba(0, 0, 0, 0.18),
+      0px 4px 10px -2px rgba(0, 0, 0, 0.1),
+      0 0 0 2px color-mix(in srgb, currentColor 45%, transparent),
+      0 0 26px 4px color-mix(in srgb, currentColor 40%, transparent);
+  }
+}
+// Whichever tile is active permanently reads as "selected" — the table below
+// always reflects it, so it needs a stable visual cue, not just a hover state.
+.level-tile-active {
+  border-bottom-width: 8px;
+  box-shadow:
+    0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0px 2px 4px -2px rgba(0, 0, 0, 0.1),
+    0 0 16px 2px color-mix(in srgb, currentColor 30%, transparent);
+}
+
+.tile-icon-box {
+  position: absolute;
+  top: 16px; left: 20px;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 0.6px solid;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tile-icon {
+  width: 42px; height: 42px;
+  object-fit: contain;
+}
+
+.tile-icon-compact {
+  width: 30px; height: 30px;
+}
+.tile-label {
+  position: absolute;
+  top: 26px; left: 74px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.tile-value {
+  position: absolute;
+  top: 18px; right: 20px;
+  font-size: 28px;
+  line-height: 32px;
+}
+
+.tile-pill {
+  position: absolute;
+  bottom: 16px; left: 20px; right: 20px;
+  height: 32px;
+  box-sizing: border-box;
+  border-radius: 22369600px;
+  background-color: #fff;
+  border: 0.7px solid;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15), 0px 1px 0px rgba(255, 255, 255, 0.5) inset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+.dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+  flex-shrink: 0;
+
+  &.dot-filled {
+    box-shadow: 0px 0px 5px currentColor;
+  }
+}
+.pill-text {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(0, 0, 0, 0.75);
+}

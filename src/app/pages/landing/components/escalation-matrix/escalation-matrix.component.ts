@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { EscalationLevel, SectionVariant } from '../../landing.types';
+import { LEVEL_COLORS, LEVEL_COUNTS } from '../../../escalation-matrix/escalation-matrix.constants';
 
 @Component({
   selector: 'app-landing-escalation-matrix',
@@ -7,6 +9,8 @@ import { EscalationLevel, SectionVariant } from '../../landing.types';
   styleUrls: ['./escalation-matrix.component.scss']
 })
 export class EscalationMatrixCardComponent {
+
+  constructor(private router: Router) {}
 
   @Input() variant: SectionVariant = 'desktop';
 
@@ -17,16 +21,22 @@ export class EscalationMatrixCardComponent {
 
   escalationCardTitle    = 'Escalation matrix';
   escalationCardSubtitle = 'Streamline issue escalation with clear ownership and workflows.';
-  totalEscalated = '419';
 
-  escalationLevels: EscalationLevel[] = [
-    { label: 'Level 1', dotColor: '#22c55e', count: 47,  percent: '11.2%', isLast: false },
-    { label: 'Level 2', dotColor: '#3b82f6', count: 148, percent: '35.3%', isLast: false },
-    { label: 'Level 3', dotColor: '#f59e0b', count: 105, percent: '25.1%', isLast: false },
-    { label: 'Level 4', dotColor: '#e60012', count: 92,  percent: '22.0%', isLast: false },
-    { label: 'Level 5', dotColor: '#8b5cf6', count: 27,  percent: '6.4%',  isLast: false },
-    { label: 'Level 6', dotColor: '#dedce2', count: 0,   percent: '—',     isLast: true  },
-  ];
+  // Counts and colors come from the escalation matrix page's own constants,
+  // so this card can never disagree with the real page on the numbers.
+  private readonly totalEscalatedCount = Object.values(LEVEL_COUNTS).reduce((sum, count) => sum + count, 0);
+  totalEscalated = String(this.totalEscalatedCount);
+
+  escalationLevels: EscalationLevel[] = [1, 2, 3, 4, 5, 6].map(level => {
+    const count = LEVEL_COUNTS[level];
+    return {
+      label: `Level ${level}`,
+      dotColor: LEVEL_COLORS[level],
+      count,
+      percent: count === 0 ? '—' : `${((count / this.totalEscalatedCount) * 100).toFixed(1)}%`,
+      isLast: level === 6,
+    };
+  });
 
   // ---------- Dynamic donut chart ----------
   // Bigger donut: radius 140, circumference = 2π × 140 ≈ 879.6
@@ -56,7 +66,6 @@ export class EscalationMatrixCardComponent {
   }
 
   onExpandCard(): void {
-    console.log('Expand card: escalation');
-    // TODO: open a full-screen modal / dedicated route for this card
+    this.router.navigate(['/escalation-matrix']);
   }
 }

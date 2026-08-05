@@ -7,12 +7,17 @@
       <div
         class="stat-tile"
         *ngFor="let tile of statTiles; let i = index"
-        [style.left.px]="i * 216"
+        [class.stat-tile-active]="tile.key === activeKey"
+        [style.left.px]="i * 227.5"
         [style.backgroundColor]="tile.bg"
         [style.borderTopColor]="tile.borderColor"
         [style.borderRightColor]="tile.borderColor"
         [style.borderBottomColor]="tile.borderColor"
         [style.color]="tile.textColor"
+        role="button"
+        tabindex="0"
+        (click)="tileClick.emit(tile.key)"
+        (keyup.enter)="tileClick.emit(tile.key)"
       >
         <!-- Icon box -->
         <div class="tile-icon-box" [style.borderColor]="tile.badgeBorderColor">
@@ -51,7 +56,7 @@
       <div class="container20"></div>
       <img
         class="frame-icon"
-        src="\assets\im-2-refresh.svg"
+        src="\assets/incident-management/im-2-refresh.svg"
         alt="Refresh"
         role="button"
         tabindex="0"

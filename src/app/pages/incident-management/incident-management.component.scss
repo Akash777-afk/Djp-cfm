@@ -7,7 +7,7 @@
 .the-djp-incident-management-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1302px * var(--djp-scale));
+  height: calc(1427px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -15,7 +15,7 @@
 
 .the-djp-incident-management {
   width: 1920px;
-  height: 1302px;
+  height: 1427px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
@@ -27,16 +27,46 @@
   transform-origin: top left;
 }
 
+// ---------- Welcome banner ----------
+.im-welcome {
+  position: absolute;
+  top: 207px; left: 37px;
+  font-size: 30px;
+  line-height: 27.5px;
+  font-weight: 500;
+  color: rgba(17, 16, 16, 0.79);
+}
+.im-quick-btn {
+  position: absolute;
+  top: 197px;
+  width: 42px; height: 42px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+
+  img { width: 100%; height: 100%; }
+
+  &:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.08); }
+  &:active { transform: scale(0.94); }
+}
+.im-quick-call { left: 1744px; }
+.im-quick-book { left: 1841px; }
+
 // ---------- Footer ----------
 .the-main-page {
   position: absolute;
-  top: 1125px; left: 9px;
+  top: 1336px; left: 37px;
   width: 125px; height: 54px;
   font-size: 14px;
   color: #b5b7c0;
   font-family: Poppins, sans-serif;
 }
-.tier-1 { position: absolute; top: 77px; left: 0; width: 125px; height: 54px; }
+.tier-1 { position: absolute; top: 0; left: 0; width: 125px; height: 54px; }
 .powered-by {
   position: absolute;
   top: 0; left: 5.38px;

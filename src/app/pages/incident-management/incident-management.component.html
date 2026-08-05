@@ -1,31 +1,31 @@
-<app-sidebar-nav></app-sidebar-nav>
+<app-im-header-bar [scale]="scale"></app-im-header-bar>
 
 <div class="the-djp-incident-management-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-incident-management">
 
-  <app-top-bar
-    [pageTitle]="pageTitle"
-    [searchPlaceholder]="searchPlaceholder"
-    [lastUpdated]="lastUpdated"
-    [searchQuery]="searchQuery"
-    (searchQueryChange)="searchQuery = $event"
-    (search)="onSearch()"
-    (menuClick)="onMenuClick()"
-    (refreshClick)="onTopbarRefresh()"
-  ></app-top-bar>
+  <!-- ===== Welcome banner ===== -->
+  <div class="im-welcome">Welcome back, {{ userName }} !</div>
+  <button type="button" class="im-quick-btn im-quick-call" aria-label="Call" (click)="onCallClick()">
+    <img src="/assets/incident-management/im-1-broadcast.svg" alt="" />
+  </button>
+  <button type="button" class="im-quick-btn im-quick-book" aria-label="Documentation" (click)="onBookClick()">
+    <img src="/assets/shared/famicons_book.png" alt="" />
+  </button>
 
   <app-nstt-status
     [statTiles]="statTiles"
+    [activeKey]="activeCardKey"
     (refreshClick)="onNsttStatusRefresh()"
+    (tileClick)="setActiveCard($event)"
   ></app-nstt-status>
 
-  <app-all-nstts [nsttRows]="nsttRows"></app-all-nstts>
+  <app-all-nstts [nsttRows]="nsttRows" [statusFilter]="statusFilter"></app-all-nstts>
 
   <!-- ===== Footer ===== -->
   <div class="the-main-page">
     <div class="tier-1">
       <div class="powered-by">Powered by</div>
-      <img class="t1-4-icon" src="\assets\im-3-tier1.png" alt="" />
+      <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
     </div>
   </div>
 

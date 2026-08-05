@@ -5,7 +5,7 @@ export interface NavTabItem {
 
 export interface GlanceTile {
   label: string;
-  action: () => void;
+  action: (variant?: SectionVariant) => void;
 }
 
 export type MainCardKey = 'sr' | 'incident' | 'change' | 'escalation';
@@ -31,11 +31,8 @@ export interface SrRow {
   riseDate: string;
   summary: string;
   subType: 'Parent' | 'Child';
-  escalationLevel: string;
-  badgeClass: string;
-  badgeDotClass: string;
+  level: number;
   trackingPercent: number;
-  trackingColor: string;
   isLast: boolean;
 }
 

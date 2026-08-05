@@ -149,6 +149,14 @@
 .table-cell47 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; }
 .table-cell50 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; box-sizing: border-box; }
 
+// Planned Outage ID column's data cells only (not the header, and not the
+// Implementor column, which reuses .table-cell47/.table-cell50 too) —
+// nudged right 15px for better alignment under the header.
+.po-id-cell.table-cell47,
+.po-id-cell.table-cell50 {
+  padding-left: 31px;
+}
+
 .div26 { position: relative; line-height: 20px; }
 .div27 { position: relative; line-height: 20px; flex-shrink: 0; }
 

@@ -24,13 +24,13 @@
   <div class="planned-outages-3-parent">
     <b class="planned-outages-3">Planned Outages ({{ plannedOutages.length }})</b>
     <div class="container4">
-      <img class="container-child" src="/assets/planned outage icon.svg" alt="">
+      <img class="container-child" src="/assets/change-management/planned outage icon.svg" alt="">
     </div>
   </div>
 
   <div class="select" role="button" tabindex="0" [attr.aria-expanded]="isSortOpen" (click)="toggleSort()" (keyup.enter)="toggleSort()">
     <div class="sort-by">{{ sortBy }}</div>
-    <img class="chevrondown-icon" [class.dropdown-open]="isSortOpen" src="/assets/Dropdown-topbar.svg" alt="">
+    <img class="chevrondown-icon" [class.dropdown-open]="isSortOpen" src="/assets/shared/Dropdown-topbar.svg" alt="">
 
     <div class="sort-panel" *ngIf="isSortOpen" (click)="$event.stopPropagation()">
       <div
@@ -56,7 +56,7 @@
     <div class="export">Export</div>
   </div>
 
-  <img class="frame-icon" src="/assets/im-3-refresh.svg" alt="Refresh" role="button" tabindex="0" (click)="refreshClick.emit()" (keyup.enter)="refreshClick.emit()">
+  <img class="frame-icon" src="/assets/shared/im-3-refresh.svg" alt="Refresh" role="button" tabindex="0" (click)="refreshClick.emit()" (keyup.enter)="refreshClick.emit()">
 
   <!-- ===================== TABLE ===================== -->
   <div class="table-scroll-container">
@@ -93,7 +93,7 @@
           <td class="mail-po-cell">
             <img
               class="phexport-bold-icon2"
-              src="/assets/mail po icons.svg"
+              src="/assets/change-management/mail po icons.svg"
               alt="View row"
               role="button"
               tabindex="0"

@@ -6,17 +6,17 @@
     <div class="cml-date-field" (click)="openDatePicker(fromDateInput)">
       <input #fromDateInput type="date" [(ngModel)]="fromDate" />
       <span class="cml-date-label" [class.cml-date-label-filled]="fromDate">{{ fromDate || 'From Date' }}</span>
-      <img class="cml-date-icon" src="/assets/uil_calender.png" alt="" />
+      <img class="cml-date-icon" src="/assets/change-management/uil_calender.png" alt="" />
     </div>
     <div class="cml-date-field cml-date-field2" (click)="openDatePicker(toDateInput)">
       <input #toDateInput type="date" [(ngModel)]="toDate" />
       <span class="cml-date-label" [class.cml-date-label-filled]="toDate">{{ toDate || 'To Date' }}</span>
-      <img class="cml-date-icon" src="/assets/uil_calender.png" alt="" />
+      <img class="cml-date-icon" src="/assets/change-management/uil_calender.png" alt="" />
     </div>
     <button type="button" class="cml-search-btn" (click)="onSearch()">Search</button>
     <button type="button" class="cml-export-btn" (click)="onExport()">Export</button>
     <div class="cml-filter-select" role="button" tabindex="0" [attr.aria-expanded]="isFilterOpen" (click)="toggleFilter()">
-      <img src="/assets/iconoir_filter.png" alt="" />
+      <img src="/assets/change-management/iconoir_filter.png" alt="" />
       <span>{{ filterLabel }}</span>
 
       <div class="cml-filter-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">

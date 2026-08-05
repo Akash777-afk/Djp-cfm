@@ -1,0 +1,223 @@
+<app-cm-sidebar-nav [scale]="scale" [top]="170" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
+<app-im-header-bar [scale]="scale" breadcrumbText="NOC Portal"></app-im-header-bar>
+
+<div class="the-djp-noc-portal-scale-wrapper" [style.--djp-scale]="scale">
+<div class="the-djp-noc-portal">
+
+  <!-- ===== Top search bar ===== -->
+  <div class="np-search-row">
+    <div class="np-search-bar">
+      <input class="np-search-input" type="text" [(ngModel)]="lsiQuery" aria-label="LSI" />
+    </div>
+    <div class="np-search-bar np-search-bar-po">
+      <input class="np-search-input" type="text" [(ngModel)]="poIdQuery" aria-label="PO ID" />
+    </div>
+    <div class="np-search-btn" role="button" tabindex="0" (click)="onSearch()" (keyup.enter)="onSearch()">
+      <span>Search</span>
+    </div>
+    <div class="np-reset-btn" role="button" tabindex="0" (click)="onReset()" (keyup.enter)="onReset()">Reset</div>
+
+    <div class="np-top-icons">
+      <img
+        *ngFor="let icon of topUtilityIcons"
+        [src]="icon.icon"
+        [alt]="icon.alt"
+        [style.width.px]="icon.width"
+        [style.height.px]="icon.height"
+        role="button" tabindex="0"
+        (click)="onTopUtilityClick(icon.key)" (keyup.enter)="onTopUtilityClick(icon.key)"
+      />
+    </div>
+  </div>
+
+  <!-- ===== Primary nav ===== -->
+  <div class="np-nav">
+    <div
+      class="np-nav-pill"
+      *ngFor="let item of navItems"
+      role="button" tabindex="0"
+      (click)="onNavItemClick(item.key)" (keyup.enter)="onNavItemClick(item.key)"
+    >
+      <img class="np-nav-pill-icon" [src]="item.icon" alt="" />
+      <span class="np-nav-pill-label">{{ item.label }}</span>
+    </div>
+    <div class="np-nav-icon-btn" role="button" tabindex="0" aria-label="Edit" (click)="onNavEditClick()" (keyup.enter)="onNavEditClick()">
+      <img src="/assets/NOC_Portal/edit.png" alt="" />
+    </div>
+    <div class="np-nav-icon-btn" role="button" tabindex="0" aria-label="Menu" (click)="onNavMenuClick()" (keyup.enter)="onNavMenuClick()">
+      <img src="/assets/NOC_Portal/hammenu.svg" alt="" />
+    </div>
+  </div>
+
+  <!-- ===== SR Notifications bar ===== -->
+  <div class="np-notif-bar">
+    <div class="np-notif-title">SR Notifications({{ totalNotificationCount }})</div>
+    <svg class="np-notif-chevron" viewBox="0 0 24 24" fill="none" role="button" tabindex="0" (click)="onNotificationsPrevClick()" (keyup.enter)="onNotificationsPrevClick()" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+    <div class="np-notif-tabs">
+      <div
+        class="np-notif-tab"
+        [class.active]="tab.active"
+        *ngFor="let tab of notificationTabs"
+        role="button" tabindex="0"
+        (click)="setActiveNotificationTab(tab)" (keyup.enter)="setActiveNotificationTab(tab)"
+      >
+        <span class="np-notif-dot"></span>
+        {{ tab.label }} ({{ tab.count }})
+      </div>
+    </div>
+
+    <svg class="np-notif-chevron" viewBox="0 0 24 24" fill="none" role="button" tabindex="0" (click)="onNotificationsNextClick()" (keyup.enter)="onNotificationsNextClick()" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <img
+      class="np-notif-filter"
+      src="/assets/NOC_Portal/Frame 14.svg"
+      alt=""
+      role="button" tabindex="0"
+      (click)="onNotificationsFilterClick()" (keyup.enter)="onNotificationsFilterClick()"
+    />
+  </div>
+
+  <!-- ===== Summary cards ===== -->
+  <div class="np-cards-panel">
+
+    <div class="np-cards-row np-cards-row-1">
+
+      <!-- Card 1: Profile -->
+      <div class="np-card np-card-profile">
+        <div class="np-profile-row">
+
+          <!-- Left column: icon+name, then bank/phone/email -->
+          <div class="np-profile-left">
+            <div class="np-profile-head">
+              <div class="np-profile-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="8" r="4" stroke="#4b91f8" stroke-width="1.8" />
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#4b91f8" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </div>
+              <span class="np-profile-name">{{ profile.name }}</span>
+            </div>
+            <div class="np-profile-info">
+              <div class="np-profile-bank">{{ profile.bank }}</div>
+              <div class="np-profile-contact">
+                <img src="/assets/NOC_Portal/Phone.svg" alt="" />
+                <span>{{ profile.phone }}</span>
+              </div>
+              <div class="np-profile-contact">
+                <img src="/assets/NOC_Portal/Mail.svg" alt="" />
+                <span>{{ profile.email }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column: tag pinned top, button pinned bottom -->
+          <div class="np-profile-right">
+            <span class="np-profile-tag">{{ profile.lsiTag }}</span>
+            <div class="np-btn np-btn-blue np-profile-btn" role="button" tabindex="0" (click)="onViewProfileDetails()" (keyup.enter)="onViewProfileDetails()">View Full Details</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Card 2: Network Alarms / Threshold Alarms -->
+      <div class="np-card np-card-alarms">
+        <div class="np-alarms-block">
+          <div class="np-alarms-left">
+            <img src="/assets/NOC_Portal/icon-park-outline_alarm.svg" alt="" />
+            <span class="np-alarms-title">Network Alarms</span>
+          </div>
+          <div class="np-alarms-badges">
+            <div class="np-alarm-badge" *ngFor="let a of networkAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
+          </div>
+        </div>
+        <div class="np-alarms-block">
+          <div class="np-alarms-left">
+            <img src="/assets/NOC_Portal/ic_sharp-alarm.svg" alt="" />
+            <span class="np-alarms-title">Threshold Alarms</span>
+          </div>
+          <div class="np-alarms-badges">
+            <div class="np-alarm-badge" *ngFor="let a of thresholdAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: OTN Span Loss -->
+      <div class="np-card np-card-otn">
+        <div class="np-otn-head">
+          <img src="/assets/NOC_Portal/TrendingUp.svg" alt="" />
+          <span>OTN Span Loss</span>
+          <div class="np-btn np-btn-purple" role="button" tabindex="0" (click)="onViewOtnDetails()" (keyup.enter)="onViewOtnDetails()">View Full Details</div>
+        </div>
+        <div class="np-otn-row" *ngFor="let row of otnSpanLoss" [style.backgroundColor]="row.bg" [style.borderColor]="row.border" [style.color]="row.color">
+          <span>{{ row.label }}</span>
+          <b>{{ row.value }}</b>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="np-cards-row np-cards-row-2">
+
+      <!-- Card 4: Status -->
+      <div class="np-card np-card-status">
+        <div class="np-card-heading">
+          <img class="np-card-heading-icon" src="/assets/NOC_Portal/mdi_list-status.svg" alt="" />
+          <span>Status</span>
+          <div class="np-card-heading-actions">
+            <img src="/assets/NOC_Portal/gg_info.svg" alt="Info" role="button" tabindex="0" (click)="onStatusInfoClick()" (keyup.enter)="onStatusInfoClick()" />
+            <img
+              [class.spinning]="isStatusRefreshing"
+              src="/assets/NOC_Portal/RefreshCw.svg" alt="Refresh"
+              role="button" tabindex="0"
+              (click)="onStatusRefresh()" (keyup.enter)="onStatusRefresh()"
+            />
+          </div>
+        </div>
+        <div class="np-card-divider"></div>
+        <div class="np-status-grid">
+          <div class="np-status-field" *ngFor="let f of statusFields">
+            <span class="np-status-label">{{ f.label }}</span>
+            <span class="np-status-pill" [style.backgroundColor]="f.bg" [style.borderColor]="f.border" [style.color]="f.color">{{ f.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Product Details -->
+      <div class="np-card np-card-product">
+        <div class="np-card-heading">
+          <img class="np-card-heading-icon" src="/assets/NOC_Portal/ix_details.svg" alt="" />
+          <span>Product details</span>
+          <div class="np-card-heading-actions">
+            <img src="/assets/NOC_Portal/gg_info-1.svg" alt="Info" role="button" tabindex="0" (click)="onProductDetailsInfoClick()" (keyup.enter)="onProductDetailsInfoClick()" />
+          </div>
+        </div>
+        <div class="np-card-divider"></div>
+        <div class="np-product-grid">
+          <div class="np-product-field" *ngFor="let f of productDetails">
+            <span class="np-product-label">{{ f.label }}</span>
+            <span class="np-product-pill">{{ f.value }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===== LSI Health Index ===== -->
+  <app-noc-health-index></app-noc-health-index>
+
+  <!-- ===== Footer ===== -->
+  <div class="the-main-page">
+    <div class="tier-1">
+      <div class="powered-by">Powered by</div>
+      <img class="t1-4-icon" src="/assets/shared/im-3-tier1.png" alt="" />
+    </div>
+  </div>
+
+</div>
+</div>
