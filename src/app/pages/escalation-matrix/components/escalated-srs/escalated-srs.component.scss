@@ -48,7 +48,7 @@
 .group-parent7 { position: absolute; top: 0; left: 1008.6px; width: 254.8px; height: 46px; font-size: 19.25px; color: rgba(15, 23, 42, 0.5); }
 .rectangle-wrapper { position: absolute; top: 0; left: 0; width: 254.8px; height: 46px; }
 .group-child5 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; box-sizing: border-box; width: 254.8px; height: 46px; transition: border-color 0.2s ease, background-color 0.2s ease; }
-.group-parent7:focus-within .group-child5 { border-color: #e60023; background-color: #fff; }
+.group-parent7:focus-within .group-child5 { border-color: #e40000; background-color: #fff; }
 .search-requests {
   position: absolute;
   top: 11px; left: 65.29px;
@@ -137,7 +137,7 @@
   cursor: pointer;
   color: rgba(0, 0, 0, 0.75);
   &:hover { background-color: rgba(15, 23, 42, 0.05); }
-  &.sort-option-active { color: #e20010; font-weight: 600; background-color: rgba(226, 0, 16, 0.06); }
+  &.sort-option-active { color: #e40000; font-weight: 600; background-color: rgba(228, 0, 0, 0.06); }
 }
 
 // ================================
@@ -345,8 +345,8 @@
   justify-content: center;
   transition: background 0.2s ease;
   &.page-btn-active {
-    box-shadow: 0px 0px 10px rgba(220, 38, 38, 0.3);
-    background: linear-gradient(135deg, #ca3a3a, rgba(242, 24, 24, 0.54));
+    box-shadow: 0px 0px 10px rgba(228, 0, 0, 0.3);
+    background: linear-gradient(135deg, #e40000, rgba(228, 0, 0, 0.75));
     color: #fff;
   }
   &.page-btn-disabled {

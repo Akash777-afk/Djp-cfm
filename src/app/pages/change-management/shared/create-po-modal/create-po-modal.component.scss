@@ -58,7 +58,7 @@
   letter-spacing: -0.22px;
   line-height: 33px;
   font-weight: 600;
-  color: #e4002b;
+  color: #e40000;
 }
 .button-close-modal {
   border-radius: 8px;
@@ -111,7 +111,7 @@
 .text {
   line-height: 21px;
   font-size: 16px;
-  color: #e4002b;
+  color: #e40000;
 }
 .container5 {
   align-self: stretch;
@@ -135,8 +135,8 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:focus-within {
-    border-color: #e4002b;
-    box-shadow: 0px 0px 0px 3px rgba(228, 0, 43, 0.12);
+    border-color: #e40000;
+    box-shadow: 0px 0px 0px 3px rgba(228, 0, 0, 0.12);
   }
 }
 .enter-crq-number {
@@ -166,7 +166,7 @@
   border-radius: 50%;
   transition: background-color 0.15s ease;
 
-  &:hover { background-color: rgba(228, 0, 43, 0.08); }
+  &:hover { background-color: rgba(228, 0, 0, 0.08); }
 }
 .icon2 {
   height: 18px;
@@ -213,7 +213,7 @@
   width: 200px;
   border-radius: 14px;
   background-color: #fff;
-  border: 1.3px solid #e4002b;
+  border: 1.3px solid #e40000;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -224,20 +224,20 @@
   transition: background-color 0.15s ease;
   font: inherit;
 
-  &:hover { background-color: rgba(228, 0, 43, 0.05); }
+  &:hover { background-color: rgba(228, 0, 0, 0.05); }
 }
 .cancel {
   position: relative;
   letter-spacing: 0.14px;
   line-height: 21px;
   font-weight: 600;
-  color: #e4002b;
+  color: #e40000;
 }
 .button2 {
   height: 48px;
   width: 200px;
   border-radius: 14px;
-  background-color: #e4002b;
+  background-color: #e40000;
   border: none;
   display: flex;
   align-items: center;
@@ -290,7 +290,7 @@
   letter-spacing: -0.22px;
   line-height: 33px;
   font-weight: 600;
-  color: #e4002b;
+  color: #e40000;
 }
 .form-body {
   flex: 1 1 auto;
@@ -330,7 +330,7 @@
   color: #4a5565;
 }
 .field-required {
-  color: #e4002b;
+  color: #e40000;
   margin-left: 3px;
 }
 .field-box {
@@ -380,10 +380,10 @@
 
   &::placeholder { color: rgba(17, 24, 39, 0.35); }
 
-  &:hover { background-color: rgba(226, 0, 16, 0.03); }
+  &:hover { background-color: rgba(228, 0, 0, 0.03); }
   &:focus {
     background-color: #fff;
-    box-shadow: 0px 0px 0px 2px rgba(226, 0, 16, 0.15) inset;
+    box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
   }
 }
 .field-input[readonly] {
@@ -423,7 +423,7 @@ input[type='datetime-local'].field-input {
   min-width: 160px;
   border-radius: 14px;
   background-color: #fff;
-  border: 1.3px solid #e4002b;
+  border: 1.3px solid #e40000;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -433,13 +433,13 @@ input[type='datetime-local'].field-input {
   font: inherit;
   transition: background-color 0.15s ease;
 
-  &:hover { background-color: rgba(228, 0, 43, 0.05); }
+  &:hover { background-color: rgba(228, 0, 0, 0.05); }
 }
 .step2-submit-btn {
   height: 53px;
   min-width: 160px;
   border-radius: 14px;
-  background-color: #e4002b;
+  background-color: #e40000;
   border: none;
   display: flex;
   align-items: center;

@@ -1,0 +1,42 @@
+<div class="np-acc" [class.np-acc-expanded]="expanded">
+
+  <div
+    class="np-acc-header"
+    role="button"
+    tabindex="0"
+    [attr.aria-expanded]="expanded"
+    (click)="toggle()"
+    (keyup.enter)="toggle()"
+  >
+    <span class="np-acc-title">{{ title }}</span>
+
+    <span class="np-acc-extra">
+      <ng-content select="[accordionExtra]"></ng-content>
+    </span>
+
+    <!-- Real asset (material-symbols_call.svg — misnamed in the source
+         export, it's actually a filled dropdown caret already in brand
+         red) rather than a hand-drawn triangle, so every dropdown affordance
+         in the app traces back to the same file. -->
+    <img
+      class="np-acc-chevron"
+      [class.np-acc-chevron-open]="expanded"
+      src="/assets/NOC_Portal/material-symbols_call.svg"
+      width="42" height="37"
+      alt=""
+    />
+  </div>
+
+  <!-- No *ngIf here on purpose — a CSS max-height transition (see the scss)
+       needs the content to stay in the DOM to animate smoothly. Angular's
+       animations module isn't wired into this app anywhere else, so this
+       matches the rest of the codebase's plain-CSS-transition convention
+       (e.g. .asr-icon-btn, .np-sidebar-item) rather than introducing one
+       just for this component. -->
+  <div class="np-acc-body" [class.np-acc-body-open]="expanded">
+    <div class="np-acc-body-inner">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>

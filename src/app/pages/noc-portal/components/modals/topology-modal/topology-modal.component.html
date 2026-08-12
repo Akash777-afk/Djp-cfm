@@ -1,0 +1,55 @@
+<div class="tp-overlay" *ngIf="isOpen" role="presentation" (click)="close()">
+  <div class="tp-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="tp-header">
+      <div class="tp-title">Topology</div>
+
+      <div class="tp-header-actions">
+        <div class="tp-select-box">
+          <select class="tp-select" [(ngModel)]="rjnNumber" [class.is-placeholder]="!rjnNumber">
+            <option value="" disabled hidden>Select RJN Number</option>
+            <option *ngFor="let o of rjnOptions" [ngValue]="o">{{ o }}</option>
+          </select>
+          <img class="tp-select-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
+        </div>
+
+        <div class="tp-select-box tp-select-box-options">
+          <select class="tp-select">
+            <option value="">Options</option>
+          </select>
+          <img class="tp-select-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
+        </div>
+
+        <button type="button" class="tp-icon-btn" aria-label="Zoom in" (click)="zoomIn()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="9" r="6.2" stroke="#4b5563" stroke-width="1.5"/>
+            <path d="M13.6 13.6L17.5 17.5M9 6.5V11.5M6.5 9H11.5" stroke="#4b5563" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" class="tp-icon-btn" aria-label="Zoom out" (click)="zoomOut()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="9" r="6.2" stroke="#4b5563" stroke-width="1.5"/>
+            <path d="M13.6 13.6L17.5 17.5M6.5 9H11.5" stroke="#4b5563" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" class="tp-icon-btn" [class.spinning]="isRefreshing" aria-label="Refresh" (click)="onRefresh()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.5 10a6.5 6.5 0 1 1-2.1-4.8M16.5 3v4h-4" stroke="#4b5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="tp-icon-btn" aria-label="Close" (click)="close()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5L15 15M15 5L5 15" stroke="#4b5563" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tp-body">
+      <div class="tp-diagram-viewport">
+        <img class="tp-diagram-img" [src]="diagramImage" [style.transform]="'scale(' + zoom + ')'" alt="Network topology diagram" />
+      </div>
+    </div>
+
+  </div>
+</div>

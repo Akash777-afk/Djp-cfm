@@ -62,8 +62,8 @@
   justify-content: center;
   transition: background 0.2s ease;
   &.page-btn-active {
-    box-shadow: 0px 0px 10px rgba(220,38,38,0.3);
-    background: linear-gradient(135deg, #ca3a3a, rgba(242,24,24,0.54));
+    box-shadow: 0px 0px 10px rgba(228, 0, 0, 0.3);
+    background: linear-gradient(135deg, #e40000, rgba(228, 0, 0, 0.75));
     color: #fff;
   }
 }
@@ -139,7 +139,7 @@
   position: absolute;
   top: 0; left: 0;
   border-radius: 14px;
-  background: linear-gradient(135deg, #d1150b, #ff8282);
+  background: linear-gradient(135deg, #e40000, #ff8282);
   width: 52.2px; height: 52px;
   display: flex;
   flex-direction: column;
@@ -236,7 +236,7 @@
   input[type="checkbox"] {
     flex: 0 0 auto;
     width: 16px; height: 16px;
-    accent-color: #e20010;
+    accent-color: #e40000;
     cursor: pointer;
   }
 }
@@ -254,7 +254,7 @@
   font-size: 16px;
   outline: none;
   transition: border-color 0.2s ease;
-  &:focus { border-color: #e60023; }
+  &:focus { border-color: #e40000; }
 }
 
 // ---- Search ----
@@ -262,7 +262,7 @@
 .rectangle-frame { position: absolute; top: 0; left: 0; width: 160px; height: 46px; }
 .group-child7 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #f9f9f9; border: 1px solid #cfd4dc; width: 160px; height: 46px; transition: border-color 0.2s ease, background-color 0.2s ease; }
 .group-parent2:focus-within .group-child7 {
-  border-color: #e60023;
+  border-color: #e40000;
   background-color: #fff;
 }
 .search-results {
@@ -352,7 +352,7 @@
   color: #fff;
 }
 .rectangle-wrapper2 { position: absolute; top: 0; left: 0; width: 100px; height: 46px; }
-.group-child9 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #e20010; width: 100px; height: 46px; }
+.group-child9 { position: absolute; top: 0; left: 0; border-radius: 30px; background-color: #e40000; width: 100px; height: 46px; }
 .export { position: absolute; top: 11px; left: 16px; font-weight: 600; cursor: pointer; }
 
 // ---- Settings ----

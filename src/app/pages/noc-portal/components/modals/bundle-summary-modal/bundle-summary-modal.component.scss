@@ -1,0 +1,131 @@
+:host {
+  display: contents;
+}
+
+// Same overlay/card/header language as every other modal in the app
+// (create-po-modal, service-impact-modal, contact-centre-modal) — sits
+// above the fixed header (110) and sidebar (100) so it's unambiguously the
+// only interactive thing on screen while open.
+.bs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bs-card {
+  width: min(1200px, 94vw);
+  margin: auto 0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 22px;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, sans-serif;
+  overflow: hidden;
+}
+
+.bs-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px;
+  border-bottom: 1.3px solid #f0f0f0;
+}
+.bs-title {
+  font-size: 24px;
+  letter-spacing: -0.22px;
+  line-height: 33px;
+  font-weight: 600;
+  color: #e40000;
+}
+.bs-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+// Bordered-square icon button — matches the reference's refresh/close
+// buttons here (a visible outline box), unlike the plain borderless X used
+// on the simpler filter-only modals (contact-centre, service-impact).
+.bs-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  svg { width: 18px; height: 18px; }
+  &:hover { background-color: rgba(0, 0, 0, 0.03); border-color: #d1d5db; }
+  &.spinning svg { animation: bs-spin 0.7s linear; }
+}
+@keyframes bs-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.bs-body {
+  padding: 24px 32px 32px;
+}
+
+.bs-table-wrap {
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.bs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #eaecf0;
+    padding: 14px 24px;
+    text-align: left;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.44);
+    white-space: nowrap;
+  }
+  td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eaecf0;
+    font-size: 15px;
+    color: #374151;
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+}
+.bs-lsi-link {
+  color: #0284c7;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  &:hover { text-decoration: underline; }
+}
+.bs-view-link {
+  color: #e40000;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  &:hover { text-decoration: underline; }
+}

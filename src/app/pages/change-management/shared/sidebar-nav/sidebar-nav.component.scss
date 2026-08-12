@@ -19,8 +19,11 @@
   border-top-right-radius: 400px;
   border-bottom-right-radius: 400px;
   border-bottom-left-radius: 0;
-  background-color: #ea473e;
-  box-shadow: 0px 2px 44px rgba(0, 0, 0, 0.25), 0px 0px 33px rgba(0, 0, 0, 0.25) inset;
+  background-color: #e40000;
+  // Same glossy inset highlight as NOC Portal's .np-nav-pill (the red pills
+  // bar) — swapped out for the old dark inset glow so the sidebar reads as
+  // the same red-button family instead of its own separate look.
+  box-shadow: 0px 2px 44px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(255, 255, 255, 0.36) inset;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -44,18 +47,34 @@
   width: 42px;
   height: 42px;
   padding: 0;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  opacity: 0.92;
+  transition: transform 0.15s ease;
 
-  &:hover,
-  &:focus-visible {
-    opacity: 1;
-    transform: scale(1.1);
+  // Hover Overlay: a 58x58 circle — bigger than the 42px item/icon itself —
+  // going from 10% to 25% white. Put on ::before rather than the item's own
+  // background so the halo can extend past the item's 42x42 hit-box without
+  // resizing it (the icon span gets z-index:1 below so it stays on top).
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+    pointer-events: none;
+  }
+  &:hover::before,
+  &:focus-visible::before {
+    background-color: rgba(255, 255, 255, 0.25);
   }
   &:active {
     transform: scale(0.95);
@@ -67,6 +86,8 @@
 }
 
 .sidebar-nav-icon {
+  position: relative;
+  z-index: 1;
   width: 42px;
   height: 42px;
   display: flex;

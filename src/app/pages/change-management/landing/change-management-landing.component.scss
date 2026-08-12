@@ -5,7 +5,7 @@
 .cml-scale-wrapper {
   --cml-scale: 1;
   width: calc(1920px * var(--cml-scale));
-  height: calc(1310px * var(--cml-scale));
+  height: calc(1263px * var(--cml-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -15,6 +15,16 @@
   position: relative;
   width: 1920px;
   height: 1310px;
+  // Every child below is absolutely positioned relative to this canvas
+  // using literal top values baked in against the OLD 170px-tall header
+  // (e.g. .cml-quick-btn was top:206 = 170 + the standard ~37px gap).
+  // Rather than hunt down and re-number every one of them now that the
+  // header is 122px tall, this single negative margin shifts the whole
+  // canvas (and everything positioned relative to it) up by 47px, landing
+  // every child at the new 159px (122 + 37) gap with zero risk of missing
+  // one. The wrapper's height above is reduced by the same 47px so
+  // nothing is left clipped or leaves a blank gap.
+  margin-top: -37px;
   background-color: #f7f8f9;
   overflow: hidden;
   text-align: left;

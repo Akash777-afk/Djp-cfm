@@ -1,0 +1,271 @@
+:host { display: contents; }
+
+// Values copied from work-notes.component.scss / all-srs.component.scss —
+// same design system, this component just gets its own budget headroom by
+// living in its own stylesheet rather than growing noc-portal.component.scss
+// further. (The toolbar row — 5 icons/search/sort/refresh — lives in
+// noc-portal.component.scss instead, as .np-srs-*: it's projected into the
+// shared accordion header from that component's own template, so its
+// styles have to live where that markup actually is.)
+$radius-card: 22px;
+$color-brand-red: #e40000;
+
+// Typography hierarchy for this section — all within the requested
+// 16-24px range (nothing smaller, nothing bigger), sized down from the
+// max end: labels/tabs/buttons read as supporting text, not headings.
+$fs-tab: 18px;
+$fs-value: 18px;
+$fs-label: 16px;
+
+.srs-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// ---------- Top info: 3 columns x 3 read-only fields ----------
+.srs-top-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 48px;
+  row-gap: 0;
+  padding-bottom: 18px;
+  padding-top: 18px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.18);
+}
+.srs-top-col { display: flex; flex-direction: column; min-width: 0; }
+.srs-top-field {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.12);
+}
+.srs-top-field-last { border-bottom: none; }
+.srs-top-label {
+  font-size: $fs-label;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+.srs-top-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #101828;
+  // Long values (e.g. Problem Summary) wrap instead of overflowing — these
+  // aren't table cells, there's no shared grid width to protect.
+  word-break: break-word;
+}
+
+// ---------- Tabs + the 3 circular action buttons ----------
+.srs-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  row-gap: 12px;
+  padding: 8px 20px;
+  border-radius: $radius-card;
+  background: linear-gradient(90deg, rgba(228, 0, 0, 0.1), rgba(228, 0, 0, 0.02));
+}
+.srs-tabs {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 32px);
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+.srs-tab {
+  font-size: $fs-label;
+  font-weight: 600;
+  color: $color-brand-red;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 10px 8px;
+  border-radius: $radius-card;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  &:hover { background-color: rgba(228, 0, 0, 0.06); }
+}
+.srs-tab-active {
+  background-color: $color-brand-red;
+  color: #fff;
+  box-shadow: 0px 4px 10px rgba(228, 0, 0, 0.28);
+  &:hover { background-color: $color-brand-red; }
+}
+.srs-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+// ssr3.svg/ssr4.png/ssr5.png are already complete, self-contained circle
+// graphics (their own fill/border baked in) — this just sizes/spaces/
+// hosts the tooltip, no extra CSS border drawn on top of them.
+.srs-icon-circle {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  img { width: 38px; height: 38px; }
+  &:hover { transform: scale(1.08); }
+  &:active { transform: scale(0.94); }
+}
+.srs-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 5;
+}
+.srs-icon-circle:hover .srs-tooltip,
+.srs-icon-circle:focus-visible .srs-tooltip {
+  opacity: 1;
+}
+
+// ---------- Tab body ----------
+.srs-tab-body { min-height: 40px; }
+.srs-tab-placeholder {
+  padding: 40px 0;
+  text-align: center;
+  font-size: $fs-value;
+  color: rgba(0, 0, 0, 0.4);
+}
+.srs-loading {
+  padding: 40px 0;
+  text-align: center;
+  font-size: $fs-value;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+// ---------- SR Details form card ----------
+.srs-form-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-sizing: border-box;
+  padding: 20px 22px;
+}
+.srs-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  row-gap: 16px;
+}
+.srs-form-col { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.srs-form-field { display: flex; flex-direction: column; gap: 6px; }
+.srs-form-label {
+  font-size: $fs-label;
+  font-weight: 600;
+  color: #344054;
+}
+.srs-form-input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+.srs-form-value {
+  font-size: 17px;
+  color: #939494bd;
+  word-break: break-word;
+}
+.srs-form-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: $fs-label;
+  color: #101828;
+}
+// Editing state gets a red focus ring on the whole box, same convention as
+// .awn-expanded-textarea:focus. Driven by [class.srs-form-editing] in the
+// template (not a :has() selector — broader browser support).
+.srs-form-editing {
+  border-color: $color-brand-red;
+  box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
+  background-color: #fff;
+}
+
+// edit.png is a white pencil (already used that way in .np-nav-icon-btn's
+// red circle) — invisible on this field's light background as a bare <img>,
+// so it gets the same "colored circle behind a white icon" treatment
+// instead of recoloring the raster asset itself. Small/subtle, not a
+// prominent button.
+.srs-edit-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background-color: #b0b8c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  img { width: 10px; height: 10px; }
+  &:hover { background-color: $color-brand-red; }
+  &:active { transform: scale(0.92); }
+}
+
+// ---------- Save row ----------
+.srs-save-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 14px;
+}
+.srs-saved-msg {
+  font-size: $fs-label;
+  font-weight: 600;
+  color: #15803d;
+}
+.srs-save-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background-color: $color-brand-red;
+  color: #fff;
+  font: inherit;
+  font-size: $fs-label;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+  &:hover:not(:disabled) { filter: brightness(1.08); }
+  &:active:not(:disabled) { transform: scale(0.98); }
+  &:disabled { opacity: 0.6; cursor: default; }
+}

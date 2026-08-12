@@ -6,7 +6,7 @@
 .the-djp-escalation-matrix-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1382px * var(--djp-scale));
+  height: calc(1334px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -16,12 +16,14 @@
   width: 1920px;
   height: 1212px;
   // The shared header (app-im-header-bar) is position:fixed/overlay at
-  // 170px tall (106px topbar + 64px breadcrumb) rather than in normal flow,
+  // 122px tall (82px topbar + 40px breadcrumb) rather than in normal flow,
   // so this margin — not a baked-in offset on each child — is what clears
-  // it; every child keeps the plain 37px-from-card top values as designed.
+  // it. Every child keeps its own plain 37px-from-card top values on top
+  // of this (e.g. .im-welcome below is top:37px), so this is just the
+  // header height itself, not header+gap.
   // (Must be margin, not padding: an absolutely-positioned descendant's
   // containing block is the padding box, so padding-top wouldn't move it.)
-  margin-top: 120px;
+  margin-top: 86px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
@@ -35,8 +37,8 @@
 
 // ---------- Welcome banner ----------
 // Same "Welcome back, {{userName}} !" + 2 quick-action icons pattern as
-// Incident Management that 170px is already applied via
-// margin-top above, so these are IM's values minus 170).
+// Incident Management, but header clearance is already applied via
+// margin-top above, so these just use the plain 37px-from-card values.
 .im-welcome {
   position: absolute;
   top: 37px; left: 37px;

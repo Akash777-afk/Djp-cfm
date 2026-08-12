@@ -27,17 +27,18 @@ export const THRESHOLD_ALARMS: AlarmBadge[] = [
 ];
 
 export const OTN_SPAN_LOSS: OtnSpanLossRow[] = [
-  { label: 'Critical',  value: 5, bg: '#fee2e2', border: '#ffc5c5', color: '#b91c1c' },
   { label: 'Very High', value: 9, bg: '#ffedd5', border: '#ffd49b', color: '#c2410c' },
+  { label: 'Critical',  value: 5, bg: '#fee2e2', border: '#ffc5c5', color: '#b91c1c' },
+  { label: 'Medium',    value: 0, bg: 'rgba(255, 234, 0, 0.19)', border: '#ffea00', color: '#958800' },
 ];
 
 export const STATUS_FIELDS: StatusField[] = [
   { label: 'ECRM Status',      value: 'Active',    bg: 'rgba(21, 128, 61, 0.11)', border: 'rgba(4, 143, 56, 0.3)',   color: '#15803d' },
-  { label: 'Link Status',      value: 'Link Down', bg: 'rgba(210, 179, 163, 0.11)', border: 'rgba(185, 28, 28, 0.3)', color: '#b91c1c' },
+  { label: 'Link Status',      value: 'Link Down', bg: '#faf7f5', border: 'rgba(185, 28, 28, 0.3)', color: '#b91c1c' },
   { label: 'Outage',           value: 'No',        bg: '#f1f5f9', border: 'rgba(0, 0, 0, 0.14)', color: '#475569' },
   { label: 'Planned Active',   value: 'NA',        bg: '#faf7f5', border: '#e6b5b4',              color: '#b91c1c' },
   { label: 'Over utilization', value: 'No',        bg: '#f1f5f9', border: 'rgba(0, 0, 0, 0.07)', color: '#475569' },
-  { label: 'Tierone LSI',      value: 'Link Down', bg: 'rgba(210, 179, 163, 0.11)', border: 'rgba(185, 28, 28, 0.3)', color: '#b91c1c' },
+  { label: 'Tierone LSI',      value: 'Link Down', bg: '#faf7f5', border: 'rgba(185, 28, 28, 0.3)', color: '#b91c1c' },
 ];
 
 export const PRODUCT_DETAILS: ProductDetailField[] = [
@@ -70,20 +71,27 @@ export const NAV_ITEMS: PrimaryNavItem[] = [
 ];
 
 export const TOP_UTILITY_ICONS: TopUtilityIcon[] = [
-  { key: 'analytics', icon: `${A}/majesticons_analytics-line.svg`,        alt: 'Analytics',        width: 42, height: 42 },
-  { key: 'call',      icon: `${A}/tdesign_call.svg`,                      alt: 'Call',             width: 36, height: 36 },
-  { key: 'network',   icon: `${A}/fluent-mdl2_my-network.svg`,            alt: 'Network',          width: 39, height: 39 },
-  { key: 'knowledge', icon: `${A}/carbon_ibm-watson-knowledge-studio.svg`, alt: 'Knowledge studio', width: 42, height: 42 },
+  { key: 'analytics', icon: `${A}/majesticons_analytics-line.svg`,        alt: 'NAMO',                 width: 42, height: 42 },
+  { key: 'call',      icon: `${A}/tdesign_call.svg`,                      alt: 'Airtel IQ',            width: 36, height: 36 },
+  { key: 'network',   icon: `${A}/fluent-mdl2_my-network.svg`,            alt: 'NMS',                  width: 39, height: 39 },
+  { key: 'knowledge', icon: `${A}/Knowledgemmt.svg`,                      alt: 'Knowledge management', width: 39, height: 39 },
 ];
 
 // Same sidebar shell as Change Management (dashboard + LSI search
 // unchanged); only the bottom three icons are NOC Portal-specific.
+// Icon assets for slots 3 and 5 are swapped from the original order
+// (Frame 427319855 now sits in slot 3, Frame 427319853 in slot 5).
 export const NOC_SIDEBAR_ITEMS: SidebarNavItem[] = [
-  { key: 'dashboard',    label: 'Dashboard',  icon: 'dashboard' },
-  { key: 'lsi-search',   label: 'LSI Search', icon: 'search' },
-  { key: 'noc-alerts',   label: 'Alerts',     icon: 'img', iconSrc: `${A}/Frame 427319853.svg` },
-  { key: 'noc-insights', label: 'Insights',   icon: 'img', iconSrc: `${A}/Frame 427319854.svg` },
-  { key: 'noc-reports',  label: 'Reports',    icon: 'img', iconSrc: `${A}/Frame 427319855.svg` },
+  { key: 'dashboard',             label: 'Dashboard',         icon: 'dashboard' },
+  { key: 'lsi-search',            label: 'LSI Search',        icon: 'search' },
+  { key: 'noc-feedback',          label: 'Feedback',          icon: 'img', iconSrc: `${A}/Frame 427319855.svg` },
+  { key: 'noc-escalation-matrix', label: 'Escalation matrix', icon: 'img', iconSrc: `${A}/Frame 427319854.svg` },
+  { key: 'noc-logout',            label: 'Logout',            icon: 'img', iconSrc: `${A}/Frame 427319853.svg` },
 ];
 
 export const ASSET = A;
+
+// SR Journey Summary, FLT Observation / Expected Root Cause (Crystalized
+// RCA), and both SR Insights cards are all backend-driven now — see
+// services/sr-details.service.ts + services/sr-details.mock.ts, not this
+// file. This file only holds data that isn't tied to a specific searched SR.

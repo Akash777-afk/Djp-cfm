@@ -1,0 +1,59 @@
+<div class="pk-overlay" *ngIf="isOpen" role="presentation" (click)="close()">
+  <div class="pk-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="pk-header">
+      <div class="pk-title">Performance KPI</div>
+      <div class="pk-close" role="button" tabindex="0" aria-label="Close" (click)="close()" (keyup.enter)="close()">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="pk-body">
+
+      <div class="pk-tabs">
+        <button
+          type="button"
+          class="pk-tab"
+          *ngFor="let tab of tabs"
+          [class.pk-tab-active]="tab.key === activeTabKey"
+          (click)="setTab(tab)"
+        >{{ tab.label }}</button>
+      </div>
+
+      <ng-container *ngIf="activeTab.leftFields.length > 0; else pkEmptyState">
+        <div class="pk-fields-grid">
+          <div class="pk-fields-col">
+            <div class="pk-field" *ngFor="let f of activeTab.leftFields">
+              <div class="pk-field-label">{{ f.label }}</div>
+              <div class="pk-field-value">{{ f.value }}</div>
+            </div>
+          </div>
+          <div class="pk-fields-col">
+            <div class="pk-field" *ngFor="let f of activeTab.rightFields">
+              <div class="pk-field-label">{{ f.label }}</div>
+              <div class="pk-field-value">{{ f.value }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pk-footer">
+          <button type="button" class="pk-reset-btn" (click)="reset()">Reset</button>
+          <button type="button" class="pk-submit-btn" (click)="submit()">Submit</button>
+        </div>
+      </ng-container>
+
+      <ng-template #pkEmptyState>
+        <div class="pk-empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="pk-empty-text">{{ activeTab.label }} data coming soon</div>
+        </div>
+      </ng-template>
+
+    </div>
+
+  </div>
+</div>

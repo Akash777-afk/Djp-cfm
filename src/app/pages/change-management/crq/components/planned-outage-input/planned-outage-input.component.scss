@@ -100,7 +100,7 @@
   top: 0px;
   height: 46px;
   border-radius: 50px;
-  background: linear-gradient(90deg, #d1150b, #ff6868);
+  background: linear-gradient(90deg, #e40000, #ff6868);
   box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1);
   transition: left 0.25s ease, width 0.25s ease;
   z-index: 0;
@@ -204,11 +204,11 @@
   transition: background-color 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
-    background-color: rgba(226, 0, 16, 0.03);
+    background-color: rgba(228, 0, 0, 0.03);
   }
   &:focus {
     background-color: #fff;
-    box-shadow: 0px 0px 0px 2px rgba(226, 0, 16, 0.15) inset;
+    box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
   }
 }
 

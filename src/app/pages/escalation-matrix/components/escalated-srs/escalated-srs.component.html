@@ -59,14 +59,14 @@
 
       <!-- Export / download -->
       <div class="icon-btn" role="button" tabindex="0" aria-label="Download" (click)="onExport()" (keyup.enter)="onExport()">
-        <img src="\assets/escalation-matrix/Download.png" alt="" />
+        <img src="\assets/shared/Download.png" alt="" />
       </div>
 
       <!-- Refresh -->
       <img
         class="icon-btn refresh-icon"
         [class.spinning]="isTableRefreshing"
-        src="\assets/escalation-matrix/Refresh.png"
+        src="\assets/shared/Refresh.png"
         alt="Refresh"
         role="button"
         tabindex="0"
@@ -78,7 +78,7 @@
       <div class="icon-btn-wrap">
         <img
           class="icon-btn"
-          src="\assets/escalation-matrix/Settings.png"
+          src="\assets/shared/Settings.png"
           alt="Settings"
           role="button"
           tabindex="0"
@@ -92,14 +92,14 @@
       <!-- Filter -->
       <div class="icon-btn-wrap">
         <div class="icon-btn" role="button" tabindex="0" [attr.aria-expanded]="isFilterOpen" (click)="toggleFilter()" (keyup.enter)="toggleFilter()">
-          <img src="\assets/escalation-matrix/Filter.png" alt="" />
+          <img src="\assets/shared/Filter.png" alt="" />
         </div>
         <div class="dropdown-panel settings-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">Filters — coming soon</div>
       </div>
 
       <!-- Expand -->
       <div class="icon-btn" role="button" tabindex="0" aria-label="Expand" (click)="onExpand()" (keyup.enter)="onExpand()">
-        <img src="\assets/escalation-matrix/Expansion.png" alt="" />
+        <img src="\assets/shared/Expansion.png" alt="" />
       </div>
 
     </div>

@@ -40,10 +40,14 @@ export class ChangeManagementSidebarNavComponent {
   // of staying full-size and drifting out of place.
   @Input() scale = 1;
 
-  // Distance from the viewport top, in px at scale 1 — matches whichever
-  // fixed header bar sits above the sidebar on the host page (Change
-  // Management's own header is 134px tall; other hosts pass their own).
-  @Input() top = 134;
+  // Distance from the viewport top, in px at scale 1. Change Management's
+  // own header (app-cm-header-bar) is 122px tall (82px topbar + 40px
+  // breadcrumb) — 108 is a deliberate ~14px tuck-under-the-header overlap
+  // (see the header's own z-index comment), not the header's height.
+  // Other hosts that want a real gap below their header should pass
+  // header height + however much clearance they want, not just the
+  // header height alone.
+  @Input() top = 108;
 
   @Input() items: SidebarNavItem[] = [];
 

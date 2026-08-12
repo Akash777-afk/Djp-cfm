@@ -1,0 +1,52 @@
+<div class="bs-overlay" *ngIf="isOpen" role="presentation" (click)="close()">
+  <div class="bs-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="bs-header">
+      <div class="bs-title">Bundle Summary</div>
+      <div class="bs-header-actions">
+        <button type="button" class="bs-icon-btn" [class.spinning]="isRefreshing" aria-label="Refresh" (click)="onRefresh()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.5 10a6.5 6.5 0 1 1-2.1-4.8M16.5 3v4h-4" stroke="#4b5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="bs-icon-btn" aria-label="Close" (click)="close()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5L15 15M15 5L5 15" stroke="#4b5563" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="bs-body">
+      <div class="bs-table-wrap">
+        <table class="bs-table">
+          <thead>
+            <tr>
+              <th>LSI</th>
+              <th>Product name</th>
+              <th>Common LSI</th>
+              <th>Location</th>
+              <th>BW</th>
+              <th>Customer segment</th>
+              <th>Platform</th>
+              <th>Bundle attributes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of rows">
+              <td><a href="javascript:void(0)" class="bs-lsi-link">{{ row.lsi }}</a></td>
+              <td>{{ row.productName }}</td>
+              <td>{{ row.commonLsi }}</td>
+              <td>{{ row.location }}</td>
+              <td>{{ row.bw }}</td>
+              <td>{{ row.customerSegment }}</td>
+              <td>{{ row.platform }}</td>
+              <td><a href="javascript:void(0)" class="bs-view-link" (click)="onViewDetails(row)">View Details</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

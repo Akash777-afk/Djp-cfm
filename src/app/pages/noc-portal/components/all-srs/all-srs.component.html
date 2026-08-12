@@ -1,0 +1,164 @@
+<div class="asr-card">
+
+  <!-- Toolbar: title+history-tabs left-aligned, search/sort/create/icons
+       right-aligned as one group — whatever gap forms between the two
+       groups is left alone rather than distributed further. -->
+  <div class="asr-toolbar">
+    <div class="asr-toolbar-left">
+      <div class="asr-title">
+        <img class="asr-title-icon" [src]="headingIcon" alt="" />
+        <b>All SRs</b>
+      </div>
+
+      <div class="asr-history-tabs">
+        <button
+          type="button"
+          class="asr-history-tab"
+          *ngFor="let tab of historyTabs"
+          [class.asr-history-tab-active]="tab.active"
+          (click)="setHistoryTab(tab)"
+        >{{ tab.label }}</button>
+      </div>
+    </div>
+
+    <div class="asr-toolbar-right">
+      <div class="asr-search">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Search by..."
+          (keyup.enter)="onSearch()"
+          aria-label="Search all SRs"
+        />
+        <svg class="asr-search-icon" viewBox="0 0 24 24" fill="none" role="button" tabindex="0" (click)="onSearch()" (keyup.enter)="onSearch()" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <div class="asr-sort" role="button" tabindex="0" [attr.aria-expanded]="isSortOpen" (click)="toggleSort()" (keyup.enter)="toggleSort()">
+        <span>Sort by : {{ activeSort }}</span>
+        <svg class="asr-sort-chevron" [class.asr-sort-chevron-open]="isSortOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="asr-dropdown-panel" *ngIf="isSortOpen" (click)="$event.stopPropagation()">
+          <div class="asr-sort-option" *ngFor="let opt of sortOptions" [class.asr-sort-option-active]="opt === activeSort" (click)="setSort(opt)">{{ opt }}</div>
+        </div>
+      </div>
+
+      <div class="asr-create-btn" role="button" tabindex="0" (click)="onCreateSr()" (keyup.enter)="onCreateSr()">Create SR</div>
+
+      <div class="asr-icon-actions">
+        <img class="asr-icon-btn" [class.spinning]="isRefreshing" [src]="refreshIcon" alt="Refresh" role="button" tabindex="0" (click)="onRefresh()" (keyup.enter)="onRefresh()" />
+
+        <div class="asr-icon-btn-wrap">
+          <img class="asr-icon-btn" [src]="settingsIcon" alt="Settings" role="button" tabindex="0" [attr.aria-expanded]="isSettingsOpen" (click)="toggleSettings()" (keyup.enter)="toggleSettings()" />
+          <div class="asr-dropdown-panel asr-settings-panel" *ngIf="isSettingsOpen" (click)="$event.stopPropagation()">Table settings — coming soon</div>
+        </div>
+
+        <div class="asr-icon-btn-wrap">
+          <img class="asr-icon-btn" [src]="filterIcon" alt="Filter" role="button" tabindex="0" [attr.aria-expanded]="isFilterOpen" (click)="toggleFilter()" (keyup.enter)="toggleFilter()" />
+          <div class="asr-dropdown-panel asr-settings-panel" *ngIf="isFilterOpen" (click)="$event.stopPropagation()">Filters — coming soon</div>
+        </div>
+
+        <img class="asr-icon-btn" [src]="expandIcon" alt="Expand" role="button" tabindex="0" (click)="onExpand()" (keyup.enter)="onExpand()" />
+        <img class="asr-icon-btn" [src]="downloadIcon" alt="Download" role="button" tabindex="0" (click)="onExport()" (keyup.enter)="onExport()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="asr-table" *ngIf="rows.length > 0; else asrEmptyState">
+
+    <!-- Header row -->
+    <div class="asr-cell asr-header-cell">SR Number</div>
+    <div class="asr-cell asr-header-cell">Rise Date</div>
+    <div class="asr-cell asr-header-cell">Summary</div>
+    <div class="asr-cell asr-header-cell">Last Mile ID</div>
+    <div class="asr-cell asr-header-cell">Last Mile Device IP</div>
+    <div class="asr-cell asr-header-cell asr-center">RCA</div>
+    <div class="asr-cell asr-header-cell">Summarization</div>
+    <div class="asr-cell asr-header-cell">Subtype</div>
+    <div class="asr-cell asr-header-cell">SR Type</div>
+    <div class="asr-cell asr-header-cell">Escalation Level</div>
+    <div class="asr-cell asr-header-cell">Escalated Time</div>
+    <div class="asr-cell asr-header-cell asr-center">Alerts</div>
+    <div class="asr-cell asr-header-cell asr-center">Actions</div>
+
+    <!-- Data rows — ng-container so *ngFor doesn't wrap each row in its own
+         element, which would break out of the shared CSS grid below -->
+    <ng-container *ngFor="let row of pagedRows; let i = index">
+      <a class="asr-cell asr-sr-number" [class.asr-cell-shade]="i % 2 === 1" role="button" tabindex="0" (click)="onRowClick(row)" (keyup.enter)="onRowClick(row)">{{ row.srNumber }}</a>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.riseDate }}</div>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.summary }}</div>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.lastMileId }}</div>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.lastMileIp }}</div>
+      <div class="asr-cell asr-center" [class.asr-cell-shade]="i % 2 === 1">
+        <img class="asr-cell-icon" [src]="eyeIcon" alt="View RCA" role="button" tabindex="0" (click)="onRcaClick(row)" (keyup.enter)="onRcaClick(row)" />
+      </div>
+      <div class="asr-cell asr-center" [class.asr-cell-shade]="i % 2 === 1">
+        <img class="asr-cell-icon" [src]="docIcon" alt="View summarization" role="button" tabindex="0" (click)="onSummarizationClick(row)" (keyup.enter)="onSummarizationClick(row)" />
+      </div>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.srSubType }}</div>
+      <div class="asr-cell" [class.asr-cell-shade]="i % 2 === 1">
+        <span
+          class="asr-sr-type-badge"
+          [style.color]="srTypeStyle(row.srType).color"
+          [style.backgroundColor]="srTypeStyle(row.srType).bg"
+          [style.borderColor]="srTypeStyle(row.srType).border"
+        >{{ row.srType }}</span>
+      </div>
+      <div class="asr-cell asr-tracking-cell" [class.asr-cell-shade]="i % 2 === 1">
+        <span class="asr-tracking-pill" [style.color]="levelColor(row.level)" [style.borderColor]="levelColor(row.level)">
+          <span class="asr-tracking-level">Level {{ row.level }}</span>
+        </span>
+        <span class="asr-tracking-dots">
+          <span
+            class="asr-dot"
+            *ngFor="let d of dotSlots"
+            [class.asr-dot-filled]="d < row.level"
+            [style.backgroundColor]="d < row.level ? levelColor(row.level) : null"
+          ></span>
+        </span>
+      </div>
+      <div class="asr-cell asr-time-cell" [class.asr-cell-shade]="i % 2 === 1">{{ row.escalatedTime }}</div>
+      <div class="asr-cell asr-center" [class.asr-cell-shade]="i % 2 === 1">
+        <img class="asr-cell-icon" [src]="alertIcon(row.alert)" alt="" />
+      </div>
+      <div class="asr-cell asr-center" [class.asr-cell-shade]="i % 2 === 1">
+        <button type="button" class="asr-actions-btn" aria-label="Row actions" (click)="onActionsClick(row)">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="5" r="1.8" fill="currentColor" />
+            <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+            <circle cx="12" cy="19" r="1.8" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+    </ng-container>
+
+  </div>
+
+  <ng-template #asrEmptyState>
+    <div class="asr-empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="asr-empty-text">No data available</div>
+    </div>
+  </ng-template>
+
+  <!-- Pagination -->
+  <div class="asr-pagination" *ngIf="rows.length > 0">
+    <div class="asr-showing-text">{{ showingText }}</div>
+    <div class="asr-pagination-buttons">
+      <div
+        class="asr-page-btn"
+        *ngFor="let page of pages"
+        [class.asr-page-btn-active]="page.active"
+        [class.asr-page-btn-disabled]="page.disabled"
+        (click)="setPage(page)"
+      >{{ page.label }}</div>
+    </div>
+  </div>
+
+</div>

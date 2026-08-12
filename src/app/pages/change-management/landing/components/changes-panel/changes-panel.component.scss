@@ -34,8 +34,8 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
-    border-color: #e20010;
-    box-shadow: 0 0 0 3px rgba(226, 0, 16, 0.12);
+    border-color: #e40000;
+    box-shadow: 0 0 0 3px rgba(228, 0, 0, 0.12);
   }
 
   // The real <input type="date"> stays fully functional (native calendar
@@ -90,7 +90,7 @@
   top: 0px; left: 940px;
   width: 234px; height: 48px;
   border-radius: 26px;
-  background-color: #e20010;
+  background-color: #e40000;
   border: none;
   color: #fff;
   font: inherit;
@@ -109,9 +109,9 @@
   width: 235px; height: 48px;
   border-radius: 26px;
   background-color: #fff;
-  border: 1px solid #d1150b;
+  border: 1px solid #e40000;
   box-sizing: border-box;
-  color: #bd1010;
+  color: #e40000;
   font: inherit;
   font-size: 20px;
   letter-spacing: -0.01em;
@@ -119,7 +119,7 @@
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.15s ease;
 
-  &:hover { background-color: rgba(226, 0, 16, 0.05); }
+  &:hover { background-color: rgba(228, 0, 0, 0.05); }
   &:active { transform: scale(0.98); }
 }
 .cml-filter-select {
@@ -164,11 +164,11 @@
   cursor: pointer;
   transition: background-color 0.15s ease;
 
-  &:hover { background-color: rgba(226, 0, 16, 0.06); }
+  &:hover { background-color: rgba(228, 0, 0, 0.06); }
   &.cml-filter-option-active {
-    color: #e20010;
+    color: #e40000;
     font-weight: 600;
-    background-color: rgba(226, 0, 16, 0.04);
+    background-color: rgba(228, 0, 0, 0.04);
   }
 }
 
@@ -231,7 +231,7 @@
   }
 }
 .cml-change-link {
-  color: #e60012;
+  color: #e40000;
   font-weight: 500;
   text-decoration: underline;
   cursor: pointer;
@@ -290,8 +290,8 @@
   padding: 0;
 }
 .cml-page-active {
-  background: linear-gradient(135deg, #ca3a3a, rgba(242, 24, 24, 0.54));
-  box-shadow: 0px 0px 10px rgba(220, 38, 38, 0.3);
+  background: linear-gradient(135deg, #e40000, rgba(228, 0, 0, 0.75));
+  box-shadow: 0px 0px 10px rgba(228, 0, 0, 0.3);
   color: #fff;
   font-weight: 600;
 }

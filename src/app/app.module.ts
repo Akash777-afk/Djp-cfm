@@ -31,6 +31,15 @@ import { EscalationLevelsComponent } from './pages/escalation-matrix/components/
 import { EscalatedSrsComponent } from './pages/escalation-matrix/components/escalated-srs/escalated-srs.component';
 import { NocPortalComponent } from './pages/noc-portal/noc-portal.component';
 import { NocHealthIndexComponent } from './pages/noc-portal/components/health-index/health-index.component';
+import { NocAllSrsComponent } from './pages/noc-portal/components/all-srs/all-srs.component';
+import { TopologyModalComponent } from './pages/noc-portal/components/modals/topology-modal/topology-modal.component';
+import { LinkStatusModalComponent } from './pages/noc-portal/components/modals/link-status-modal/link-status-modal.component';
+import { InventoryBlueprintModalComponent } from './pages/noc-portal/components/modals/inventory-blueprint-modal/inventory-blueprint-modal.component';
+import { BundleSummaryModalComponent } from './pages/noc-portal/components/modals/bundle-summary-modal/bundle-summary-modal.component';
+import { PerformanceKpiModalComponent } from './pages/noc-portal/components/modals/performance-kpi-modal/performance-kpi-modal.component';
+import { AccordionSectionComponent } from './pages/noc-portal/components/accordion-section/accordion-section.component';
+import { WorkNotesComponent } from './pages/noc-portal/components/work-notes/work-notes.component';
+import { SrSummaryComponent } from './pages/noc-portal/components/sr-summary/sr-summary.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +69,16 @@ import { NocHealthIndexComponent } from './pages/noc-portal/components/health-in
     EscalationLevelsComponent,
     EscalatedSrsComponent,
     NocPortalComponent,
-    NocHealthIndexComponent
+    NocHealthIndexComponent,
+    NocAllSrsComponent,
+    TopologyModalComponent,
+    LinkStatusModalComponent,
+    InventoryBlueprintModalComponent,
+    BundleSummaryModalComponent,
+    PerformanceKpiModalComponent,
+    AccordionSectionComponent,
+    WorkNotesComponent,
+    SrSummaryComponent
   ],
   imports: [
     BrowserModule,

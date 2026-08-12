@@ -1,8 +1,62 @@
-<app-cm-sidebar-nav [scale]="scale" [top]="170" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
+<!-- ===== Left rail — cloned directly from app-cm-sidebar-nav (not reused
+     via the shared component), so its position/CSS lives entirely in this
+     page's own files where it's easy to see and adjust directly. `top`
+     below is a plain literal px value, same default Change Management
+     itself uses (134px) — edit it directly to move the rail. ===== -->
+<nav class="np-sidebar" aria-label="Quick actions" [style.--np-sidebar-scale]="scale">
+  <button
+    type="button"
+    class="np-sidebar-item"
+    *ngFor="let item of sidebarItems"
+    (click)="onSidebarClick(item)"
+  >
+    <span class="np-sidebar-icon" [ngSwitch]="item.icon">
+      <svg *ngSwitchCase="'dashboard'" viewBox="70 112 42 41" xmlns="http://www.w3.org/2000/svg">
+        <path d="M77.7778 149C76.7389 149 75.8499 148.641 75.1107 147.924C74.3715 147.206 74.0013 146.343 74 145.333V133.875H87.2222V149H77.7778ZM91 149V133.875H108V145.333C108 146.342 107.63 147.205 106.891 147.924C106.152 148.642 105.262 149.001 104.222 149H91ZM74 130.208V119.667C74 118.658 74.3702 117.795 75.1107 117.078C75.8511 116.361 76.7401 116.001 77.7778 116H104.222C105.261 116 106.151 116.359 106.891 117.078C107.632 117.797 108.001 118.66 108 119.667V130.208H74Z" fill="currentColor" />
+      </svg>
+      <svg *ngSwitchCase="'search'" viewBox="68 230 44 44" xmlns="http://www.w3.org/2000/svg">
+        <path d="M93.4998 236.376C95.2315 237.375 96.729 238.734 97.8915 240.361C99.054 241.988 99.8545 243.845 100.239 245.807C100.624 247.769 100.584 249.791 100.122 251.737C99.6594 253.682 98.7859 255.506 97.5598 257.085L106.987 266.512C107.306 266.843 107.482 267.285 107.478 267.743C107.474 268.202 107.29 268.641 106.966 268.966C106.641 269.29 106.202 269.474 105.744 269.478C105.285 269.482 104.843 269.306 104.513 268.987L95.0836 259.56C93.0781 261.116 90.6873 262.097 88.1669 262.4C85.6466 262.702 83.0915 262.313 80.7751 261.275C78.4588 260.236 76.4682 258.588 75.0165 256.506C73.5648 254.423 72.7065 251.986 72.5335 249.453C72.3605 246.921 72.8793 244.389 74.0344 242.128C75.1895 239.868 76.9374 237.964 79.0911 236.621C81.2448 235.277 83.7233 234.545 86.2613 234.501C88.7993 234.458 91.3014 235.107 93.4998 236.376Z" fill="currentColor" />
+      </svg>
+      <svg *ngSwitchCase="'alerts'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+        <line x1="12" y1="9" x2="12" y2="13" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+      <svg *ngSwitchCase="'trending'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+        <polyline points="17 6 23 6 23 12" />
+      </svg>
+      <svg *ngSwitchCase="'exit'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+      <img *ngSwitchCase="'img'" [src]="item.iconSrc" alt="" />
+    </span>
+    <span class="np-sidebar-label">{{ item.label }}</span>
+  </button>
+</nav>
+
 <app-im-header-bar [scale]="scale" breadcrumbText="NOC Portal"></app-im-header-bar>
 
+<!-- Wrapper has no explicit height — it's a plain block box (height:auto)
+     that sizes itself to its child's real content on every render, so it
+     always fits however many accordion sections/table rows happen to be
+     expanded, with no JS measurement needed. See noc-portal.component.scss's
+     .the-djp-noc-portal-scale-wrapper comment for the full reasoning. -->
 <div class="the-djp-noc-portal-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-noc-portal">
+
+  <!-- "You're on a different page now" cue between clicking Search and the
+       SR Details state appearing — position:absolute (not fixed) so it
+       naturally scales with the canvas instead of needing the fixed-element-
+       trapped-by-transform:scale() workaround the modals/sidebar use. Only
+       covers this canvas, not the header/sidebar/search bar above it —
+       those stay visibly persistent through the transition on purpose. -->
+  <div class="np-sr-transition-overlay" *ngIf="isSrTransitioning">
+    <div class="np-sr-transition-spinner"></div>
+    <div class="np-sr-transition-text">Loading SR details…</div>
+  </div>
 
   <!-- ===== Top search bar ===== -->
   <div class="np-search-row">
@@ -10,7 +64,7 @@
       <input class="np-search-input" type="text" [(ngModel)]="lsiQuery" aria-label="LSI" />
     </div>
     <div class="np-search-bar np-search-bar-po">
-      <input class="np-search-input" type="text" [(ngModel)]="poIdQuery" aria-label="PO ID" />
+      <input class="np-search-input" type="text" [(ngModel)]="srQuery" placeholder="Enter Service request ID" aria-label="SR number" (keyup.enter)="onSearch()" />
     </div>
     <div class="np-search-btn" role="button" tabindex="0" (click)="onSearch()" (keyup.enter)="onSearch()">
       <span>Search</span>
@@ -18,15 +72,20 @@
     <div class="np-reset-btn" role="button" tabindex="0" (click)="onReset()" (keyup.enter)="onReset()">Reset</div>
 
     <div class="np-top-icons">
-      <img
+      <div
+        class="np-top-icon-item"
         *ngFor="let icon of topUtilityIcons"
-        [src]="icon.icon"
-        [alt]="icon.alt"
-        [style.width.px]="icon.width"
-        [style.height.px]="icon.height"
         role="button" tabindex="0"
         (click)="onTopUtilityClick(icon.key)" (keyup.enter)="onTopUtilityClick(icon.key)"
-      />
+      >
+        <img
+          [src]="icon.icon"
+          [alt]="icon.alt"
+          [style.width.px]="icon.width"
+          [style.height.px]="icon.height"
+        />
+        <span class="np-top-icon-tooltip">{{ icon.alt }}</span>
+      </div>
     </div>
   </div>
 
@@ -123,38 +182,40 @@
         </div>
       </div>
 
-      <!-- Card 2: Network Alarms / Threshold Alarms -->
+      <!-- Card 2: Network Alarms / Threshold Alarms — each group is its own
+           3-col grid: heading spans columns 1-2 of row 1, the 3 badges fill
+           row 2 one per column (equal width), not a left-packed flex row. -->
       <div class="np-card np-card-alarms">
-        <div class="np-alarms-block">
-          <div class="np-alarms-left">
-            <img src="/assets/NOC_Portal/icon-park-outline_alarm.svg" alt="" />
-            <span class="np-alarms-title">Network Alarms</span>
-          </div>
-          <div class="np-alarms-badges">
-            <div class="np-alarm-badge" *ngFor="let a of networkAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
-          </div>
-        </div>
-        <div class="np-alarms-block">
-          <div class="np-alarms-left">
+        <div class="np-alarms-group">
+          <div class="np-alarms-head">
             <img src="/assets/NOC_Portal/ic_sharp-alarm.svg" alt="" />
-            <span class="np-alarms-title">Threshold Alarms</span>
+            <span>Network Alarms</span>
           </div>
-          <div class="np-alarms-badges">
-            <div class="np-alarm-badge" *ngFor="let a of thresholdAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
+          <div class="np-alarm-badge" *ngFor="let a of networkAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
+        </div>
+        <div class="np-alarms-group">
+          <div class="np-alarms-head">
+            <img src="/assets/NOC_Portal/icon-park-outline_alarm.svg" alt="" />
+            <span>Threshold Alarms</span>
           </div>
+          <div class="np-alarm-badge" *ngFor="let a of thresholdAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
         </div>
       </div>
 
       <!-- Card 3: OTN Span Loss -->
       <div class="np-card np-card-otn">
         <div class="np-otn-head">
-          <img src="/assets/NOC_Portal/TrendingUp.svg" alt="" />
-          <span>OTN Span Loss</span>
+          <div class="np-otn-head-label">
+            <img src="/assets/NOC_Portal/TrendingUp.svg" alt="" />
+            <span>OTN Span Loss</span>
+          </div>
           <div class="np-btn np-btn-purple" role="button" tabindex="0" (click)="onViewOtnDetails()" (keyup.enter)="onViewOtnDetails()">View Full Details</div>
         </div>
-        <div class="np-otn-row" *ngFor="let row of otnSpanLoss" [style.backgroundColor]="row.bg" [style.borderColor]="row.border" [style.color]="row.color">
-          <span>{{ row.label }}</span>
-          <b>{{ row.value }}</b>
+        <div class="np-otn-rows">
+          <div class="np-otn-row" *ngFor="let row of otnSpanLoss" [style.backgroundColor]="row.bg" [style.borderColor]="row.border" [style.color]="row.color">
+            <span>{{ row.label }}</span>
+            <b>{{ row.value }}</b>
+          </div>
         </div>
       </div>
 
@@ -177,7 +238,6 @@
             />
           </div>
         </div>
-        <div class="np-card-divider"></div>
         <div class="np-status-grid">
           <div class="np-status-field" *ngFor="let f of statusFields">
             <span class="np-status-label">{{ f.label }}</span>
@@ -195,11 +255,10 @@
             <img src="/assets/NOC_Portal/gg_info-1.svg" alt="Info" role="button" tabindex="0" (click)="onProductDetailsInfoClick()" (keyup.enter)="onProductDetailsInfoClick()" />
           </div>
         </div>
-        <div class="np-card-divider"></div>
         <div class="np-product-grid">
           <div class="np-product-field" *ngFor="let f of productDetails">
             <span class="np-product-label">{{ f.label }}</span>
-            <span class="np-product-pill">{{ f.value }}</span>
+            <input class="np-product-pill" type="text" [(ngModel)]="f.value" [attr.aria-label]="f.label" />
           </div>
         </div>
       </div>
@@ -208,16 +267,317 @@
 
   </div>
 
-  <!-- ===== LSI Health Index ===== -->
-  <app-noc-health-index></app-noc-health-index>
+  <!-- ===== LSI dashboard content (unchanged) — hidden, not removed, once
+       an SR is searched, so Reset can switch back instantly. ===== -->
+  <ng-container *ngIf="!isSrStateActive">
+    <!-- ===== LSI Health Index ===== -->
+    <app-noc-health-index></app-noc-health-index>
 
-  <!-- ===== Footer ===== -->
+    <!-- ===== All SRs ===== -->
+    <app-noc-all-srs></app-noc-all-srs>
+  </ng-container>
+
+  <!-- ===== SR Details state — replaces LSI Health Index + All SRs once an
+       SR number has been searched. Everything above this point (search bar,
+       nav pills, SR Notifications, the 5 summary cards) is untouched. ===== -->
+  <ng-container *ngIf="isSrStateActive">
+
+    <!-- SR Journey Summary — a real accordion instance now, same as the
+         other 4 below. The compact stepper + "SR Task Journey" pill are
+         projected into the accordion's own accordionExtra slot (a
+         reusable projection point — see accordion-section.component.html),
+         so the pill shape/chevron/expand-radius/animation all come from
+         app-noc-accordion-section for free instead of a hand-rolled shell.
+         The compact stepper here and the expanded timeline below both read
+         the SAME srDetails.journey array — nothing duplicated between the
+         two views. -->
+    <app-noc-accordion-section title="SR Journey Summary" [(expanded)]="isSrJourneyExpanded">
+
+      <ng-container accordionExtra *ngIf="srDetails as details">
+        <!-- Only while collapsed — once expanded, the timeline below already
+             shows each stage in full, so the compact summary is redundant. -->
+        <div class="np-journey-steps" *ngIf="!isSrJourneyExpanded">
+          <ng-container *ngFor="let stage of details.journey; let last = last">
+            <div class="np-journey-step">
+              <span class="np-journey-node" [ngClass]="'np-journey-node-' + stage.state">
+                <svg *ngIf="stage.state === 'done'" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <ng-container *ngIf="stage.state !== 'done'">{{ stage.number }}</ng-container>
+              </span>
+              <span class="np-journey-label" [ngClass]="'np-journey-label-' + stage.state">{{ stage.label }}</span>
+            </div>
+            <span class="np-journey-line" [ngClass]="'np-journey-line-' + stage.state" *ngIf="!last"></span>
+          </ng-container>
+        </div>
+
+        <div class="np-journey-task-btn" role="button" tabindex="0" (click)="onSrTaskJourneyClick()" (keyup.enter)="onSrTaskJourneyClick()">
+          <span>SR Task Journey</span>
+          <svg viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </ng-container>
+
+      <!-- Expanded body: one column per stage, its events underneath, an
+           arrow to the next stage colored by whichever stage it's leading
+           into (matches the compact stepper's own line-color convention
+           above). *ngFor over details.journey/stage.events — any number of
+           stages or events renders correctly, not just today's 4/1-3. -->
+      <ng-container *ngIf="srDetails as details; else srSectionLoading">
+        <div class="np-journey-timeline">
+          <ng-container *ngFor="let stage of details.journey; let i = index; let last = last">
+
+            <div class="np-journey-col">
+              <div class="np-journey-col-head" [ngClass]="'np-journey-col-head-' + stage.state">{{ stage.label }}</div>
+              <div class="np-journey-col-card" [ngClass]="'np-journey-col-card-' + stage.state">
+                <div class="np-journey-event" *ngFor="let ev of stage.events">
+                  <span class="np-journey-event-icon" [ngClass]="'np-journey-event-icon-' + stage.state" [ngSwitch]="ev.icon">
+                    <svg *ngSwitchCase="'ticket'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="2" width="10" height="12" rx="1.2" stroke="#fff" stroke-width="1.4"/>
+                      <path d="M5.5 6H10.5M5.5 9H10.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    <svg *ngSwitchCase="'assign'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="6" cy="6" r="2.3" stroke="#fff" stroke-width="1.4"/>
+                      <path d="M2 14C2 11 3.8 9.3 6 9.3C8.2 9.3 10 11 10 14" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M12.5 6.5V10.5M10.5 8.5H14.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    <svg *ngSwitchCase="'send'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2L2 7.5L7 9L9 14L14 2Z" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/>
+                      <path d="M14 2L7 9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+                    </svg>
+                    <svg *ngSwitchCase="'chat'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2 3.5C2 2.7 2.7 2 3.5 2H12.5C13.3 2 14 2.7 14 3.5V9.5C14 10.3 13.3 11 12.5 11H6L3 13.5V11H3.5C2.7 11 2 10.3 2 9.5V3.5Z" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/>
+                    </svg>
+                    <svg *ngSwitchCase="'check'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 8L6.5 11.5L13 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg *ngSwitchCase="'close'" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 4L12 12M12 4L4 12" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <div class="np-journey-event-text">
+                    <div class="np-journey-event-label">{{ ev.label }} <span class="np-journey-event-time">({{ ev.time }})</span></div>
+                    <div class="np-journey-event-desc">{{ ev.description }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <span class="np-journey-arrow" [ngClass]="'np-journey-arrow-' + details.journey[i + 1]?.state" *ngIf="!last">
+              <svg viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 7H24M24 7L18 1M24 7L18 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+
+          </ng-container>
+        </div>
+      </ng-container>
+
+    </app-noc-accordion-section>
+
+    <!-- SR Insights — collapsed shell only for now; real content comes in a
+         later task. -->
+    <!-- Both this and Crystalized RCA below are backend-driven: content
+         comes from srDetails (fetched via SrDetailsService.getSrDetails() in
+         onSearch()), not hard-coded in this template. Shared loading
+         fallback for both — see srSectionLoading below. -->
+    <app-noc-accordion-section title="SR Insights" [(expanded)]="isSrInsightsExpanded">
+      <ng-container *ngIf="srDetails as details; else srSectionLoading">
+        <div class="np-insights-grid">
+          <div class="np-insights-card" *ngFor="let card of [details.insights.srSummarization, details.insights.historicalFaultInsights]">
+
+            <div class="np-insights-card-head">
+              <div class="np-insights-card-title">{{ card.title }}</div>
+
+              <!-- Placeholder actions — clickable, but not wired to real
+                   behavior yet (no spec given beyond "expand / refresh /
+                   more info"). Tooltip is the same hover-reveal-label
+                   pattern as .np-sidebar-label, just anchored below instead
+                   of to the side since these sit right at the card's top
+                   edge (opening upward would get clipped by the accordion
+                   body's overflow:hidden). -->
+              <div class="np-insights-card-actions">
+                <!-- Expansion.png is baked-in red (can't be recolored via
+                     CSS, it's a raster image) — inline svg instead, matching
+                     RefreshCw.svg / gg_info.svg's own #15803D green. -->
+                <button type="button" class="np-insights-icon-btn" (click)="onSrInsightsExpand(card)">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 3H3V9" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15 3H21V9" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 21H3V15" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15 21H21V15" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="np-insights-tooltip">Expand</span>
+                </button>
+                <button type="button" class="np-insights-icon-btn" (click)="onSrInsightsRefresh(card)">
+                  <img src="/assets/NOC_Portal/RefreshCw.svg" alt="" />
+                  <span class="np-insights-tooltip">Refresh</span>
+                </button>
+                <button type="button" class="np-insights-icon-btn" (click)="onSrInsightsInfo(card)">
+                  <img src="/assets/NOC_Portal/gg_info.svg" alt="" />
+                  <span class="np-insights-tooltip">More info</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="np-insights-card-desc">{{ card.description }}</div>
+
+            <hr class="np-insights-divider" />
+
+            <div class="np-insights-field" *ngFor="let f of card.fields">
+              <div class="np-insights-field-label">{{ f.label }}</div>
+              <div class="np-insights-field-value">{{ f.value }}</div>
+              <ul class="np-insights-field-bullets" *ngIf="f.bullets?.length">
+                <li *ngFor="let b of f.bullets">{{ b }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </app-noc-accordion-section>
+
+    <!-- Crystalized RCA Conclusion — expanded by default. -->
+    <app-noc-accordion-section title="Crystalized RCA Conclusion" [(expanded)]="isRcaExpanded">
+      <ng-container *ngIf="srDetails as details; else srSectionLoading">
+        <div class="np-rca-grid">
+
+          <!-- FLT OBSERVATION -->
+          <div class="np-rca-card np-rca-card-flt">
+            <div class="np-rca-card-head">
+              <img class="np-rca-card-icon" src="/assets/NOC_Portal/FLT Observation.png" alt="" />
+              <span>FLT OBSERVATION</span>
+            </div>
+
+            <div class="np-rca-mini-grid np-rca-mini-grid-3">
+              <div class="np-rca-mini-card" *ngFor="let f of details.rca.fltPingFields">
+                <div class="np-rca-mini-label">{{ f.label }}</div>
+                <div class="np-rca-mini-value" [ngClass]="'np-rca-mini-value-' + f.status">
+                  <svg *ngIf="f.status === 'down'" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1V9M5 9L1.5 5.5M5 9L8.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg *ngIf="f.status === 'up'" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9V1M5 1L1.5 4.5M5 1L8.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {{ f.value }}
+                </div>
+              </div>
+            </div>
+
+            <div class="np-rca-mini-grid np-rca-mini-grid-2">
+              <div class="np-rca-mini-card" *ngFor="let f of details.rca.fltAlarmFields">
+                <div class="np-rca-mini-label">{{ f.label }}</div>
+                <div class="np-rca-mini-value" [ngClass]="'np-rca-mini-value-' + f.status">
+                  <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  {{ f.value }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXPECTED ROOT CAUSE -->
+          <div class="np-rca-card np-rca-card-cause">
+            <div class="np-rca-card-head">
+              <img class="np-rca-card-icon" src="/assets/NOC_Portal/Expected root cause.png" alt="" />
+              <span>EXPECTED ROOT CAUSE</span>
+            </div>
+
+            <div class="np-rca-cause-grid">
+              <ul class="np-rca-cause-col" *ngFor="let col of [1, 2]">
+                <li *ngFor="let bullet of details.rca.rootCauseBullets">{{ bullet }}</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+    </app-noc-accordion-section>
+
+    <!-- Shared by SR Insights + Crystalized RCA above — only relevant for a
+         moment with a real async API; the mock service resolves
+         synchronously so this won't normally be visible today. -->
+    <ng-template #srSectionLoading>
+      <div class="np-acc-placeholder">Loading…</div>
+    </ng-template>
+
+    <!-- SR Summary — the 5 icons + search + sort + refresh live in the
+         shared accordion header itself (accordionExtra), same mechanism as
+         SR Journey Summary's compact stepper above; there is exactly one
+         "SR Summary" title on screen (the accordion's own), not a second
+         one duplicated inside the body. Everything below that header (top
+         info / tabs / SR Details form) is its own component, same
+         "complex section gets its own component" precedent as All Work
+         Notes, keyed off the searched SR number. -->
+    <app-noc-accordion-section title="SR Summary" [(expanded)]="isSrSummaryExpanded">
+
+      <!-- Only while expanded — collapsed, this should read as the same
+           plain title+chevron bar every other accordion shows (matches
+           .np-acc-extra's own &:empty{display:none} once nothing's
+           projected into it). -->
+      <ng-container accordionExtra *ngIf="isSrSummaryExpanded">
+        <button
+          type="button"
+          class="np-srs-icon-circle"
+          *ngFor="let icon of srSummaryToolbarIcons"
+          (click)="$event.stopPropagation(); onSrSummaryToolbarIconClick(icon.key)"
+        >
+          <img [src]="icon.icon" [alt]="icon.alt" />
+          <span class="np-srs-tooltip">{{ icon.alt }}</span>
+        </button>
+
+        <div class="np-srs-search">
+          <input
+            type="text"
+            [(ngModel)]="srSummarySearchQuery"
+            placeholder="Search..."
+            (keyup.enter)="onSrSummarySearch()"
+            (click)="$event.stopPropagation()"
+            aria-label="Search SR Summary"
+          />
+          <svg class="np-srs-search-icon" viewBox="0 0 24 24" fill="none" role="button" tabindex="0" (click)="onSrSummarySearch()" (keyup.enter)="onSrSummarySearch()" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+
+        <div class="np-srs-sort" role="button" tabindex="0" [attr.aria-expanded]="isSrSummarySortOpen" (click)="$event.stopPropagation(); toggleSrSummarySort()" (keyup.enter)="toggleSrSummarySort()">
+          <span>Sort by : {{ srSummaryActiveSort }}</span>
+          <svg class="np-srs-sort-chevron" [class.np-srs-sort-chevron-open]="isSrSummarySortOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="np-srs-dropdown-panel" *ngIf="isSrSummarySortOpen" (click)="$event.stopPropagation()">
+            <div class="np-srs-dropdown-option" *ngFor="let opt of srSummarySortOptions" [class.np-srs-dropdown-option-active]="opt === srSummaryActiveSort" (click)="setSrSummarySort(opt)">{{ opt }}</div>
+          </div>
+        </div>
+
+        <img class="np-srs-refresh" [class.spinning]="isSrSummaryRefreshing" [src]="srSummaryRefreshIcon" alt="Refresh" role="button" tabindex="0" (click)="$event.stopPropagation(); onSrSummaryRefresh()" (keyup.enter)="onSrSummaryRefresh()" />
+      </ng-container>
+
+      <app-noc-sr-summary [srNumber]="srQuery"></app-noc-sr-summary>
+    </app-noc-accordion-section>
+
+    <!-- All Work Notes — fully built out: its own card/table/pagination
+         component (app-noc-work-notes), backend-driven via WorkNotesService.
+         "Create Note" lives inside that component's own toolbar (matching
+         the reference), not projected into this accordion's header. -->
+    <app-noc-accordion-section title="All Work Notes" [(expanded)]="isWorkNotesExpanded">
+      <app-noc-work-notes></app-noc-work-notes>
+    </app-noc-accordion-section>
+
+  </ng-container>
+
+<!-- ===== Footer ===== -->
   <div class="the-main-page">
     <div class="tier-1">
       <div class="powered-by">Powered by</div>
-      <img class="t1-4-icon" src="/assets/shared/im-3-tier1.png" alt="" />
+      <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
     </div>
   </div>
+</div>
+</div>
 
-</div>
-</div>
+<!-- ===== Primary nav pill modals — rendered as siblings of the scaled
+     canvas above (not nested inside it), same reason app-im-header-bar and
+     .np-sidebar are: their overlays are position:fixed, and the canvas's
+     own transform:scale() would otherwise create a new containing block
+     that traps them inside its (scaled) box instead of the real viewport.
+     See .np-sidebar's own comment for the full explanation. ===== -->
+<app-noc-topology-modal [isOpen]="isTopologyModalOpen" (closed)="isTopologyModalOpen = false"></app-noc-topology-modal>
+<app-noc-link-status-modal [isOpen]="isLinkStatusModalOpen" (closed)="isLinkStatusModalOpen = false"></app-noc-link-status-modal>
+<app-noc-inventory-blueprint-modal [isOpen]="isInventoryBlueprintModalOpen" (closed)="isInventoryBlueprintModalOpen = false"></app-noc-inventory-blueprint-modal>
+<app-noc-bundle-summary-modal [isOpen]="isBundleSummaryModalOpen" (closed)="isBundleSummaryModalOpen = false"></app-noc-bundle-summary-modal>
+<app-noc-performance-kpi-modal [isOpen]="isPerformanceKpiModalOpen" (closed)="isPerformanceKpiModalOpen = false"></app-noc-performance-kpi-modal>

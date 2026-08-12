@@ -7,7 +7,7 @@
 .the-djp-incident-management-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1427px * var(--djp-scale));
+  height: calc(1379px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -16,12 +16,13 @@
 .the-djp-incident-management {
   width: 1920px;
   height: 1427px;
+  margin-top: -38px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
   text-align: left;
   font-size: 20px;
-  color: #e20010;
+  color: #e40000;
   font-family: Inter, sans-serif;
   transform: scale(var(--djp-scale));
   transform-origin: top left;

@@ -50,7 +50,7 @@
   position: absolute;
   top: 0; left: 0;
   border-radius: 22369600px;
-  background-color: #e60023;
+  background-color: #e40000;
   width: 3.7px; height: 26.2px;
 }
 .frame-icon {
@@ -61,7 +61,7 @@
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.4s ease;
 
-  &:hover { background-color: rgba(230, 0, 35, 0.08); }
+  &:hover { background-color: rgba(228, 0, 0, 0.08); }
   &:active { transform: rotate(90deg); }
 }
 

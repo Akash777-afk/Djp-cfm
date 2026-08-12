@@ -30,26 +30,187 @@ $radius-pill: 999px;
 $shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
 $space-major: 37px;
 
-$color-brand-red: #d1150b;
+// Official Airtel brand red — the single token every branding-red element
+// in this file resolves to (buttons, borders, focus rings, links, nav
+// pills). Card-accent colors and status/severity colors are deliberately
+// NOT tied to this token — see .np-card-product / .np-profile-tag / the
+// escalation-level color map in all-srs.component.ts, none of which mean
+// "brand", so they keep their own independent values.
+$color-brand-red: #e40000;
+
+// SR Insights / SR Details typography hierarchy — centralized here (not
+// CSS custom properties: see this file's own header comment above for why
+// a --card-title-style :root block silently does nothing under this app's
+// view encapsulation). Reused across every .np-insights-* rule below
+// instead of repeating the hex values.
+$color-card-title: #101828;
+$color-card-description: #4a5565;
+$color-body-title: #1e2939;
+$color-body-description: #8c8f8d;
+
+// =========================================================
+// Left rail — cloned from app-cm-sidebar-nav's own CSS (Change
+// Management's shared sidebar), not inherited via an [top] input on the
+// shared component. `top` is a plain, literal px value right here — edit
+// it directly to move the rail; there's no other math feeding it.
+// =========================================================
+.np-sidebar {
+  --np-sidebar-scale: 1;
+  position: fixed;
+  top: 108px; // <-- move the sidebar by changing this one number
+  left: 0;
+  width: 92px;
+  // 600px was copied from Change Management's sidebar, sized for CM's
+  // original, much shorter pages. This page (NOC Portal) has since grown
+  // to ~2200px tall (LSI Health Index + the All SRs table), so a fixed
+  // sidebar only 600px tall left most of the page with no rail alongside
+  // it at all — bumped so it fills a normal-height viewport instead.
+  height: 629px;
+  padding: 66px 25px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 400px;
+  border-bottom-right-radius: 400px;
+  border-bottom-left-radius: 0;
+  background-color: #e40000;
+  // Same glossy inset highlight as .np-nav-pill (the red pills bar) —
+  // swapped out for the old dark inset glow so the sidebar reads as the
+  // same red-button family instead of its own separate look.
+  box-shadow: 0px 2px 44px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(255, 255, 255, 0.36) inset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 67px;
+  z-index: 100;
+  transform: scale(var(--np-sidebar-scale));
+  transform-origin: top left;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.np-sidebar-item {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  // Hover Overlay: a 58x58 circle — bigger than the 42px item/icon itself —
+  // going from 10% to 25% white. Put on ::before rather than the item's own
+  // background so the halo can extend past the item's 42x42 hit-box without
+  // resizing it (the icon span gets z-index:1 below so it stays on top).
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+    pointer-events: none;
+  }
+  &:hover::before, &:focus-visible::before { background-color: rgba(255, 255, 255, 0.25); }
+  &:active { transform: scale(0.95); }
+  &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+}
+
+.np-sidebar-icon {
+  position: relative;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  pointer-events: none;
+
+  svg, img { width: 100%; height: 100%; }
+}
+
+.np-sidebar-label {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right-color: #1e2939;
+  }
+}
+.np-sidebar-item:hover .np-sidebar-label,
+.np-sidebar-item:focus-visible .np-sidebar-label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
 
 .the-djp-noc-portal-scale-wrapper {
   --djp-scale: 1;
+  // transform:scale() below never shrinks the *layout* space its element
+  // reserves in normal flow, only its visual size — so this wrapper still
+  // needs an explicit width matching the canvas's true scaled-down width,
+  // otherwise it'd reserve room for the canvas's full unscaled 1920px
+  // horizontally. overflow-x:hidden clips that leftover horizontal
+  // reservation. Deliberately NOT overflow-y/overflow:hidden, and
+  // deliberately no explicit height: this box is a plain block element
+  // with height:auto, so it always sizes itself to its child's real,
+  // current, natural height — accordions expanded or not, table rows
+  // expanded or not — via normal document flow, no JS measurement needed.
+  // (A previous version here tried to pre-compute an explicit height via a
+  // ResizeObserver reading the canvas's offsetHeight, then clipped
+  // anything past it with overflow:hidden on both axes. That's fragile by
+  // construction: ResizeObserver fires a frame after layout, the accordion
+  // body animates via a CSS max-height transition rather than jumping
+  // instantly, and any change-detection lag between the callback and the
+  // height binding re-rendering means the JS number can undershoot the
+  // real content height — and overflow:hidden doesn't degrade gracefully
+  // from that, it silently deletes whatever's past its bottom edge with no
+  // way to scroll to it. height:auto has no such gap: there's nothing to
+  // undershoot.)
   width: calc(1920px * var(--djp-scale));
-  // Must cover the inner canvas's own height PLUS its margin-top (the
-  // margin is what clears the fixed header) — missing the margin here
-  // was clipping the bottom of the page (footer included) via overflow.
-  height: calc((2020px + 120px) * var(--djp-scale));
   max-width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: 0 auto;
 }
 
 .the-djp-noc-portal {
   width: 1920px;
-  height: 2020px;
-  // Clears the fixed app-im-header-bar (170px: 106px topbar + 64px
-  // breadcrumb) — same technique as Escalation Matrix's page shell.
-  margin-top: 120px;
+  // min-height is a floor only (never a ceiling, never clips) — keeps a
+  // normal single-page LSI-dashboard view from looking too short. Actual
+  // height is otherwise auto, sized to whatever content is really present.
+  min-height: 2320px;
+  // Clears the fixed app-im-header-bar (122px: 82px topbar + 40px
+  // breadcrumb) — same technique as Escalation Matrix's page shell. The
+  // standard 37px gap comes from this canvas's own padding-top ($space-major)
+  // below, not from this margin, so this is just the header height itself.
+  margin-top: 85px;
   position: relative;
   background-color: #f7f8f9;
   text-align: left;
@@ -60,8 +221,39 @@ $color-brand-red: #d1150b;
   transform-origin: top left;
   box-sizing: border-box;
   // Left: sidebar width (92px) + 37px gap. Right: 37px gap from the page
-  // edge. Both match the design system's 37px spacing unit exactly.
-  padding: $space-major 37px 60px calc(92px + 37px);
+  // edge. Bottom: same $space-major unit too, so the footer ends up
+  // exactly 37px above the page's bottom edge instead of the old 60px.
+  padding: $space-major 37px $space-major calc(92px + 37px);
+}
+
+// "You're on a different page now" transition — see the html comment for
+// why this is position:absolute (scales naturally with the canvas) rather
+// than position:fixed like the modals/sidebar.
+.np-sr-transition-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(247, 248, 249, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.np-sr-transition-spinner {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 4px solid rgba(228, 0, 0, 0.15);
+  border-top-color: $color-brand-red;
+  // infinite (not the one-shot 0.7s .spinning elsewhere uses) — this
+  // overlay's own lifetime already controls how long it spins for.
+  animation: djp-noc-spin 0.7s linear infinite;
+}
+.np-sr-transition-text {
+  font-size: $fs-body;
+  font-weight: 600;
+  color: #475569;
 }
 
 // ---------- Top search bar ----------
@@ -83,24 +275,49 @@ $color-brand-red: #d1150b;
   align-items: center;
   padding: 0 18px;
   flex-shrink: 0;
+  // Same hover/focus family used on inputs everywhere else (see
+  // .si-input / .create-po-modal's fields): a faint red tint on hover,
+  // a red focus ring on focus — :focus-within because the actual <input>
+  // is this box's own child, not a separate wrapper.
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  &:hover { background-color: rgba(228, 0, 0, 0.03); }
+  &:focus-within {
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
+  }
 }
 .np-search-bar-po { width: 505px; }
+// PO ID's placeholder ("Enter Service request ID") only — scoped to this
+// bar specifically since the LSI input keeps its own default placeholder
+// styling untouched.
+.np-search-bar-po .np-search-input::placeholder { color: #b5b6b8; }
 .np-search-input {
   width: 100%;
   border: none;
   outline: none;
   background: transparent;
   font: inherit;
+  font-size: 18px;
   color: #66686c;
   font-weight: 500;
   letter-spacing: -0.01em;
+
+  // PO ID field's placeholder ("Enter Service request ID") gets its own
+  // lighter tone rather than the real-text color above — this only ever
+  // shows while the field is empty, so it doesn't touch the LSI field's
+  // actual value text.
+  &::placeholder { color: #b5b6b8; }
 }
 .np-search-btn {
   width: 200px;
   height: 48px;
   flex-shrink: 0;
   border-radius: $radius-pill;
-  background-color: $color-brand-red;
+  // Matches .np-nav-pill (the red pills bar below) exactly — same
+  // semi-transparent red + glossy inset highlight + drop shadow, instead
+  // of the flat $color-brand-red this used before.
+  box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.36) inset, 0px 2px 4px rgba(0, 0, 0, 0.25);
+  background-color: rgb(228, 0, 0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,6 +327,11 @@ $color-brand-red: #d1150b;
   font-family: $font-family-poppins;
   font-weight: 500;
   font-size: $fs-section-heading;
+  // Same hover/click language as every other solid CTA button in the app
+  // (see .cml-search-btn): brighten on hover, brief scale-down on click.
+  transition: filter 0.2s ease, transform 0.15s ease;
+  &:hover { filter: brightness(1.1); }
+  &:active { transform: scale(0.98); }
 }
 .np-reset-btn {
   width: 150px;
@@ -123,7 +345,12 @@ $color-brand-red: #d1150b;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #bd1010;
+  // Same hover/click language as every other outlined secondary button
+  // (see .cml-export-btn): faint red tint on hover, brief scale-down on click.
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  &:hover { background-color: rgba(228, 0, 0, 0.05); }
+  &:active { transform: scale(0.98); }
+  color: $color-brand-red;
   font-family: $font-family-poppins;
   font-weight: 500;
   font-size: $fs-section-heading;
@@ -133,16 +360,43 @@ $color-brand-red: #d1150b;
   align-items: center;
   gap: 27px;
   margin-left: auto;
+}
+
+// Wraps each icon so it can host an absolutely-positioned tooltip below it —
+// an <img> alone can't have a positioned child. Same hover-reveal-label idea
+// as .np-sidebar-label/.np-insights-tooltip elsewhere on this page, just
+// anchored under a small icon in a horizontal row instead.
+.np-top-icon-item {
+  position: relative;
+  display: flex;
+  cursor: pointer;
 
   img {
-    // Width/height come from each icon's own natural size (bound inline
-    // per-icon via [style.width.px]/[style.height.px] in the template) —
-    // not a shared class rule, since they aren't uniform.
     flex-shrink: 0;
-    cursor: pointer;
     transition: transform 0.15s ease;
-    &:hover { transform: scale(1.1); }
   }
+  &:hover img { transform: scale(1.1); }
+}
+.np-top-icon-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 5;
+}
+.np-top-icon-item:hover .np-top-icon-tooltip,
+.np-top-icon-item:focus-visible .np-top-icon-tooltip {
+  opacity: 1;
 }
 
 // ---------- Primary nav ----------
@@ -157,7 +411,7 @@ $color-brand-red: #d1150b;
   height: 55px;
   box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.36) inset, 0px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: $radius-card;
-  background-color: rgba(226, 0, 16, 0.77);
+  background-color: #e40000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,8 +419,9 @@ $color-brand-red: #d1150b;
   cursor: pointer;
   color: #fff;
   font-family: $font-family-alt;
-  transition: background-color 0.15s ease;
-  &:hover { background-color: rgba(226, 0, 16, 0.9); }
+  transition: filter 0.2s ease, transform 0.15s ease;
+  &:hover { filter: brightness(1.1); }
+  &:active { transform: scale(0.98); }
 }
 .np-nav-pill-icon { width: 30px; height: 30px; flex-shrink: 0; filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.22)); }
 .np-nav-pill-label { font-weight: 600; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.22); white-space: nowrap; font-size: $fs-card-title; }
@@ -176,7 +431,7 @@ $color-brand-red: #d1150b;
   height: 55px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: $radius-card;
-  background-color:  rgba(226, 0, 16, 0.77);
+  background-color:  rgba(228, 0, 0, 0.77);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,13 +469,9 @@ $color-brand-red: #d1150b;
   color: $color-brand-red;
   .np-notif-dot { background-color: $color-brand-red; }
 }
-.np-notif-filter { width: 24px; height: 24px; cursor: pointer; flex-shrink: 0; }
+.np-notif-filter { width: 42px; height: 37px; cursor: pointer; flex-shrink: 0; }
 
-// ---------- Summary cards panel ----------
-// Card heights (232px row 1, 257px row 2) and row gaps (37px row 1, 20px
-// row 2, 37px between the rows) are fixed, exact values from the design —
-// not auto-sized from content, which is what made everything read as too
-// loose/tall before.
+
 .np-cards-panel {
   box-shadow: $shadow-card;
   border-radius: $radius-card;
@@ -253,8 +504,8 @@ $color-brand-red: #d1150b;
   overflow: hidden;
 }
 .np-card-profile { border: 1px solid #4b91f8; box-shadow: 0px 0px 33px rgba(80, 149, 248, 0.22) inset; }
-.np-card-alarms  { border: 1px solid #c2410c; box-shadow: 0px 0px 22px rgba(194, 65, 12, 0.22) inset; justify-content: center; padding: 20px 34px; gap: 40px; }
-.np-card-otn     { border: 1px solid #9a83fb; box-shadow: 0px 0px 22px rgba(154, 131, 251, 0.33) inset; color: #b91c1c; }
+.np-card-alarms  { border: 1px solid #c2410c; box-shadow: 0px 0px 22px rgba(194, 65, 12, 0.22) inset; gap: 28px; }
+.np-card-otn     { border: 1px solid #9a83fb; box-shadow: 0px 0px 22px rgba(154, 131, 251, 0.33) inset; color: #b91c1c; gap: 22px; }
 .np-card-status  { border: 1px solid #15803d; box-shadow: 0px 0px 22px rgba(21, 128, 61, 0.22) inset; color: #2b2c2c; }
 .np-card-product { border: 1px solid #ab0900; box-shadow: 0px 0px 22px rgba(171, 9, 0, 0.22) inset; color: #2b2c2c; }
 
@@ -263,7 +514,7 @@ $color-brand-red: #d1150b;
 // with justify-content:space-between + stretch, rather than the design's
 // fixed 95px gap, so it stays correct if content height ever changes).
 .np-profile-row { display: flex; align-items: stretch; gap: 43px; flex: 1; min-height: 0; }
-.np-profile-left { width: 250px; flex-shrink: 0; display: flex; flex-direction: column; gap: 18px; }
+.np-profile-left { width: 250px; flex-shrink: 0; display: flex; flex-direction: column; gap: 28px; }
 .np-profile-head { display: flex; align-items: center; gap: 15px; }
 .np-profile-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .np-profile-name { font-size: $fs-card-title; font-weight: 600; color: #0f172a; }
@@ -299,51 +550,61 @@ $color-brand-red: #d1150b;
   font-size: $fs-section-heading;
   font-weight: 500;
   cursor: pointer;
+  // Same hover/click language as the other gradient CTAs in this codebase:
+  // brighten on hover, brief brightness-dip + scale-down on click. Lives on
+  // the shared class so both Card 1's blue button and Card 3's purple one
+  // (.np-btn-blue / .np-btn-purple) pick it up automatically.
+  transition: filter 0.15s ease, transform 0.15s ease;
+  &:hover { filter: brightness(1.1); }
+  &:active { filter: brightness(0.95); transform: scale(0.97); }
 }
 .np-btn-blue { background: linear-gradient(135deg, #589ef9, #0649ae); }
-.np-btn-purple { background: linear-gradient(135deg, #b18fff 2.4%, #6366f1 81.73%); font-size: $fs-body; height: 35px; }
+.np-btn-purple { background: linear-gradient(135deg, #b18fff 2.4%, #6366f1 81.73%); font-size: $fs-caption; height: 28px; width: 137px; padding: 0 12px; }
 // Profile card's button lives in a flex column using space-between, so it
 // doesn't need the shared .np-btn's flex-start/margin-top:auto positioning.
 .np-profile-btn { align-self: stretch; margin-top: 0; position: relative; top: -20px; }
 
-// Card 2: Alarms — each block stacks the icon+title above a 3-column grid
-// of badges (not beside it), so the badges land in fixed, evenly-spaced
-// positions instead of drifting with the title's text length.
-.np-alarms-block { display: flex; flex-direction: column; gap: 21px; }
-.np-alarms-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  img { width: 26px; height: 26px; }
-}
-.np-alarms-title { font-size: $fs-card-title; font-weight: 600; opacity: 0.8; white-space: nowrap; }
-.np-alarms-badges {
+// Card 2: Alarms — each group (Network/Threshold) is its own 3-col grid:
+// the heading spans columns 1-2 of row 1, the 3 badges auto-place into
+// row 2 one per column (equal width), not a left-packed flex row.
+.np-alarms-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 33px;
-  justify-items: start;
-  font-size: $fs-caption;
+  column-gap: 24px;
+  row-gap: 24px;
+}
+.np-alarms-head {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  display: flex; align-items: center; gap: 18px;
+  font-size: $fs-card-title;
+  font-weight: 600; opacity: 0.8;
+  img { width: 27px; height: 27px; }
 }
 .np-alarm-badge {
+  grid-row: 2;
   height: 28px;
+  display: flex; align-items: center; justify-content: center;
   border-radius: $radius-pill;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0 44px;
+  font-size: $fs-body;
   font-weight: 500;
   white-space: nowrap;
-  box-sizing: border-box;
 }
 
 // Card 3: OTN Span Loss
-.np-otn-head { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #0f172a; img { width: 22px; height: 22px; } }
-.np-otn-head .np-btn-purple { margin-left: auto; margin-top: 0; align-self: center; }
+// justify-content:space-between instead of a fixed gap — a magic-number gap
+// (135px) was tuned for the old, narrower 16px heading; at the current 22px
+// it no longer leaves room for "OTN Span Loss" on one line and the label
+// wraps instead. space-between adapts to the label's actual width instead.
+.np-otn-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 22px; font-weight: 600; color: #0f172a; }
+.np-otn-head-label { display: flex; align-items: center; gap: 18px; white-space: nowrap; img { width: 22px; height: 22px; flex-shrink: 0; } }
+.np-otn-rows { display: flex; flex-direction: column; gap: 18px; }
 .np-otn-row {
-  border-radius: 16px;
+  border-radius: 22px;
   border: 1px solid;
   box-sizing: border-box;
-  height: 44px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -352,26 +613,629 @@ $color-brand-red: #d1150b;
 }
 
 // Card 4/5 shared heading
-.np-card-heading { display: flex; align-items: center; gap: 12px; font-size: $fs-card-title; font-weight: 600; color: #0f172a; }
+.np-card-heading { display: flex; align-items: center; gap: 13px; font-size: $fs-card-title; font-weight: 600; color: #0f172a; }
 .np-card-heading-icon { width: 24px; height: 24px; }
 .np-card-heading-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; img { width: 24px; height: 24px; cursor: pointer; &.spinning { animation: djp-noc-spin 0.7s linear; } } }
 @keyframes djp-noc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.np-card-divider { height: 1px; background-color: rgba(0, 0, 0, 0.08); }
 
-// Card 4: Status
-.np-status-grid { display: grid; grid-template-columns: 1fr 1fr; row-gap: 10px; column-gap: 20px; }
+// Card 4: Status — heading icon 30x24, info icon 30x30, refresh icon 28x28
+// (all bigger than the shared 24px default), 21px gap between heading block
+// and the fields grid, 52px between the two field columns / 20px between
+// each column's 3 rows.
+.np-card-status { gap: 43px; }
+.np-card-status .np-card-heading-icon { width: 30px; height: 24px; }
+.np-card-status .np-card-heading-actions { gap: 20px; }
+.np-card-status .np-card-heading-actions img:nth-child(1) { width: 30px; height: 30px; }
+.np-card-status .np-card-heading-actions img:nth-child(2) { width: 28px; height: 28px; }
+.np-status-grid { display: grid; grid-template-columns: 1fr 1fr; row-gap: 20px; column-gap: 52px; }
 .np-status-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .np-status-label { color: #2b2c2c; }
-.np-status-pill { border-radius: 18px; border: 1px solid; box-sizing: border-box; padding: 4px 16px; font-weight: 500; font-size: $fs-caption; white-space: nowrap; }
+.np-status-pill {
+  width: 111px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 18px;
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: $fs-caption;
+  white-space: nowrap;
+}
 
-// Card 5: Product Details
-.np-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 10px; column-gap: 16px; }
-.np-product-field { display: flex; flex-direction: column; gap: 6px; }
-.np-product-label { color: #9b9c9d; font-size: $fs-caption; }
-.np-product-pill { border-radius: 6px; background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.33); box-sizing: border-box; padding: 4px 10px; color: #9b9c9d; font-size: $fs-caption; width: fit-content; }
+// Card 5: Product Details — heading icon 27x27, info icon 30x30, 16px gap
+// between heading block and the fields grid, 59px between the 3 field
+// columns / 25px between each column's 3 rows. Each field is a label+pill
+// row (space-between), matching Card 4's pattern, not a stacked column.
+.np-card-product { gap: 36px; }
+.np-card-product .np-card-heading-icon { width: 27px; height: 27px; }
+.np-card-product .np-card-heading-actions img { width: 30px; height: 30px; }
+.np-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 25px; column-gap: 59px; }
+.np-product-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.np-product-label { color: #676868; font-size: 16px; }
+// A real, editable <input [(ngModel)]> (was a plain <span>) so it reads and
+// behaves like an input field elsewhere in the app, with the same default
+// input hover/focus language used everywhere else (.si-input,
+// .np-search-bar, etc.): a faint red tint on hover, a red border + focus
+// ring on focus.
+.np-product-pill {
+  width: 111px; height: 28px;
+  display: flex; align-items: center;
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #9b9c9d;
+  box-sizing: border-box;
+  padding: 0 10px;
+  color: #9b9c9d;
+  font: inherit;
+  font-size: $fs-body;
+  white-space: nowrap;
+  outline: none;
+  cursor: text;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover { background-color: rgba(228, 0, 0, 0.03); }
+  &:focus {
+    border-color: $color-brand-red;
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
+  }
+}
+
+// ---------- SR Details state (shown once an SR number is searched) ----------
+// app-noc-accordion-section is a real child component, but its *host* tag
+// still lives in this page's own template — Angular's emulated
+// encapsulation lets a parent style a child's host element (just not its
+// internals), so layout/spacing for the 5 accordion sections belongs here,
+// same as every other section on this page owns its own gap via margin-top
+// on "whatever comes next" (.np-cards-panel's own margin-bottom supplies
+// the gap above the first one).
+app-noc-accordion-section { display: block; margin-bottom: $space-major; }
+app-noc-accordion-section:last-of-type { margin-bottom: 0; }
+
+// ---------- SR Journey Summary: compact stepper (projected into the
+// accordion's accordionExtra slot) ----------
+.np-journey-steps {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.np-journey-step { flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
+.np-journey-node {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  box-sizing: border-box;
+  svg { width: 11px; height: 9px; }
+}
+.np-journey-node-done      { background-color: #16a34a; color: #fff; }
+.np-journey-node-current   { background-color: #2563eb; color: #fff; }
+.np-journey-node-upcoming  { background-color: #fff; border: 2px solid #cbd5e1; color: #64748b; }
+.np-journey-label {
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.np-journey-label-done     { color: #16a34a; }
+.np-journey-label-current  { color: #2563eb; }
+.np-journey-label-upcoming { color: #94a3b8; }
+.np-journey-line {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 2px;
+  border-radius: 1px;
+}
+.np-journey-line-done      { background-color: #16a34a; }
+.np-journey-line-current   { background-color: #2563eb; }
+.np-journey-line-upcoming  { background-color: #cbd5e1; }
+.np-journey-task-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: $radius-pill;
+  background-color: #f1f5f9;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  svg { width: 10px; height: 7px; }
+  &:hover { background-color: #e2e8f0; }
+}
+
+// ---------- SR Journey Summary: expanded timeline (one column per stage) ----------
+.np-journey-timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.np-journey-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+// The colored pill overlaps the top of its card by half its own height
+// (negative margin), same "badge sitting on the edge" look as the
+// reference, rather than stacking with a gap between them.
+.np-journey-col-head {
+  align-self: flex-start;
+  position: relative;
+  z-index: 1;
+  height: 34px;
+  padding: 0 18px;
+  border-radius: $radius-pill;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  margin-bottom: -17px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+}
+.np-journey-col-head-done      { background-color: #16a34a; }
+.np-journey-col-head-current   { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.np-journey-col-head-upcoming  { background-color: #94a3b8; }
+
+.np-journey-col-card {
+  border-radius: 16px;
+  border: 1.5px solid;
+  box-sizing: border-box;
+  padding: 30px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.np-journey-col-card-done      { border-color: #86efac; background-color: #f0fdf4; }
+.np-journey-col-card-current   { border-color: #93c5fd; background-color: #eff6ff; }
+.np-journey-col-card-upcoming  { border-color: #cbd5e1; background-color: #f8fafc; }
+
+.np-journey-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 68px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08);
+}
+.np-journey-event-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg { width: 16px; height: 16px; }
+}
+.np-journey-event-icon-done      { background-color: #16a34a; }
+.np-journey-event-icon-current   { background-color: #2563eb; }
+.np-journey-event-icon-upcoming  { background-color: #64748b; }
+
+.np-journey-event-text { min-width: 0; }
+// All three at the 16px minimum — label/desc distinguished by weight+color
+// instead of size now, same way the rest of this page tells hierarchy apart
+// (see .np-insights-field-label vs .np-insights-field-value).
+.np-journey-event-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+}
+.np-journey-event-time {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 16px;
+}
+.np-journey-event-desc {
+  font-size: 16px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.np-journey-arrow {
+  flex-shrink: 0;
+  align-self: center;
+  // Roughly centers on the card body (below the overlapping pill), not the
+  // column as a whole.
+  margin-top: 17px;
+  svg { width: 28px; height: 14px; }
+}
+.np-journey-arrow-done      { color: #16a34a; }
+.np-journey-arrow-current   { color: #2563eb; }
+.np-journey-arrow-upcoming  { color: #94a3b8; }
+
+.np-acc-placeholder {
+  padding: 24px 0 4px;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+// ---------- Crystalized RCA Conclusion body ----------
+.np-rca-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  // stretch (grid's default, but was explicitly overridden to "start" —
+  // that's what let the two cards sit at their own different content
+  // heights instead of matching each other).
+  align-items: stretch;
+}
+.np-rca-card {
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  // FLT Observation has less content than Expected Root Cause, but with
+  // .np-rca-grid now stretching both cards to the same height (see its own
+  // comment), FLT's two mini-card rows were clustering at the top and
+  // leaving a dead gap of green below them. space-between pushes that extra
+  // height out as breathing room between the head/row1/row2 instead, so it
+  // reads as intentional spacing rather than a leftover gap.
+  justify-content: space-between;
+}
+// .np-rca-card-flt / .np-rca-card-cause are already applied alongside
+// .np-rca-card on their elements in noc-portal.component.html — add rules
+// for either one here whenever FLT Observation and Expected Root Cause need
+// to diverge (height, etc.), no template change needed.
+.np-rca-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #101828;
+  text-transform: uppercase;
+}
+// Real asset images now (FLT Observation.png / Expected root cause.png) —
+// their green badge background is baked in, so no background-color here.
+.np-rca-card-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.np-rca-mini-grid { display: grid; gap: 12px; }
+.np-rca-mini-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.np-rca-mini-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.np-rca-mini-card {
+  background-color: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.np-rca-mini-label {
+  font-size: 14px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.np-rca-mini-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  svg { width: 10px; height: 10px; flex-shrink: 0; }
+}
+.np-rca-mini-value-down, .np-rca-mini-value-no { color: #b91c1c; }
+.np-rca-mini-value-up { color: #15803d; }
+
+.np-rca-cause-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.np-rca-cause-col {
+  background-color: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+  color: #374151;
+
+  li {
+    position: relative;
+    padding-left: 16px;
+    line-height: 1.4;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background-color: $color-brand-red;
+    }
+  }
+}
+
+// ---------- SR Insights body ----------
+// Same visual language as Crystalized RCA's cards (.np-rca-card) — mint
+// bg/border, 16px radius, 20px padding — reused as literal values rather
+// than sharing the class name, since RCA's own markup/CSS must stay exactly
+// as-is (see accordion-section's own comments) while this is a different
+// content shape (label+value+optional-bullets lists, not a status-icon
+// grid). Font sizes only ever use this file's existing $fs-card-title(22) /
+// $fs-section-heading(18) / $fs-body(16) tokens.
+.np-insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.np-insights-card {
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+.np-insights-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.np-insights-card-title {
+  font-size: $fs-card-title;
+  font-weight: 700;
+  color: $color-card-title;
+}
+.np-insights-card-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.np-insights-icon-btn {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  img, svg { width: 100%; height: 100%; }
+  &:hover, &:focus-visible { transform: scale(1.12); }
+  &:focus-visible { outline: 2px solid $color-brand-red; outline-offset: 3px; }
+}
+// Same hover-reveal-label idea as .np-sidebar-label, anchored below instead
+// of to the side — these buttons sit right at the card's top edge, and the
+// accordion body clips (overflow:hidden) anything opening upward past it.
+.np-insights-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 1;
+}
+.np-insights-icon-btn:hover .np-insights-tooltip,
+.np-insights-icon-btn:focus-visible .np-insights-tooltip {
+  opacity: 1;
+}
+.np-insights-card-desc {
+  font-size: $fs-body;
+  color: $color-card-description;
+  line-height: 1.5;
+  margin-top: -8px;
+}
+// Title+description sit above this, the field list below — same gap
+// rhythm as everything else in the card (20px, from .np-insights-card's
+// own gap), not a special-cased tighter spacing.
+.np-insights-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0;
+}
+.np-insights-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.np-insights-field-label {
+  font-size: $fs-section-heading;
+  font-weight: 500;
+  color: $color-body-title;
+}
+.np-insights-field-value {
+  font-size: $fs-body;
+  color: $color-body-description;
+  line-height: 1.5;
+}
+.np-insights-field-bullets {
+  margin: 2px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  li {
+    font-size: $fs-body;
+    color: $color-body-description;
+    line-height: 1.5;
+  }
+}
+
+// ---------- SR Summary's header-row controls (accordionExtra) — the 5
+// quick-action icons + search + sort + refresh that sit in the shared
+// accordion header next to its own chevron. Compact/outlined to match that
+// 60px-tall header row, not the larger card-body icon sizing used
+// elsewhere on this page. ----------
+.np-srs-icon-circle {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  img { width: 28px; height: 28px; }
+  &:hover { transform: scale(1.08); }
+  &:active { transform: scale(0.94); }
+}
+.np-srs-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 5;
+}
+.np-srs-icon-circle:hover .np-srs-tooltip,
+.np-srs-icon-circle:focus-visible .np-srs-tooltip {
+  opacity: 1;
+}
+
+.np-srs-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  box-sizing: border-box;
+
+  input {
+    width: 130px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    font-size: $fs-caption;
+    color: #101828;
+    &::placeholder { color: rgba(15, 23, 42, 0.45); }
+  }
+}
+.np-srs-search-icon { width: 16px; height: 16px; flex-shrink: 0; color: #64748b; cursor: pointer; }
+
+.np-srs-sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  box-sizing: border-box;
+  font-size: $fs-caption;
+  // Matches .np-srs-search input's own placeholder color exactly, not the
+  // darker #101828 typed-text color — "Sort by : ..." reads as supporting
+  // text here, same visual weight as "Search...".
+  color: rgba(15, 23, 42, 0.45);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.np-srs-sort-chevron { width: 16px; height: 16px; transition: transform 0.2s ease; &.np-srs-sort-chevron-open { transform: rotate(180deg); } }
+.np-srs-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 8px); left: 0; right: auto; z-index: 30;
+  min-width: 170px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
+  padding: 8px;
+  font-size: $fs-caption;
+  color: #1f2937;
+  white-space: nowrap;
+  cursor: default;
+}
+.np-srs-dropdown-option {
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+  &:hover { background-color: rgba(15, 23, 42, 0.05); }
+  &.np-srs-dropdown-option-active { color: $color-brand-red; font-weight: 600; background-color: rgba(228, 0, 0, 0.06); }
+}
+
+.np-srs-refresh {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  padding: 7px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+  &.spinning { animation: djp-noc-spin 0.7s linear; }
+}
 
 // ---------- Footer ----------
-.the-main-page { font-size: $fs-caption; color: #b5b7c0; font-family: $font-family-poppins; }
+// margin-top (not the All SRs card's margin-bottom) owns the 37px gap
+// above this — same "next element owns the gap" convention used between
+// every other section on this page.
+.the-main-page { margin-top: $space-major; font-size: $fs-caption; color: #b5b7c0; font-family: $font-family-poppins; }
 .tier-1 { display: flex; flex-direction: column; align-items: flex-start; }
 .powered-by { letter-spacing: -0.01em; font-weight: 500; }
 .t1-4-icon { width: 107px; height: 36px; object-fit: cover; margin-top: 6px; }

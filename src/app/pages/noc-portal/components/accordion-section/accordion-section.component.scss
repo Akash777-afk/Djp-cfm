@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+$color-brand-red: #e40000;
+$radius-card: 22px;
+$shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
+
+.np-acc {
+  background-color: #fff;
+  box-shadow: $shadow-card;
+  box-sizing: border-box;
+  overflow: hidden;
+  // Collapsed = a full pill (radius = half the 60px header height).
+  // Expanded = the same rounded-rect radius every other card on this page
+  // uses. Both the header and this radius transition together so growing
+  // into the expanded card reads as one smooth motion, not a hard cut.
+  border-radius: 30px;
+  transition: border-radius 0.25s ease;
+}
+.np-acc-expanded {
+  border-radius: $radius-card;
+}
+
+.np-acc-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 32px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+}
+
+// No icon box anymore — title alone carries the brand-red accent, in both
+// the collapsed and expanded states (no red→black swap on expand either).
+.np-acc-title {
+  flex-shrink: 0;
+  margin-right: auto;
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-brand-red;
+}
+
+// flex:1 1 auto + justify-content:flex-end (not flex-shrink:0 hugging its
+// own content) so a wide projection — e.g. SR Journey Summary's compact
+// stepper — has room to lay out without overflowing, while still landing
+// snug against the chevron exactly where a single small projection (e.g.
+// All Work Notes' "Create Note +" button) already sat: flex-end recreates
+// that same "hug the end" position regardless of how wide this box now is.
+.np-acc-extra {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 28px;
+  &:empty { display: none; }
+}
+
+.np-acc-chevron {
+  flex-shrink: 0;
+  width: 42px;
+  height: 37px;
+  transition: transform 0.25s ease;
+}
+.np-acc-chevron-open {
+  transform: rotate(180deg);
+}
+
+.np-acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+// Generous fixed cap rather than height:auto — auto can't be transitioned,
+// and this is comfortably above any real content's height (RCA, the
+// tallest section right now, is well under 500px).
+.np-acc-body-open {
+  max-height: 2000px;
+}
+.np-acc-body-inner {
+  padding: 4px 32px 32px;
+}

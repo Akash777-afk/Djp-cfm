@@ -1,24 +1,47 @@
 <div class="nhi-card">
 
   <div class="nhi-heading">
-    <span>LSI Health Index</span>
-    <img class="nhi-heading-icon" [src]="refreshIcon" alt="Refresh" role="button" tabindex="0" (click)="onRefresh()" (keyup.enter)="onRefresh()" />
+    <div class="nhi-heading-left">
+      <img class="nhi-heading-icon-box" [src]="headingIcon" alt="" />
+      <span class="nhi-heading-title">LSI Health Index</span>
+    </div>
+    <div class="nhi-heading-actions">
+      <img class="nhi-refresh-icon" [src]="refreshIcon" alt="Refresh" role="button" tabindex="0" (click)="onRefresh()" (keyup.enter)="onRefresh()" />
+      <img class="nhi-dropdown-icon" [src]="dropdownIcon" alt="Expand" role="button" tabindex="0" (click)="onDropdownClick()" (keyup.enter)="onDropdownClick()" />
+    </div>
   </div>
 
   <div class="nhi-row">
-    <div class="nhi-chart-card">
-      <div class="nhi-chart-title">Latency &amp; packet loss</div>
-      <img class="nhi-chart-img" [src]="latencyGraph" alt="Latency and packet loss graph" />
-    </div>
-    <div class="nhi-chart-card">
-      <div class="nhi-chart-title">Bandwidth Throughput</div>
-      <img class="nhi-chart-img" [src]="bandwidthGraph" alt="Bandwidth throughput graph" />
-    </div>
-  </div>
+    <div class="nhi-chart-card" *ngFor="let chart of charts">
 
-  <div class="nhi-chart-card nhi-chart-card-wide">
-    <div class="nhi-chart-title">Traffic Utilization</div>
-    <img class="nhi-chart-img nhi-chart-img-wide" [src]="trafficGraph" alt="Traffic utilization graph" />
+      <div class="nhi-chart-top">
+        <div class="nhi-chart-title">{{ chart.title }}</div>
+        <div class="nhi-chart-legend">
+          <span class="nhi-legend-item" *ngFor="let item of chart.legend">
+            <span class="nhi-legend-dot" [style.backgroundColor]="item.color"></span>
+            {{ item.label }}
+          </span>
+        </div>
+      </div>
+
+      <div class="nhi-chart-body">
+        <div class="nhi-yaxis">
+          <span *ngFor="let y of chart.yAxisLabels">{{ y }}</span>
+        </div>
+        <div class="nhi-plot-col">
+          <div class="nhi-chart-plot">
+            <div class="nhi-gridlines">
+              <span *ngFor="let y of chart.yAxisLabels"></span>
+            </div>
+            <img class="nhi-chart-img" [src]="chart.graphImage" [alt]="chart.graphAlt" [style.objectFit]="chart.imgFit" [style.objectPosition]="chart.imgPosition || 'center'" />
+          </div>
+          <div class="nhi-xaxis">
+            <span *ngFor="let x of chart.xAxisLabels">{{ x }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </div>

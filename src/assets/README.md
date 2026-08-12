@@ -29,14 +29,19 @@ References in code always include the folder, e.g.
   scan and won't catch that. If nothing turns up, it's safe to delete.
 - Keep this file in sync when you move things around — it's the map.
 
-## shared/ (8 files — used by 2+ pages)
+## shared/ (13 files — used by 2+ pages)
 
 | File | Used by |
 |---|---|
 | `Airtel-logo 5.png` | change-management, incident-management, landing |
 | `Dropdown-topbar.svg` | change-management, escalation-matrix, incident-management |
+| `Download.png` | escalation-matrix, noc-portal |
+| `Expansion.png` | escalation-matrix, noc-portal |
+| `Filter.png` | escalation-matrix, noc-portal |
+| `Refresh.png` | escalation-matrix, noc-portal |
 | `Screenshot 2026-07-28 121148.png` | change-management, incident-management |
 | `Search-topbar.svg` | escalation-matrix, incident-management |
+| `Settings.png` | escalation-matrix, noc-portal |
 | `famicons_book.png` | change-management, escalation-matrix, incident-management |
 | `header-topright2.png` | change-management, incident-management, landing |
 | `im-3-refresh.svg` | change-management, incident-management |
@@ -58,11 +63,11 @@ References in code always include the folder, e.g.
 `im-2-refresh.svg`, `im-3-settings.svg`, `im-3-tablerefresh.svg`,
 `im-3-vipflag1.svg`, `im-3-vipflag2.svg`
 
-## escalation-matrix/ (14 files)
+## escalation-matrix/ (9 files)
 
-`Download.png`, `E1m.png`, `EMLevel4.png`, `EMLevel5.png`, `EMLevel6.png`,
-`Escalatedicon.png`, `Expansion.png`, `Filter.png`, `L1-recon.png`,
-`L2-recon.png`, `L3-recon.png`, `Refresh.png`, `Settings.png`, `TotalEM.png`
+`E1m.png`, `EMLevel4.png`, `EMLevel5.png`, `EMLevel6.png`,
+`Escalatedicon.png`, `L1-recon.png`, `L2-recon.png`, `L3-recon.png`,
+`TotalEM.png`
 
 ## change-management/ (18 files)
 
@@ -72,7 +77,7 @@ References in code always include the folder, e.g.
 `iconoir_filter.png`, `mail po icons.svg`, `material-symbols_call.png`,
 `planned outage icon.svg`, `plus.png`, `uil_calender.png`
 
-## _unused/ (67 files)
+## _unused/ (66 files)
 
 Not referenced anywhere in `src/app` as of this reorg. Kept rather than
 deleted in case they're wanted later — see the deletion rule above before
@@ -80,7 +85,7 @@ removing any of them.
 
 `academicons_open-data.png`, `Ai insights.png`, `Broadcasticon.png`,
 `cm-1-searchicon.png`, `contact.svg`, `Documentation-topbar.svg`,
-`edit.png`, `EMLevel1.png`, `EMLevel2.png`, `EMLevel3.png`, `graph.svg`,
+`edit.png`, `EMLevel1.png`, `EMLevel2.png`, `EMLevel3.png`,
 `Group 427319744.svg`, `header-topright.png`, `Icon-1.png`, `Icon-7.png`,
 `icon-park-outline_more-app.svg`, `icon-park-solid_add.png`,
 `icon-park_full-screen-one.svg`, `Icon.png`, `Icon.svg`,

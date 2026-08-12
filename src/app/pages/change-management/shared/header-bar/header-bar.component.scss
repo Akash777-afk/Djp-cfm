@@ -21,51 +21,55 @@
 }
 
 // ---------- Top bar ----------
+// 82px (was 106px) — logo/banner/divider all shrunk by the same 82/106
+// ratio (~0.774) so the bar's contents stay proportionate, not just
+// re-centered in a smaller box. Kept identical to app-im-header-bar.
 .cm-topbar {
   position: absolute;
   top: 0px; left: 0px;
   width: 1920px;
-  height: 106px;
+  height: 82px;
   background-color: #fff;
 }
 .cm-topbar-divider {
   position: absolute;
-  top: 98px; left: 0px;
+  top: 76px; left: 0px;
   width: 1920px;
   height: 1px;
   background-color: rgba(210, 210, 210, 0.3);
 }
 .cm-topbar-logo {
   position: absolute;
-  top: 25px; left: 25px;
-  width: 163px; height: 56px;
+  top: 20px; left: 25px;
+  width: 126px; height: 43px;
   object-fit: cover;
 }
 .cm-topbar-banner {
   position: absolute;
-  top: 7px; left: 1464px;
-  width: 448px; height: 92px;
+  top: 6px; left: 1565px;
+  width: 347px; height: 71px;
   object-fit: cover;
 }
 
 // ---------- Breadcrumb bar ----------
+// 40px (was 64px) — same proportional-shrink treatment (~0.625 ratio).
 .cm-breadcrumb {
   position: absolute;
-  top: 106px; left: 0px;
+  top: 82px; left: 0px;
   width: 1920px;
-  height: 64px;
+  height: 40px;
   background-color: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
 }
 .cm-breadcrumb-label {
   position: absolute;
-  top: 6px; left: 14px;
-  width: 305px; height: 52.5px;
+  top: 4px; left: 14px;
+  width: 191px; height: 33px;
   object-fit: cover;
 }
 .cm-breadcrumb-actions {
   position: absolute;
-  top: 5px; left: 1789px;
-  width: 114.5px; height: 55.5px;
+  top: 3px; left: 1832px;
+  width: 72px; height: 35px;
   object-fit: cover;
 }

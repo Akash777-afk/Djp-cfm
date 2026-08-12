@@ -1,0 +1,375 @@
+:host { display: contents; }
+
+// Values copied from all-srs.component.scss / all-nstts.component.scss —
+// this component follows the exact same table/pagination/dropdown/pill
+// system already established there, not a new one.
+$radius-card: 22px;
+$shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
+$color-brand-red: #e40000;
+
+$awn-columns:
+  120px                   // Select — was 70px; too narrow to fit the
+                          // "SELECT" header label at 18px without clipping
+  100px                   // View — was 70px, same reason ("VIEW" at 18px)
+  minmax(220px, 2fr)      // Notes
+  minmax(170px, 1fr)      // Creation date/time
+  minmax(120px, 1fr)      // OUM ID
+  minmax(150px, 1fr)      // Resource name
+  minmax(270px, 1fr)      // Note type — was a fixed 180px, too narrow for
+                          // the longer badge labels ("Customer Communication")
+  130px;                  // Actions — was 90px, same reason ("ACTIONS" at 18px)
+
+.awn-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ---------- Toolbar ----------
+.awn-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 18px;
+  row-gap: 12px;
+}
+.awn-toolbar-left { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; row-gap: 12px; }
+.awn-toolbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; row-gap: 12px; }
+
+.awn-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #101828;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+// ---------- Filter pills — inactive matches .asr-history-tab exactly;
+// active is solid brand-red + white text (matching the reference's "All"
+// pill), same red this app already uses for every other "selected" state
+// (e.g. .asr-page-btn-active). ----------
+.awn-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; row-gap: 8px; }
+.awn-filter-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.6);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover { background-color: rgba(0, 0, 0, 0.03); }
+  &.awn-filter-pill-active {
+    border-color: $color-brand-red;
+    background-color: $color-brand-red;
+    color: #fff;
+    font-weight: 700;
+    &:hover { filter: brightness(1.08); }
+  }
+}
+
+.awn-create-btn {
+  height: 46px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border-radius: 999px;
+  background-color: $color-brand-red;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  &:hover { filter: brightness(1.08); }
+}
+
+// ---------- "Created by" / "Noted by" — same custom-dropdown pattern as
+// All SRs' "Sort by" (.asr-sort / .asr-dropdown-panel). ----------
+.awn-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  flex-shrink: 0;
+  padding: 0 18px;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #101828;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.awn-dropdown-placeholder { color: rgba(15, 23, 42, 0.5); }
+.awn-dropdown-chevron { width: 18px; height: 18px; transition: transform 0.2s ease; &.awn-dropdown-chevron-open { transform: rotate(180deg); } }
+.awn-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 8px); left: 0; right: auto; z-index: 30;
+  min-width: 200px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
+  padding: 10px;
+  font-size: 16px;
+  color: #1f2937;
+  white-space: nowrap;
+  cursor: default;
+}
+.awn-dropdown-option {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+  &:hover { background-color: rgba(15, 23, 42, 0.05); }
+  &.awn-dropdown-option-active { color: $color-brand-red; font-weight: 600; background-color: rgba(228, 0, 0, 0.06); }
+}
+
+.awn-icon-btn {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+  &.spinning { animation: awn-spin 0.7s linear; }
+}
+@keyframes awn-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+// ---------- Table — same shared-grid convention as All SRs' .asr-table
+// (one grid for header + every row, so columns can never drift). ----------
+.awn-table {
+  display: grid;
+  grid-template-columns: #{$awn-columns};
+  width: 100%;
+  column-gap: 0;
+  row-gap: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 16px;
+}
+
+.awn-cell {
+  display: flex;
+  align-items: center;
+  min-height: 65px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.awn-cell-shade { background-color: #f8fafc; }
+.awn-center { justify-content: center; }
+
+.awn-header-cell {
+  min-height: auto;
+  padding: 16px 20px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+  background-color: #f9fafb;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.18);
+  white-space: nowrap;
+}
+
+.awn-checkbox { width: 18px; height: 18px; accent-color: $color-brand-red; cursor: pointer; }
+
+.awn-view-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(15, 23, 42, 0.06);
+  color: #475569;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  &:hover { background-color: rgba(15, 23, 42, 0.1); }
+  &:active { transform: scale(0.92); }
+  &[aria-expanded='true'] { background-color: rgba(21, 128, 61, 0.12); color: #15803d; }
+}
+
+.awn-no-description { color: $color-brand-red; font-weight: 500; }
+
+.awn-note-type-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.06);
+  color: #334155;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.awn-actions-btn {
+  appearance: none; -webkit-appearance: none;
+  border: none; background: transparent; padding: 0;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  svg { width: 20px; height: 20px; }
+}
+
+// ---------- Expanded row ----------
+// The green border/tint isn't one box — it's built from the row's own 8
+// cells (top border, plus left/right border + top corner radius on the
+// first/last cell only) continuing seamlessly into the panel below (left/
+// right/bottom border + bottom corner radius). column-gap/row-gap:0 on
+// .awn-table above is what lets these edges line up with no seams.
+.awn-cell-expanded {
+  background-color: rgba(21, 128, 61, 0.04);
+  border-top: 1.5px solid #16a34a;
+}
+.awn-cell-edge-left.awn-cell-expanded { border-left: 1.5px solid #16a34a; border-top-left-radius: 14px; }
+.awn-cell-edge-right.awn-cell-expanded { border-right: 1.5px solid #16a34a; border-top-right-radius: 14px; }
+
+.awn-expanded-panel {
+  grid-column: 1 / -1;
+  box-sizing: border-box;
+  background-color: rgba(21, 128, 61, 0.04);
+  border-left: 1.5px solid #16a34a;
+  border-right: 1.5px solid #16a34a;
+  border-bottom: 1.5px solid #16a34a;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  padding: 16px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.awn-expanded-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #334155;
+  b { font-weight: 700; color: #101828; }
+}
+.awn-expanded-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+.awn-status-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+.awn-status-badge-progress { background-color: rgba(21, 128, 61, 0.12); color: #15803d; }
+.awn-status-badge-resolved { background-color: rgba(37, 99, 235, 0.12); color: #2563eb; }
+.awn-status-badge-pending  { background-color: rgba(100, 116, 139, 0.14); color: #475569; }
+.awn-status-badge-neutral  { background-color: rgba(100, 116, 139, 0.14); color: #475569; }
+
+.awn-expanded-notes { margin-top: 4px; }
+.awn-expanded-textarea {
+  width: 100%;
+  min-height: 64px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 16px;
+  color: #101828;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder { color: rgba(15, 23, 42, 0.4); }
+  &:hover { background-color: rgba(228, 0, 0, 0.02); }
+  &:focus {
+    outline: none;
+    border-color: $color-brand-red;
+    box-shadow: 0px 0px 0px 2px rgba(228, 0, 0, 0.15) inset;
+  }
+}
+
+// ---------- Empty state ----------
+.awn-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+}
+.awn-empty-text { font-size: 18px; font-weight: 500; color: #9ca3af; }
+
+// ---------- Pagination ----------
+.awn-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+  font-size: 16px;
+}
+.awn-showing-text { color: rgba(0, 0, 0, 0.5); }
+.awn-pagination-buttons { display: flex; align-items: center; gap: 8px; }
+.awn-page-btn {
+  height: 38px;
+  min-width: 38px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border-radius: 11px;
+  background-color: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+
+  &.awn-page-btn-active {
+    box-shadow: 0px 0px 10px rgba(228, 0, 0, 0.3);
+    background: linear-gradient(135deg, $color-brand-red, rgba(228, 0, 0, 0.75));
+    color: #fff;
+  }
+  &.awn-page-btn-disabled {
+    cursor: default;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.35);
+  }
+}

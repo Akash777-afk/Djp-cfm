@@ -1,0 +1,144 @@
+<div class="awn-card">
+
+  <!-- Toolbar: title+filter-pills left-aligned, create/dropdowns/refresh
+       right-aligned — same two-group pattern as All SRs' own toolbar. -->
+  <div class="awn-toolbar">
+    <div class="awn-toolbar-left">
+      <div class="awn-title">Automation Work Notes</div>
+
+      <div class="awn-filters">
+        <button
+          type="button"
+          class="awn-filter-pill"
+          *ngFor="let filter of filters"
+          [class.awn-filter-pill-active]="activeFilter === filter.key"
+          (click)="setFilter(filter)"
+        >{{ filter.label }}</button>
+      </div>
+    </div>
+
+    <div class="awn-toolbar-right">
+      <div class="awn-create-btn" role="button" tabindex="0" (click)="onCreateNote()" (keyup.enter)="onCreateNote()">Create Note</div>
+
+      <div class="awn-dropdown" role="button" tabindex="0" [attr.aria-expanded]="isCreatedByOpen" (click)="toggleCreatedBy()" (keyup.enter)="toggleCreatedBy()">
+        <span [class.awn-dropdown-placeholder]="!createdByFilter">{{ createdByFilter || 'Created by...' }}</span>
+        <svg class="awn-dropdown-chevron" [class.awn-dropdown-chevron-open]="isCreatedByOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="awn-dropdown-panel" *ngIf="isCreatedByOpen" (click)="$event.stopPropagation()">
+          <div class="awn-dropdown-option" [class.awn-dropdown-option-active]="!createdByFilter" (click)="setCreatedBy(null)">All</div>
+          <div class="awn-dropdown-option" *ngFor="let name of createdByOptions" [class.awn-dropdown-option-active]="name === createdByFilter" (click)="setCreatedBy(name)">{{ name }}</div>
+        </div>
+      </div>
+
+      <div class="awn-dropdown" role="button" tabindex="0" [attr.aria-expanded]="isNotedByOpen" (click)="toggleNotedBy()" (keyup.enter)="toggleNotedBy()">
+        <span [class.awn-dropdown-placeholder]="!notedByFilter">{{ notedByFilter || 'Noted by...' }}</span>
+        <svg class="awn-dropdown-chevron" [class.awn-dropdown-chevron-open]="isNotedByOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="awn-dropdown-panel" *ngIf="isNotedByOpen" (click)="$event.stopPropagation()">
+          <div class="awn-dropdown-option" [class.awn-dropdown-option-active]="!notedByFilter" (click)="setNotedBy(null)">All</div>
+          <div class="awn-dropdown-option" *ngFor="let name of createdByOptions" [class.awn-dropdown-option-active]="name === notedByFilter" (click)="setNotedBy(name)">{{ name }}</div>
+        </div>
+      </div>
+
+      <img class="awn-icon-btn" [class.spinning]="isRefreshing" [src]="refreshIcon" alt="Refresh" role="button" tabindex="0" (click)="onRefresh()" (keyup.enter)="onRefresh()" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="awn-table" *ngIf="pagedNotes.length > 0; else awnEmptyState">
+
+    <!-- Header row -->
+    <div class="awn-cell awn-header-cell">Select</div>
+    <div class="awn-cell awn-header-cell">View</div>
+    <div class="awn-cell awn-header-cell">Notes</div>
+    <div class="awn-cell awn-header-cell">Creation date/time</div>
+    <div class="awn-cell awn-header-cell">OUM ID</div>
+    <div class="awn-cell awn-header-cell">Resource name</div>
+    <div class="awn-cell awn-header-cell">Note type</div>
+    <div class="awn-cell awn-header-cell awn-center">Actions</div>
+
+    <!-- Data rows — ng-container so *ngFor doesn't wrap each row (or its
+         conditional expansion panel) in its own element, which would break
+         out of the shared CSS grid, same convention as All SRs' table. -->
+    <ng-container *ngFor="let note of pagedNotes; let i = index">
+      <div class="awn-cell awn-cell-edge-left" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">
+        <input type="checkbox" class="awn-checkbox" [checked]="isSelected(note)" (change)="toggleSelected(note)" [attr.aria-label]="'Select note ' + note.id" />
+      </div>
+      <div class="awn-cell awn-center" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">
+        <button type="button" class="awn-view-btn" [attr.aria-expanded]="isExpanded(note)" [attr.aria-label]="isExpanded(note) ? 'Collapse row' : 'Expand row'" (click)="toggleExpanded(note)">{{ isExpanded(note) ? '−' : '+' }}</button>
+      </div>
+      <div class="awn-cell" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">
+        <span [class.awn-no-description]="!note.description">{{ note.description || 'No Description Found' }}</span>
+      </div>
+      <div class="awn-cell" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">{{ note.createdAt }}</div>
+      <div class="awn-cell" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">{{ note.oumId }}</div>
+      <div class="awn-cell" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">{{ note.resourceName }}</div>
+      <div class="awn-cell" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">
+        <span class="awn-note-type-badge">{{ note.noteType }}</span>
+      </div>
+      <div class="awn-cell awn-center awn-cell-edge-right" [class.awn-cell-shade]="i % 2 === 1" [class.awn-cell-expanded]="isExpanded(note)">
+        <button type="button" class="awn-actions-btn" aria-label="Row actions" (click)="onActionsClick(note)">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="5" r="1.8" fill="currentColor" />
+            <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+            <circle cx="12" cy="19" r="1.8" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Expanded panel — spans every column (grid-column:1/-1), so it
+           flows onto its own full-width grid row directly beneath the row
+           that triggered it. Its border + the row's own cell borders above
+           combine into one seamless rounded outline (see .awn-cell-expanded
+           / .awn-expanded-panel in the scss) rather than being two
+           separate bordered boxes. -->
+      <div class="awn-expanded-panel" *ngIf="isExpanded(note)">
+        <div class="awn-expanded-field">
+          <img class="awn-expanded-icon" [src]="clockIcon" alt="" />
+          <span>First acknowledge time : <b>{{ note.firstAcknowledgeTime }}</b></span>
+        </div>
+        <div class="awn-expanded-field">
+          <img class="awn-expanded-icon" [src]="statusIcon" alt="" />
+          <span>SR Status :</span>
+          <span class="awn-status-badge" [ngClass]="'awn-status-badge-' + statusClass(note.srStatus)">{{ note.srStatus }}</span>
+        </div>
+        <div class="awn-expanded-notes">
+          <textarea
+            class="awn-expanded-textarea"
+            placeholder="Write your notes here......"
+            [(ngModel)]="noteDraft[note.id]"
+          ></textarea>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+
+  <ng-template #awnEmptyState>
+    <div class="awn-empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="awn-empty-text">No data available</div>
+    </div>
+  </ng-template>
+
+  <!-- Pagination — identical structure/classes to All SRs' own (see
+       .asr-pagination), just prefixed .awn- for this component's own
+       scoped styles. -->
+  <div class="awn-pagination" *ngIf="displayedNotes.length > 0">
+    <div class="awn-showing-text">{{ showingText }}</div>
+    <div class="awn-pagination-buttons">
+      <div
+        class="awn-page-btn"
+        *ngFor="let page of pages"
+        [class.awn-page-btn-active]="page.active"
+        [class.awn-page-btn-disabled]="page.disabled"
+        (click)="setPage(page)"
+      >{{ page.label }}</div>
+    </div>
+  </div>
+
+</div>

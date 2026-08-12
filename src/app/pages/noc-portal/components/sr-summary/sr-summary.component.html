@@ -1,0 +1,99 @@
+<div class="srs-card" *ngIf="data as summary; else srsLoading">
+
+  <!-- Top info: 3 columns x 3 read-only fields, entirely data-driven — add
+       a field to a column in SrSummaryData and it renders, no template
+       change needed. This is the first thing in the body — the section's
+       only title is the shared accordion header above it, there is no
+       second "SR Summary" heading in here. -->
+  <div class="srs-top-info">
+    <div class="srs-top-col" *ngFor="let col of summary.topInfo">
+      <div class="srs-top-field" *ngFor="let field of col; let last = last" [class.srs-top-field-last]="last">
+        <div class="srs-top-label">{{ field.label }}</div>
+        <div class="srs-top-value">{{ field.value }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs + the 3 circular quick-action buttons, same row as the reference. -->
+  <div class="srs-tabs-row">
+    <div class="srs-tabs">
+      <div
+        class="srs-tab"
+        *ngFor="let tab of tabs"
+        [class.srs-tab-active]="activeTab === tab.key"
+        role="button" tabindex="0"
+        (click)="setActiveTab(tab)" (keyup.enter)="setActiveTab(tab)"
+      >{{ tab.label }}</div>
+    </div>
+
+    <div class="srs-quick-actions">
+      <button
+        type="button"
+        class="srs-icon-circle"
+        *ngFor="let qa of quickActions"
+        (click)="onQuickActionClick(qa.key)"
+      >
+        <img [src]="qa.icon" [alt]="qa.label" />
+        <span class="srs-tooltip">{{ qa.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab body: SR Details is fully built; the other 6 tabs are
+       functional (they switch activeTab, get highlighted) but don't invent
+       content that hasn't been specified yet. -->
+  <div class="srs-tab-body">
+    <ng-container *ngIf="activeTab === 'details'; else srsTabPlaceholder">
+
+      <div class="srs-form-card">
+        <div class="srs-form">
+          <div class="srs-form-col" *ngFor="let col of summary.details">
+            <div class="srs-form-field" *ngFor="let field of col">
+              <div class="srs-form-label">{{ field.label }}</div>
+
+              <div class="srs-form-input-wrap" [class.srs-form-editing]="isEditing(field)">
+                <input
+                  *ngIf="isEditing(field); else srsFieldDisplay"
+                  type="text"
+                  class="srs-form-input"
+                  [(ngModel)]="draft[field.key]"
+                  (keyup.enter)="saveChanges()"
+                />
+                <ng-template #srsFieldDisplay>
+                  <span class="srs-form-value">{{ field.value }}</span>
+                </ng-template>
+
+                <button
+                  type="button"
+                  class="srs-edit-btn"
+                  *ngIf="field.editable && !isEditing(field)"
+                  aria-label="Edit field"
+                  (click)="startEdit(field)"
+                >
+                  <img src="/assets/NOC_Portal/edit.png" alt="" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srs-save-row">
+          <span class="srs-saved-msg" *ngIf="justSaved">Changes saved</span>
+          <button type="button" class="srs-save-btn" [disabled]="isSaving" (click)="saveChanges()">
+            {{ isSaving ? 'Saving…' : 'Save changes' }}
+          </button>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <ng-template #srsTabPlaceholder>
+      <div class="srs-tab-placeholder">{{ activeTabLabel }} — content coming soon</div>
+    </ng-template>
+  </div>
+
+</div>
+
+<ng-template #srsLoading>
+  <div class="srs-loading">Loading…</div>
+</ng-template>

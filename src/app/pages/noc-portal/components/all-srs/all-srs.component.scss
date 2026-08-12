@@ -1,0 +1,377 @@
+:host { display: contents; }
+
+$radius-card: 22px;
+$shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
+$color-brand-red: #e40000;
+
+// Same 13 column tracks for the header row AND every data row (they share
+// one CSS grid — see .asr-table below), so header/cell alignment can never
+// drift the way hand-placed absolute-position columns can.
+// Icon/badge/pill columns stay fixed px; every plain text column is
+// minmax(measured-header-width, weighted-fr) — the fr side lets them grow
+// to fill the card same as before, but the px floor (measured directly off
+// the rendered header cells, +10px padding included) guarantees a header
+// like "Last Mile Device IP" can never clip again no matter how tight
+// things get. 13 columns x the wider +10px padding needs ~1926px at those
+// floors, more than this card's ~1680px, so .asr-table below scrolls
+// horizontally rather than clipping — standard behavior for a table this
+// wide, same as Escalation Matrix's own table already does.
+$asr-columns:
+  minmax(140px, 1fr)     // SR Number
+  minmax(130px, 1fr)     // Rise Date
+  minmax(162px, 1.3fr)   // Summary
+  minmax(148px, 1fr)     // Last Mile ID
+  minmax(206px, 1.3fr)   // Last Mile Device IP
+  80px                   // RCA
+  minmax(175px, 1.1fr)   // Summarization
+  minmax(120px, 1fr)     // Subtype
+  140px                  // SR Type
+  250px                  // Escalation Level
+  minmax(180px, 1.2fr)   // Escalated Time
+  106px                  // Alerts
+  114px;                 // Actions
+
+.asr-card {
+  margin-top: 37px; // standard spacing unit, gap from the LSI Health Index card above
+  // No margin-bottom of its own — the footer below now supplies the gap via
+  // its own margin-top (37px), same convention as the LSI Health Index
+  // card above (which has no margin-bottom either, for the same reason:
+  // whatever comes next owns the gap, not this card).
+  box-shadow: $shadow-card;
+  border-radius: $radius-card;
+  background-color: #fff;
+  padding: 30px 37px 37px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+// ---------- Toolbar ----------
+// Two groups only: title+history-tabs left-aligned, search/sort/create/icon
+// actions right-aligned as one cluster — space-between sits between just
+// these two groups, so whatever gap forms between the tabs and the search
+// bar is left alone instead of being redistributed across every item.
+.asr-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 18px;
+  row-gap: 12px;
+}
+.asr-toolbar-left { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; row-gap: 12px; }
+.asr-toolbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; row-gap: 12px; }
+
+.asr-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 24px; // matches .nhi-heading-title (LSI Health Index)
+  color: rgba(17, 16, 16, 0.79);
+  flex-shrink: 0;
+}
+// Matches .nhi-heading-icon-box (LSI Health Index) exactly — same asset
+// convention (badge fills the top ~52x52 square of a taller viewBox).
+.asr-title-icon { width: 53px; height: 52px; }
+
+.asr-history-tabs { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.asr-history-tab {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.6);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover { background-color: rgba(0, 0, 0, 0.03); }
+  &.asr-history-tab-active {
+    border-color: $color-brand-red;
+    color: $color-brand-red;
+    background-color: rgba(228, 0, 0, 0.05);
+  }
+}
+
+// ---- Search ----
+.asr-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 210px;
+  flex-shrink: 0;
+  height: 46px;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  box-sizing: border-box;
+  padding: 0 16px;
+  font-size: 15px;
+  color: rgba(15, 23, 42, 0.5);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:focus-within { border-color: $color-brand-red; background-color: #fff; }
+
+  input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: none; outline: none; background: transparent;
+    font: inherit; color: inherit;
+    &::placeholder { color: inherit; }
+  }
+}
+.asr-search-icon { width: 20px; height: 20px; flex-shrink: 0; cursor: pointer; color: inherit; }
+
+// ---- Sort by ----
+.asr-sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  flex-shrink: 0;
+  padding: 0 18px;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #cfd4dc;
+  box-sizing: border-box;
+  font-size: 15px;
+  color: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.asr-sort-chevron { width: 18px; height: 18px; transition: transform 0.2s ease; &.asr-sort-chevron-open { transform: rotate(180deg); } }
+
+.asr-create-btn {
+  height: 46px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border-radius: 999px;
+  background-color: $color-brand-red;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  &:hover { filter: brightness(1.08); }
+}
+
+// ---- Icon actions ----
+.asr-icon-actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.asr-icon-btn-wrap { position: relative; flex: 0 0 auto; }
+.asr-icon-btn {
+  flex: 0 0 auto;
+  width: 56px; height: 56px;
+  padding: 4px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
+  &.spinning { animation: djp-asr-spin 0.7s linear; }
+}
+@keyframes djp-asr-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+// Shared dropdown panel (sort / settings / filter)
+.asr-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 8px); right: 0; z-index: 30;
+  min-width: 200px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
+  padding: 10px;
+  font-size: 15px;
+  color: #1f2937;
+  white-space: nowrap;
+  cursor: default;
+}
+.asr-sort .asr-dropdown-panel { left: 0; right: auto; }
+.asr-settings-panel { color: #94a3b8; padding: 14px 16px; }
+.asr-sort-option {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+  &:hover { background-color: rgba(15, 23, 42, 0.05); }
+  &.asr-sort-option-active { color: $color-brand-red; font-weight: 600; background-color: rgba(228, 0, 0, 0.06); }
+}
+
+// ---------- Table ----------
+// One CSS grid holds the header cells AND every data row's cells (rows are
+// spread into it via *ngFor on an <ng-container>, so nothing wraps them in
+// an element that would break out of the shared column tracks) — the
+// alternative (Escalation Matrix's literal per-column absolute-position
+// clone) doesn't scale cleanly to 13 columns.
+.asr-table {
+  display: grid;
+  grid-template-columns: #{$asr-columns};
+  width: 100%;
+  column-gap: 0;
+  // The minmax() floors above (~1926px combined) exceed this card's
+  // ~1680px, so let the table scroll horizontally within its own box
+  // rather than clipping text or spilling out of the card.
+  overflow-x: auto;
+}
+
+.asr-cell {
+  display: flex;
+  align-items: center;
+  min-height: 65px;
+  padding: 10px 24px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.asr-cell-shade { background-color: #f8fafc; }
+.asr-center { justify-content: center; }
+
+.asr-header-cell {
+  min-height: auto;
+  padding: 0 24px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(100, 116, 139, 0.18);
+  align-items: center;
+  white-space: nowrap;
+}
+
+.asr-sr-number {
+  color: #0284c7;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+.asr-time-cell { color: rgba(0, 0, 0, 0.85); }
+
+.asr-cell-icon { width: 22px; height: 22px; cursor: pointer; transition: transform 0.15s ease; &:hover { transform: scale(1.12); } }
+
+.asr-sr-type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 17px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  border: 0.7px solid;
+  box-shadow: 0px 0px 3px currentColor inset;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+// Escalation Level & Tracking — same pill + dot-row language as Escalation
+// Matrix's escalation-tracking column.
+.asr-tracking-cell { gap: 14px; }
+.asr-tracking-pill {
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border-radius: 999px;
+  background-color: #fff;
+  border: 0.7px solid;
+  box-shadow: 0px 0px 2.5px currentColor;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.asr-tracking-level { font-weight: 600; font-size: 16px; white-space: nowrap; }
+.asr-tracking-dots { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 40px; }
+.asr-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+  flex-shrink: 0;
+}
+
+.asr-actions-btn {
+  appearance: none; -webkit-appearance: none;
+  border: none; background: transparent; padding: 0;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  svg { width: 20px; height: 20px; }
+}
+
+// ---------- Empty state ----------
+.asr-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+}
+.asr-empty-text { font-size: 18px; font-weight: 500; color: #9ca3af; }
+
+// ---------- Pagination ----------
+.asr-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid rgba(100, 116, 139, 0.18);
+  font-size: 15px;
+}
+.asr-showing-text { color: rgba(0, 0, 0, 0.5); }
+.asr-pagination-buttons { display: flex; align-items: center; gap: 8px; }
+.asr-page-btn {
+  height: 38px;
+  min-width: 38px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border-radius: 11px;
+  background-color: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+
+  &.asr-page-btn-active {
+    box-shadow: 0px 0px 10px rgba(228, 0, 0, 0.3);
+    background: linear-gradient(135deg, $color-brand-red, rgba(228, 0, 0, 0.75));
+    color: #fff;
+  }
+  &.asr-page-btn-disabled {
+    cursor: default;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.35);
+  }
+}

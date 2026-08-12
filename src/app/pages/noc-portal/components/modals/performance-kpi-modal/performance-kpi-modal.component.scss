@@ -1,0 +1,182 @@
+:host {
+  display: contents;
+}
+
+.pk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.pk-card {
+  width: min(1120px, 92vw);
+  margin: auto 0;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-radius: 22px;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, sans-serif;
+  overflow: hidden;
+}
+
+.pk-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px;
+  border-bottom: 1.3px solid #f0f0f0;
+}
+.pk-title {
+  font-size: 24px;
+  letter-spacing: -0.22px;
+  line-height: 33px;
+  font-weight: 600;
+  color: #e40000;
+}
+// Bare X, no bordered box — this modal's reference only shows a plain
+// close icon, unlike Topology/Link Status/Inventory Blueprint/Bundle
+// Summary which all have a bordered-square icon button here.
+.pk-close {
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  svg { width: 20px; height: 20px; }
+  &:hover { background-color: rgba(0, 0, 0, 0.05); }
+}
+
+.pk-body {
+  padding: 28px 32px 32px;
+}
+
+.pk-tabs {
+  display: flex;
+  align-items: center;
+  background-color: #f5f6f8;
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+.pk-tab {
+  flex: 1 1 0;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover { background-color: rgba(0, 0, 0, 0.04); }
+}
+.pk-tab-active {
+  background-color: #e40000;
+  color: #fff;
+  font-weight: 600;
+  &:hover { background-color: #e40000; }
+}
+
+.pk-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 56px;
+}
+.pk-fields-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pk-field-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+.pk-field-value {
+  height: 44px;
+  border-radius: 10px;
+  background-color: #f7f8fa;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 15px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pk-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+.pk-reset-btn {
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 24px;
+  background-color: #fff;
+  border: 1px solid #e40000;
+  color: #e40000;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover { background-color: rgba(228, 0, 0, 0.05); }
+}
+.pk-submit-btn {
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 24px;
+  background-color: #e40000;
+  border: none;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+
+  &:hover { filter: brightness(1.08); }
+}
+
+.pk-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0 40px;
+}
+.pk-empty-text { font-size: 16px; font-weight: 500; color: #9ca3af; }

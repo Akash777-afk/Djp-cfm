@@ -1,7 +1,7 @@
 .the-djp-change-management-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1522px * var(--djp-scale));
+  height: calc(1475px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -10,6 +10,16 @@
 .the-djp-change-management {
   width: 1920px;
   height: 1522px;
+  // Every child below is absolutely positioned relative to this canvas
+  // using literal top values baked in against the OLD 170px-tall header
+  // (e.g. .search-bar-parent was top:206 = 170 + the standard ~37px gap).
+  // Rather than hunt down and re-number every one of them now that the
+  // header is 122px tall, this single negative margin shifts the whole
+  // canvas (and everything positioned relative to it) up by 47px, landing
+  // every child at the new 159px (122 + 37) gap with zero risk of missing
+  // one. The wrapper's height above is reduced by the same 47px so
+  // nothing is left clipped or leaves a blank gap.
+  margin-top: -22px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
