@@ -1,0 +1,169 @@
+<div class="csm-overlay" *ngIf="open" (click)="onBackdropClick()">
+  <div class="csm-card" role="dialog" aria-modal="true" aria-label="Custom Settings" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="csm-header">
+      <div class="csm-header-text">
+        <h2 class="csm-title">Custom Settings</h2>
+        <p class="csm-subtitle">Customize the Incident table fields</p>
+      </div>
+      <button type="button" class="csm-close-btn" aria-label="Close" (click)="onCancel()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main content -->
+    <div class="csm-columns">
+
+      <!-- Available -->
+      <div class="csm-panel">
+        <div class="csm-panel-header">
+          <h3 class="csm-panel-title">Available Incident Fields <span class="csm-count">({{ draftAvailable.length }})</span></h3>
+        </div>
+
+        <div class="csm-search">
+          <svg class="csm-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="availableSearchQuery"
+            placeholder="Search available fields..."
+            aria-label="Search available incident fields"
+          />
+        </div>
+
+        <div
+          class="csm-list"
+          cdkDropList
+          [id]="availableListId"
+          [cdkDropListData]="filteredAvailable"
+          [cdkDropListConnectedTo]="[selectedListId]"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <div
+            class="csm-item"
+            *ngFor="let field of filteredAvailable"
+            cdkDrag
+            [cdkDragData]="field"
+          >
+            <span class="csm-drag-handle" aria-hidden="true">
+              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="3" cy="3" r="1.6" fill="currentColor"/><circle cx="11" cy="3" r="1.6" fill="currentColor"/>
+                <circle cx="3" cy="10" r="1.6" fill="currentColor"/><circle cx="11" cy="10" r="1.6" fill="currentColor"/>
+                <circle cx="3" cy="17" r="1.6" fill="currentColor"/><circle cx="11" cy="17" r="1.6" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="csm-item-label">{{ field.label }}</span>
+            <button type="button" class="csm-transfer-btn csm-add-btn" (click)="moveToSelected(field)" [attr.aria-label]="'Add ' + field.label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="csm-drag-preview" *cdkDragPreview>
+              <span class="csm-drag-handle"><svg width="14" height="20" viewBox="0 0 14 20" fill="none"><circle cx="3" cy="3" r="1.6" fill="currentColor"/><circle cx="11" cy="3" r="1.6" fill="currentColor"/><circle cx="3" cy="10" r="1.6" fill="currentColor"/><circle cx="11" cy="10" r="1.6" fill="currentColor"/><circle cx="3" cy="17" r="1.6" fill="currentColor"/><circle cx="11" cy="17" r="1.6" fill="currentColor"/></svg></span>
+              <span class="csm-item-label">{{ field.label }}</span>
+            </div>
+          </div>
+
+          <div class="csm-empty" *ngIf="filteredAvailable.length === 0 && draftAvailable.length > 0">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="7" stroke="#cbd5e1" stroke-width="1.5"/>
+              <path d="M20 20L16.65 16.65" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span>No fields found</span>
+          </div>
+          <div class="csm-empty" *ngIf="draftAvailable.length === 0">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>All fields are selected</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected -->
+      <div class="csm-panel csm-panel-selected">
+        <div class="csm-panel-header">
+          <h3 class="csm-panel-title">Selected Fields <span class="csm-count csm-count-selected">({{ draftSelected.length }})</span></h3>
+        </div>
+
+        <div class="csm-search">
+          <svg class="csm-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="selectedSearchQuery"
+            placeholder="Search selected fields..."
+            aria-label="Search selected incident fields"
+          />
+        </div>
+
+        <div
+          class="csm-list csm-list-selected"
+          cdkDropList
+          [id]="selectedListId"
+          [cdkDropListData]="filteredSelected"
+          [cdkDropListConnectedTo]="[availableListId]"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <div
+            class="csm-item csm-item-selected"
+            *ngFor="let field of filteredSelected"
+            cdkDrag
+            [cdkDragData]="field"
+          >
+            <span class="csm-drag-handle" aria-hidden="true">
+              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="3" cy="3" r="1.6" fill="currentColor"/><circle cx="11" cy="3" r="1.6" fill="currentColor"/>
+                <circle cx="3" cy="10" r="1.6" fill="currentColor"/><circle cx="11" cy="10" r="1.6" fill="currentColor"/>
+                <circle cx="3" cy="17" r="1.6" fill="currentColor"/><circle cx="11" cy="17" r="1.6" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="csm-item-label">{{ field.label }}</span>
+            <button type="button" class="csm-transfer-btn csm-remove-btn" (click)="moveToAvailable(field)" [attr.aria-label]="'Remove ' + field.label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="csm-drag-preview" *cdkDragPreview>
+              <span class="csm-drag-handle"><svg width="14" height="20" viewBox="0 0 14 20" fill="none"><circle cx="3" cy="3" r="1.6" fill="currentColor"/><circle cx="11" cy="3" r="1.6" fill="currentColor"/><circle cx="3" cy="10" r="1.6" fill="currentColor"/><circle cx="11" cy="10" r="1.6" fill="currentColor"/><circle cx="3" cy="17" r="1.6" fill="currentColor"/><circle cx="11" cy="17" r="1.6" fill="currentColor"/></svg></span>
+              <span class="csm-item-label">{{ field.label }}</span>
+            </div>
+          </div>
+
+          <div class="csm-empty" *ngIf="draftSelected.length > 0 && filteredSelected.length === 0">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="7" stroke="#cbd5e1" stroke-width="1.5"/>
+              <path d="M20 20L16.65 16.65" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span>No fields found</span>
+          </div>
+          <div class="csm-empty csm-empty-drop" *ngIf="draftSelected.length === 0">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <path d="M12 9V15M9 12H15" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="csm-empty-title">No fields selected</span>
+            <span class="csm-empty-hint">Drag fields here to add them to your Incident table.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="csm-footer">
+      <button type="button" class="csm-btn csm-btn-outline" (click)="onCancel()">Cancel</button>
+      <button type="button" class="csm-btn csm-btn-solid" (click)="onSave()">Save</button>
+    </div>
+
+  </div>
+</div>

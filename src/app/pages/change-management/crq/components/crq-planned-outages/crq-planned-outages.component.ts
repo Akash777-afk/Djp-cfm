@@ -9,6 +9,7 @@ import { PlannedOutage } from '../../../shared/types';
 export class CrqPlannedOutagesComponent {
 
   @Input() plannedOutages: PlannedOutage[] = [];
+  @Input() isLoading = false;
 
   @Input() sortBy = 'Sort by...';
   @Output() sortByChange = new EventEmitter<string>();

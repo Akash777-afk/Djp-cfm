@@ -2,162 +2,132 @@
   display: contents;
 }
 
-.rectangle-parent {
+// ---------- Status cards ----------
+// Same design as Change Management's app-cml-stat-cards (see that
+// component's .scss) — card shape, shadow, corner radius, and colored
+// bottom border are reproduced 1:1; label/count/view-text font-size/weight/
+// line-height/letter-spacing/color are copied byte-for-byte from CM (the
+// single source of truth for card text styling — see the note directly on
+// those rules below). Only the card width/pitch differ: CM fits 6 cards at
+// 267.5px/297px pitch, this row needs 8 cards in the same ~1846px width the
+// old panel occupied, so width/pitch (214px card / 232px pitch) and the
+// icon-badge/arrow-button container sizes are scaled down for fit — those
+// two are decorative containers, not text, so they're exempt from the
+// exact-match requirement.
+.im-stat-row {
   position: absolute;
-  top: 276px; left: 37px;
-  width: 1846px; height: 290px;
-  font-size: 18px;
-  color: #b0880b;
+  // top = welcome text's bottom edge (32 + 26 line-height = 58) + the
+  // universal 32px component gap (no fixed header to clear anymore).
+  top: 90px; left: 37px;
+  width: 1846px; height: 155px;
 }
-.group-item {
+.im-stat-card {
   position: absolute;
-  top: 0; left: 0;
-  box-shadow: 0px 2px 12px rgba(0,0,0,0.22);
-  border-radius: 22px;
-  background-color: #fff;
-  width: 1846px; height: 290px;
-}
-.group-container {
-  position: absolute;
-  top: 20px; left: 12px;
-  width: 1825px; height: 242px;
-}
-.container-parent {
-  position: absolute;
-  top: 78px; left: 12px;
-  width: 1798px; height: 164px;
-}
-
-// Stat tile — shared structure, colours bound inline
-.stat-tile {
-  position: absolute;
-  box-shadow: 0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.1);
-  border-radius: 16px;
-  border-top: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-  border-left: 4px solid;
-  box-sizing: border-box;
-  width: 205.5px; height: 164px;
   top: 0;
+  width: 214px;
+  height: 155px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
+  border-bottom: 4px solid var(--stat-color);
+  color: var(--stat-color);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-  &:not(.stat-tile-active):hover {
-    transform: translateY(-4px);
+  &:not(.im-stat-card-active):hover {
+    transform: translateY(-3px);
     box-shadow:
-      0px 16px 28px -6px rgba(0,0,0,0.18),
-      0px 4px 10px -2px rgba(0,0,0,0.1),
-      0 0 0 2px color-mix(in srgb, currentColor 45%, transparent),
-      0 0 26px 4px color-mix(in srgb, currentColor 40%, transparent);
+      0px 2px 12px rgba(0, 0, 0, 0.12),
+      0 0 0 2px color-mix(in srgb, var(--stat-color) 45%, transparent),
+      0 0 26px 4px color-mix(in srgb, var(--stat-color) 40%, transparent);
   }
 }
-// Permanent distinct treatment: the table below always reflects this tile,
-// so it's visually called out rather than needing a hover/click affordance.
-.stat-tile-active {
-  border-top-width: 1px;
-  border-right-width: 1px;
-  border-left-width: 1px;
+// Whichever card was last clicked (activeKey) — same permanent-callout
+// treatment CM uses for its "All" card (thicker bottom border + glow),
+// just toggled by click here instead of being permanently on one card.
+.im-stat-card-active {
+  border: 1px solid var(--stat-color);
   border-bottom-width: 8px;
   box-shadow:
-    0px 4px 6px -1px rgba(0,0,0,0.1),
-    0px 2px 4px -2px rgba(0,0,0,0.1),
-    0 0 16px 2px color-mix(in srgb, currentColor 30%, transparent);
+    0px 2px 12px rgba(0, 0, 0, 0.22),
+    0 0 16px 2px color-mix(in srgb, var(--stat-color) 30%, transparent);
 }
-.tile-icon-box {
+// Label/count/view-text below are byte-for-byte the same font-size/weight/
+// line-height/letter-spacing/color as Change Management's
+// .cml-stat-label/.cml-stat-count/.cml-stat-view (see stat-cards.component
+// .scss) — CM is the single source of truth for card text styling, so these
+// values must stay in lockstep with that file rather than being tuned
+// independently. Top/left offsets are copied from CM too (20/52/104, left
+// 24) since matching font metrics need matching vertical rhythm to land the
+// same way inside the same 155px card height. Only the label gets a fixed
+// width + ellipsis (CM doesn't need this — its cards are 267.5px wide with
+// short labels that never reach the icon; IM's narrower 214px card can't
+// assume that, so this is a defensive, non-visual-styling addition, not a
+// deviation from CM's actual text styling).
+.im-stat-label {
   position: absolute;
-  top: 22px; left: 22px;
+  top: 20px; left: 24px;
+  width: 130px;
+  line-height: 26px;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--stat-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.im-stat-icon-badge {
+  position: absolute;
+  top: 14px; left: 162px;
+  width: 36px; height: 30px;
   border-radius: 14px;
-  background-color: #fff;
-  border: 0.4px solid;
-  width: 40px; height: 40px;
-  box-sizing: border-box;
+  background-color: var(--stat-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 10px;
+
+  img { height: 17px; width: 17px; object-fit: contain; }
 }
-.icon2 { height: 25px; width: 25px; }
-.tile-label {
+.im-stat-count {
   position: absolute;
-  top: 80px; left: 28px;
-  font-size: 20px;
+  top: 52px; left: 24px;
+  // Count font size reduced 38 -> 34 (-4px) per the typography pass; kept
+  // in lockstep with Change Management's own .cml-stat-count (see that
+  // file's matching comment).
+  font-size: 34px;
+  letter-spacing: -2px;
+  line-height: 40px;
+  font-weight: 600;
+  color: #111827;
+}
+.im-stat-view {
+  position: absolute;
+  top: 104px; left: 24px;
+  font-size: 16px;
   line-height: 20px;
-  font-weight: 700;
+  color: #9ca3af;
+  width: 140px;
 }
-.tile-divider {
+.im-stat-arrow {
   position: absolute;
-  top: 108px; left: 28px;
-  width: 321px; height: 36px;
-}
-.tile-value {
-  position: absolute;
-  top: 22px;
-  font-size: 32px;
-  line-height: 36px;
-}
-.tile-badge-wrap {
-  position: absolute;
-  top: 156px; left: 28px;
-  width: 321px; height: 24px;
-  display: flex;
-  align-items: center;
-  isolation: isolate;
-  font-size: 12px;
-}
-.tile-badge {
-  height: 24px;
-  margin: 0 !important;
-  position: absolute;
-  top: -39px; left: 0;
-  border-radius: 22369600px;
-  background-color: #fff;
-  border: 0.3px solid;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  gap: 4px;
-  z-index: 0;
-}
-.icon3 { height: 12px; width: 12px; }
-.text { height: 16px; flex: 1; display: flex; align-items: flex-start; }
-.needs-review { position: relative; line-height: 16px; white-space: nowrap; }
-.vs-yesterday { position: relative; line-height: 16px; color: #6a7282; white-space: nowrap; }
-.text6 { height: 16px; display: flex; align-items: flex-start; color: #6a7282; flex-shrink: 0; }
-
-// Separator line
-.group-inner {
-  position: absolute;
-  top: 56px; left: 0;
-  border-top: 1px solid rgba(100,116,139,0.15);
-  width: 1826px; height: 1px;
-}
-
-// NSTT Status heading
-.nstt-status-parent {
-  position: absolute;
-  top: 0; left: 18px;
-  width: 1786px; height: 46px;
-  font-size: 24px;
-  color: rgba(0,0,0,0.82);
-}
-.nstt-status { position: absolute; top: 10px; left: 17px; letter-spacing: -0.01em; }
-.container20 {
-  position: absolute;
-  top: 10px; left: 0;
-  border-radius: 22369600px;
-  background-color: #e40000;
-  width: 4px; height: 28px;
-}
-.frame-icon {
-  position: absolute;
-  top: 0; left: 1740px;
-  width: 46px; height: 46px;
+  top: 101px; left: 172px;
+  width: 26px; height: 26px;
   border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.4s ease;
+  box-sizing: border-box;
+  background-color: rgba(100, 116, 139, 0.08);
+  border: 0.6px solid rgba(100, 116, 139, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease, background-color 0.15s ease;
 
-  &:hover { background-color: rgba(228, 0, 0, 0.08); }
-  &:active { transform: rotate(90deg); }
+  svg { width: 13px; height: 13px; }
+
+  &:hover { background-color: rgba(100, 116, 139, 0.16); }
+}
+.im-stat-arrow-down {
+  transform: rotate(90deg);
 }

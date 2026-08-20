@@ -11,11 +11,11 @@ $shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
   box-shadow: $shadow-card;
   box-sizing: border-box;
   overflow: hidden;
-  // Collapsed = a full pill (radius = half the 60px header height).
+  // Collapsed = a full pill (radius = half the 70px header height).
   // Expanded = the same rounded-rect radius every other card on this page
   // uses. Both the header and this radius transition together so growing
   // into the expanded card reads as one smooth motion, not a hard cut.
-  border-radius: 30px;
+  border-radius: 35px;
   transition: border-radius 0.25s ease;
 }
 .np-acc-expanded {
@@ -26,7 +26,13 @@ $shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
   display: flex;
   align-items: center;
   gap: 16px;
-  height: 60px;
+  // Symmetric padding (0 top/bottom) — the previous asymmetric
+  // padding-top:10px/padding-bottom:0 was meant to nudge content down 10px,
+  // but rendered lopsided (content sitting high, excess space at the
+  // bottom) rather than truly centered. Plain align-items:center with no
+  // vertical padding is what actually centers reliably.
+  height: 70px;
+  box-sizing: border-box;
   padding: 0 32px;
   cursor: pointer;
   font-family: Inter, sans-serif;

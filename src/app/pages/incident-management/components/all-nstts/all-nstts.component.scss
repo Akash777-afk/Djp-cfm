@@ -4,7 +4,10 @@
 
 .rectangle-group {
   position: absolute;
-  top: 603px; left: 37px;
+  // 277px = the status card row's bottom edge (90 + 155 = 245) + the
+  // universal 32px component gap used app-wide between a card row and the
+  // table below it.
+  top: 277px; left: 37px;
   width: 1846px; height: 696px;
   text-align: center;
   font-size: 19.25px;
@@ -241,6 +244,8 @@
   }
 }
 .owner-id { color: #94a3b8; font-size: 13px; }
+.checkbox-empty { color: #9ca3af; font-size: 14px; padding: 6px 0; }
+
 .panel-search {
   display: block;
   width: 100%;
@@ -366,12 +371,6 @@
   &:hover { background-color: rgba(15, 23, 42, 0.06); }
   &:active { transform: scale(0.92); }
 }
-.settings-panel {
-  position: absolute;
-  top: 54px; right: 0;
-  min-width: 220px;
-  color: #94a3b8;
-}
 
 // ---- Refresh ----
 .group-child3 {
@@ -406,28 +405,77 @@
   white-space: nowrap;
 }
 
-// Offset modifiers — each aligns its header label with the matching
-// column's data-cell content below it.
+// Offset modifier still used by the "SR without NSTT" reduced view's own
+// standalone header (see .sr-without-nstt-view above, which overrides
+// .col-header's position:absolute back to static for that context) — the
+// main table below no longer uses .col-header at all, it has real <th>s.
 .sr-count-header          { left: -8px; }
-.vip-flag-header          { left: 23px; }
-.nstt-ageing-header       { left: 0px;  }
-.actual-incident-header   { left: 15px; }
-.assigned-group-header    { left: 19px; }
-.nstt-header              { left: 33px; }
-.last-ert-time-header     { left: 16px; }
-.site-header              { left: 0px;  }
-.status-header            { left: 0px;  }
-.up-time-header           { left: 0px;  }
 
-// SR Count column
-.frame-group {
+// ================================
+// Table — real <table> with auto column widths (was a column-major grid of
+// fixed-width absolutely-positioned divs; converted so real backend values,
+// which run much longer than this table was originally built against, show
+// in full instead of truncating or bleeding into the next column). Same
+// .table-scroll-container / table pattern already used by Escalation
+// Matrix's escalated-srs table and Change Management's planned-outages table.
+// ================================
+.table-scroll-container {
   position: absolute;
-  top: 92px; left: 1697.9px;
-  width: 94.3px; height: 521px;
+  top: 92px; left: 0;
+  // .group-div starts at top:30px within .rectangle-group (696px tall) and
+  // pagination (.line-parent, a sibling of .group-div) starts at top:600px
+  // in that same outer coordinate space — so this container's absolute
+  // bottom edge (30 + 92 + height) must stay under 600px. 470px leaves a
+  // clean 8px gap (30 + 92 + 470 = 592).
+  width: 1792px; height: 470px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #f3f4f6 transparent;
+  &::-webkit-scrollbar { height: 10px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background-color: #f3f4f6; border-radius: 8px; }
 }
+
+.all-nstts-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  // The whole point: no fixed layout, so each column sizes itself to its
+  // own widest current value (mock or real) — combined with white-space:
+  // nowrap below, this is what makes "no truncation, scroll if needed" work
+  // without any JS width calculation.
+  table-layout: auto;
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(100, 116, 139, 0.22);
+  }
+  td {
+    height: 71px;
+    padding: 0 16px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 19.25px;
+    color: rgba(0, 0, 0, 0.85);
+    box-sizing: border-box;
+  }
+}
+
+// SR Count / VIP Flag stay icon-only, centered rather than left-aligned
+// like the text columns.
+.sr-count-th, .vip-flag-th { text-align: center; }
+.sr-count-td, .vip-flag-td { text-align: center; padding: 0; }
 .sr-count-icon {
-  position: absolute;
-  left: 28px;
   width: 33px; height: 33px;
   border-radius: 50%;
   cursor: pointer;
@@ -436,93 +484,17 @@
   &:hover { background-color: rgba(15, 23, 42, 0.06); }
   &:active { transform: rotate(90deg); }
 }
+.vip-icon { width: 32px; height: 32px; vertical-align: middle; }
+.vip-icon-account { width: 30px; height: 30px; }
 
-// VIP Flag column
-.vip-flag-parent {
-  position: absolute;
-  top: 92px; left: 12px;
-  width: 82.5px; height: 518px;
-}
-.icbaseline-diamond-parent {
-  position: absolute;
-  top: 71px; left: 23px;
-  width: 32px; height: 447px;
-}
-.vip-icon { position: absolute; left: 0; width: 32px; height: 32px; }
-.vip-icon-account { width: 30px; height: 30px; left: 1px; }
-
-// NSTT column
-.nstt-parent { position: absolute; top: 92px; left: 138.5px; width: 124.3px; height: 518px; }
-.network-outage-in-east-coast-d-parent {
-  position: absolute;
-  top: 65px; left: 0;
-  width: 124.3px; height: 453px;
-  font-size: 19.25px;
+// Already blue (matches the original design) — this just adds the
+// interaction affordances on top of the existing link look.
+.nstt-cell-link {
   color: #0284c7;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
 }
-
-// NSTT Ageing column
-.nstt-ageing-parent { position: absolute; top: 92px; left: 306.8px; width: 123.2px; height: 518px; }
-.parent {
-  position: absolute;
-  top: 65px; left: 16px;
-  width: 82px; height: 453px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.5);
-}
-
-// Site column
-.site-parent { position: absolute; top: 92px; left: 474px; width: 107.1px; height: 518px; }
-.network-outage-in-east-coast-d-group {
-  position: absolute;
-  top: 65px; left: 0;
-  width: 107.1px; height: 453px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.85);
-}
-
-// Status column
-.status-parent { position: absolute; top: 92px; left: 625.1px; width: 109.3px; height: 518px; }
-.network-outage-in-east-coast-d-container {
-  position: absolute;
-  top: 65px; left: 0;
-  width: 109.3px; height: 453px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.85);
-}
-
-// Actual Incident Time column
-.actual-incident-time-parent { position: absolute; top: 92px; left: 778.4px; width: 215.3px; height: 518px; }
-.network-outage-in-east-coast-d-parent2 {
-  position: absolute;
-  top: 65px; left: 15px;
-  width: 185px; height: 453px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.85);
-}
-
-// Assigned Group column
-.assigned-group-parent { position: absolute; top: 92px; left: 1037.7px; width: 161.8px; height: 518px; }
-.network-outage-in-east-coast-d-parent3 {
-  position: absolute;
-  top: 65px; left: 39px;
-  width: 88px; height: 453px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.85);
-}
-
-// Last ERT Time column
-.last-ert-time-parent { position: absolute; top: 92px; left: 1243.5px; width: 183.2px; height: 519px; }
-.network-outage-in-east-coast-d-parent4 {
-  position: absolute;
-  top: 65px; left: 0;
-  width: 183.2px; height: 454px;
-  font-size: 19.25px;
-  color: rgba(0,0,0,0.85);
-}
-
-// Up Time column
-.up-time-parent { position: absolute; top: 92px; left: 1470.7px; width: 183.2px; height: 519px; }
 
 // Empty state — shown in place of the columns when the active stat tile's
 // filter matches no rows.
@@ -543,14 +515,3 @@
   font-weight: 500;
   color: #9ca3af;
 }
-
-// Shared column cell — replaces network-outage-inN classes
-.col-cell {
-  position: absolute;
-  left: 0;
-  line-height: 27.5px;
-  white-space: pre-wrap;
-  display: inline-block;
-  width: 100%;
-}
-.nstt-cell { width: 124.3px; }

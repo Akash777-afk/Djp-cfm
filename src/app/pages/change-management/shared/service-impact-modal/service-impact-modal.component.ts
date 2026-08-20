@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeManagementService } from '../../services/change-management.service';
 
 interface ImpactedLsiRow {
   lsi: string;
@@ -13,6 +14,8 @@ interface ImpactedLsiRow {
 })
 export class ServiceImpactModalComponent implements OnChanges {
 
+  constructor(private cmService: ChangeManagementService) {}
+
   @Input() isOpen = false;
   @Output() closed = new EventEmitter<void>();
 
@@ -23,15 +26,13 @@ export class ServiceImpactModalComponent implements OnChanges {
   nodeQuery = '';
   lsiFilter = '';
 
-  // Domain/Node/Filter LSI are decorative here (no real backend to filter
-  // against) — Search just reveals the mock results panel, matching how
-  // several other search bars in this app are still non-functional stubs.
   hasSearched = false;
+  isSearching = false;
 
   pageSize = 7;
   currentPage = 1;
 
-  readonly allRows: ImpactedLsiRow[] = this.buildMockRows();
+  allRows: ImpactedLsiRow[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isOpen'] && this.isOpen) {
@@ -39,8 +40,13 @@ export class ServiceImpactModalComponent implements OnChanges {
     }
   }
 
+  get filteredRows(): ImpactedLsiRow[] {
+    const q = this.lsiFilter.trim().toLowerCase();
+    return q ? this.allRows.filter(r => r.lsi.toLowerCase().includes(q)) : this.allRows;
+  }
+
   get totalRows(): number {
-    return this.allRows.length;
+    return this.filteredRows.length;
   }
 
   get totalPages(): number {
@@ -49,7 +55,7 @@ export class ServiceImpactModalComponent implements OnChanges {
 
   get pagedRows(): ImpactedLsiRow[] {
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.allRows.slice(start, start + this.pageSize);
+    return this.filteredRows.slice(start, start + this.pageSize);
   }
 
   get rangeStart(): number {
@@ -60,15 +66,25 @@ export class ServiceImpactModalComponent implements OnChanges {
     return Math.min(this.currentPage * this.pageSize, this.totalRows);
   }
 
+  // Real search (API #5) — domain + node are the real query params DJP
+  // sends; lsiFilter is a client-side-only refinement on top of the results
+  // (DJP has no separate LSI-filter API param).
   search(): void {
-    this.hasSearched = true;
+    this.isSearching = true;
     this.currentPage = 1;
+    this.cmService.getServiceImpactedLsis(this.domain, this.nodeQuery).subscribe(rows => {
+      this.isSearching = false;
+      this.hasSearched = true;
+      this.allRows = (rows || []).map(r => ({ lsi: r.LSI, serviceType: r.ServiceType, customer: r.Customer }));
+    });
   }
 
   reset(): void {
     this.domain = 'All Domains';
     this.nodeQuery = '';
+    this.lsiFilter = '';
     this.hasSearched = false;
+    this.allRows = [];
   }
 
   onPageSizeChange(): void {
@@ -94,26 +110,8 @@ export class ServiceImpactModalComponent implements OnChanges {
     this.nodeQuery = '';
     this.lsiFilter = '';
     this.hasSearched = false;
+    this.allRows = [];
     this.pageSize = 7;
     this.currentPage = 1;
-  }
-
-  private buildMockRows(): ImpactedLsiRow[] {
-    const serviceTypes = ['MPLS L3 VPN', 'Internet Leased Line', 'MPLS L2 VPN', 'SD-WAN Managed'];
-    const customers = [
-      'Reliance Industries Ltd', 'Tata Consultancy Services', 'Infosys Limited',
-      'HDFC Bank Ltd', 'Wipro Technologies', 'ICICI Bank Ltd',
-      'Larsen & Toubro', 'State Bank of India', 'Mahindra Group', 'Bharti Enterprises',
-    ];
-    const rows: ImpactedLsiRow[] = [];
-    const count = 84;
-    for (let i = 0; i < count; i++) {
-      rows.push({
-        lsi: `LSI-${(4821 + i).toString().padStart(6, '0')}`,
-        serviceType: serviceTypes[i % serviceTypes.length],
-        customer: customers[i % customers.length],
-      });
-    }
-    return rows;
   }
 }

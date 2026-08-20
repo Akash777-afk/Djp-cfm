@@ -47,4 +47,64 @@ export const MOCK_SR_SUMMARY: SrSummaryData = {
       { key: 'refNwSr',      label: 'Ref N/W Sr',    value: 'SR-NW-2024-03876-PRIMARY',        editable: true },
     ],
   ],
+
+  relationship: {
+    incidents: [
+      { incNumber: 'INC-2024-011234', location: 'Mumbai DC - Rack 14', actualEventTime: '05-Mar-2026 08:10 UTC', status: 'Open',     statusReason: 'Investigation',            ert: '2h 30m', upTime: '99.2%' },
+      { incNumber: 'INC-2024-011198', location: 'Mumbai DC - Rack 14', actualEventTime: '03-Mar-2026 22:45 UTC', status: 'Resolved', statusReason: 'Fixed - Hardware replaced', ert: '4h 10m', upTime: '99.8%' },
+    ],
+    circuitTopology: {
+      elanNumber: 'ELAN-MWRKT-ML3-15-68937',
+      entityId: 'No entity ID found',
+    },
+  },
+
+  // Blank on purpose — this is a create-form, not a record being viewed
+  // (see CallbackTaskData's own comment), so it starts empty for the user
+  // to fill in rather than pre-populated with someone else's data.
+  callbackTask: {
+    customerName: '',
+    customerContactNumber: '',
+    customerEmailAddress: '',
+    alternateContactNumber: '',
+    reasonForCallback: '',
+    customerAvailabilityTime: '',
+  },
+
+  // All editable — an in-progress task form, not a settled record like SR
+  // Details, so every field starts ready to fill in.
+  resolutionTasks: [
+    [
+      { key: 'attributedTo',   label: 'Attributed To',   value: '', editable: true },
+      { key: 'faultLocation',  label: 'Fault Location',  value: '', editable: true },
+      { key: 'rfoStatus',      label: 'RFO Status',      value: '', editable: true },
+    ],
+    [
+      { key: 'faultFoundCode', label: 'Fault Found Code', value: '', editable: true },
+      { key: 'rfo',            label: 'RFO',              value: '', editable: true },
+      { key: 'rfoFaultType',   label: 'RFO Fault Type',   value: '', editable: true },
+    ],
+    [
+      { key: 'resolutionCode',        label: 'Resolution Code',        value: '', editable: true },
+      { key: 'rfoComments',           label: 'RFO Comments',           value: '', editable: true },
+      { key: 'rfoResolutionComments', label: 'RFO Resolution Comments',value: '', editable: true },
+    ],
+  ],
+
+  // Created Date/Time and Circuit UpTime are already-recorded system
+  // timestamps (read-only); Resolved Date/Time and SR Level Uptime are
+  // still blank/pending, matching the reference — filled in via the same
+  // pencil-to-edit pattern as everywhere else on this page.
+  dateTime: [
+    [
+      { key: 'createdDateTimeDt', label: 'Created Date/Time', value: '07/20/2024 14:19:50', editable: false },
+      { key: 'srLevelUptime',     label: 'SR Level Uptime',   value: '',                     editable: true },
+    ],
+    [
+      { key: 'resolvedDateTimeDt', label: 'Resolved Date/Time', value: '', editable: true },
+    ],
+    [
+      { key: 'circuitUptime', label: 'Circuit UpTime', value: '12/18/2024 20:19:27', editable: false },
+    ],
+  ],
 };

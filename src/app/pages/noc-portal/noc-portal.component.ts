@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarNavItem } from '../change-management/shared/sidebar-nav/sidebar-nav.component';
 import {
   NAV_ITEMS,
@@ -26,7 +26,11 @@ import { SrDetailsService } from './services/sr-details.service';
 })
 export class NocPortalComponent implements OnInit {
 
-  constructor(private router: Router, private srDetailsService: SrDetailsService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private srDetailsService: SrDetailsService,
+  ) {}
 
   // ---------- Responsive scale-to-fit (same approach as every other page) ----------
   private static readonly DESIGN_WIDTH = 1920;
@@ -34,6 +38,18 @@ export class NocPortalComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateScale();
+
+    // Deep link from Escalation Matrix's "Escalated SRs" table (row click) —
+    // land straight in the SR Details state for that SR, same as if the user
+    // had typed it into the search bar and hit search themselves. Replaces
+    // DJP's own behavior (an external window.open() popup to the legacy NOC
+    // Portal) with an in-app navigation, since djp-cfm already has its own
+    // SR-detail view.
+    const srNumber = this.route.snapshot.queryParamMap.get('SrNumber');
+    if (srNumber) {
+      this.srQuery = srNumber;
+      this.onSearch();
+    }
   }
 
   @HostListener('window:resize')
@@ -150,8 +166,8 @@ export class NocPortalComponent implements OnInit {
   // All 5 share the same #64748B gray at the SVG level, so no per-icon CSS
   // border/recolor is needed — they're rendered uniformly by .np-srs-icon-circle.
   readonly srSummaryToolbarIcons = [
-    { key: 'r',      icon: '/assets/NOC_Portal/Group ssr.svg',             alt: 'R' },
     { key: 'a',      icon: '/assets/NOC_Portal/Group ssr2.svg',            alt: 'A' },
+    { key: 'r',      icon: '/assets/NOC_Portal/Group ssr.svg',             alt: 'R' },
     { key: 'clock',  icon: '/assets/NOC_Portal/solar_alarm-linearssr.svg', alt: 'Reminder' },
     { key: 'flash',  icon: '/assets/NOC_Portal/iconoir_auto-flashssr.svg', alt: 'Quick action' },
     { key: 'attach', icon: '/assets/NOC_Portal/proicons_attachssr.svg',    alt: 'Attach' },

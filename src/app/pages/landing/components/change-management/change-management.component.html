@@ -4,6 +4,10 @@
   *ngIf="variant === 'desktop'"
   [style.top.px]="top"
   [style.left.px]="left"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
 >
 
   <!-- Card header -->
@@ -21,97 +25,60 @@
       alt="Expand Change management"
       role="button"
       tabindex="0"
-      (click)="onExpandCard()"
-      (keyup.enter)="onExpandCard()"
+      (click)="$event.stopPropagation(); onExpandCard()"
+      (keyup.enter)="$event.stopPropagation(); onExpandCard()"
     />
   </div>
 
-  <!-- Table (column-major) -->
-  <div class="content-wrapper">
-    <div class="content3">
+  <!-- Status breakdown: bar chart (6 bars incl. "All Changes") on the left,
+       a matching pill list on the right — replaces the old KPI-tiles-then-
+       chart stacked layout. -->
+  <div class="cm-analytics-row">
 
-      <!-- Column 10: CRQ -->
-      <div class="column10">
-        <div class="table-header-cell10">
-          <div class="sr-number">crq</div>
-        </div>
-        <div
-          *ngFor="let row of changeRows"
-          [ngClass]="row.isLast ? 'table-cell46' : 'table-cell43'"
-        >
-          <div class="text"><div class="div26">{{ row.crq }}</div></div>
+    <div class="cm-chart-col">
+      <div class="cm-bar-parent">
+        <div class="cm-y-label" *ngFor="let y of yLabels" [style.top.px]="y.top">{{ y.label }}</div>
+        <div class="cm-bar-col" *ngFor="let bar of bars">
+          <div
+            class="cm-bar-item"
+            [class.cm-bar-active]="bar.active"
+            [class.cm-bar-raised]="bar.label === 'Scheduled' || bar.label === 'Rejected'"
+            [style.height.px]="bar.height"
+          ></div>
         </div>
       </div>
-
-      <!-- Column 11a: Planned Outage ID -->
-      <div class="column11">
-        <div class="table-header-cell11">
-          <div class="planned-outage-id">planned outage id</div>
-        </div>
-        <div
-          *ngFor="let row of changeRows"
-          class="po-id-cell"
-          [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
-        >
-          <div class="div27">{{ row.outageId }}</div>
-        </div>
-      </div>
-
-      <!-- Column 12: Impact -->
-      <div class="column12">
-        <div class="table-header-cell12">
-          <div class="sr-number">impact</div>
-        </div>
-        <div
-          *ngFor="let row of changeRows"
-          [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'"
-        >
-          <div class="div26">{{ row.impact }}</div>
-        </div>
-      </div>
-
-      <!-- Column 11b: Implementor -->
-      <div class="column11">
-        <div class="table-header-cell6">
-          <div class="sr-number">implementor</div>
-        </div>
-        <div
-          *ngFor="let row of changeRows"
-          [ngClass]="row.isLast ? 'table-cell50' : 'table-cell47'"
-        >
-          <div class="div27">{{ row.implementor }}</div>
-        </div>
-      </div>
-
-      <!-- Column 14: Submission status -->
-      <div class="column14">
-        <div class="table-header-cell14">
-          <div class="escalation-level">submission</div>
-        </div>
-        <ng-container *ngFor="let row of changeRows">
-          <div [ngClass]="row.isLast ? 'table-cell4' : 'table-cell'">
-
-            <!-- Submitted -->
-            <div *ngIf="row.submitted" class="status-badge badge-submitted">
-              <img class="status-icon" src="assets/landing/submitted.svg" alt="" />
-              <span>Submitted</span>
-            </div>
-
-            <!-- Not submitted -->
-            <div *ngIf="!row.submitted" class="status-badge badge-not-submitted">
-              <img class="status-icon" src="\assets/landing/not-submitted.svg" alt="" />
-              <span>Not submitted</span>
-            </div>
-
-          </div>
-        </ng-container>
+      <div class="cm-x-labels">
+        <div class="cm-x-label" *ngFor="let bar of bars">{{ bar.label }}</div>
       </div>
     </div>
+
+    <div class="cm-pills-col">
+      <div
+        class="cm-pill"
+        *ngFor="let card of pillCards"
+        [style.backgroundColor]="card.bg"
+        [style.color]="card.color"
+      >
+        <span class="cm-pill-label">{{ card.label }}</span>
+        <span class="cm-pill-value">{{ card.count }}</span>
+      </div>
+    </div>
+
   </div>
+
+  <app-card-loading-overlay [loading]="isLoading"></app-card-loading-overlay>
 </div>
 
 <!-- ===== Change management (mobile) ===== -->
-<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+<div
+  class="m-card"
+  *ngIf="variant === 'mobile'"
+  [style.order]="order"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
+>
   <div class="m-card-header">
     <img class="m-card-icon" src="/assets/landing/Vector-3.svg" alt="" />
     <div>
@@ -119,29 +86,26 @@
       <div class="m-card-subtitle">{{ changeCardSubtitle }}</div>
     </div>
   </div>
-  <div class="table-scroll">
-    <table class="m-table">
-      <thead>
-        <tr><th>CRQ</th><th>Planned Outage ID</th><th>Impact</th><th>Implementor</th><th>Submission</th></tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of changeRows">
-          <td>{{ row.crq }}</td>
-          <td>{{ row.outageId }}</td>
-          <td class="m-cell-danger">{{ row.impact }}</td>
-          <td>{{ row.implementor }}</td>
-          <td>
-            <span *ngIf="row.submitted" class="status-badge badge-submitted">
-              <img class="status-icon" src="/assets/landing/submitted.svg" alt="" />
-              <span>Submitted</span>
-            </span>
-            <span *ngIf="!row.submitted" class="status-badge badge-not-submitted">
-              <img class="status-icon" src="/assets/landing/not-submitted.svg" alt="" />
-              <span>Not submitted</span>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+  <div class="m-stat-tiles">
+    <div
+      class="m-stat-tile"
+      *ngFor="let card of statCards"
+      [style.backgroundColor]="card.bg"
+      [style.borderColor]="card.color"
+      [style.color]="card.color"
+    >
+      <b>{{ card.count }}</b>
+      <span>{{ card.label }}</span>
+    </div>
   </div>
+
+  <div class="m-bar-chart">
+    <div class="m-bar-col" *ngFor="let bar of bars">
+      <div class="m-bar" [class.m-bar-active]="bar.active" [style.height.%]="(bar.height / 182) * 100"></div>
+      <span class="m-bar-label">{{ bar.label }}</span>
+    </div>
+  </div>
+
+  <app-card-loading-overlay [loading]="isLoading"></app-card-loading-overlay>
 </div>

@@ -16,7 +16,7 @@ $breakpoint-desktop: 1024px;
 .aop-scale-wrapper {
   --aop-scale: 1;
   width: calc(1920px * var(--aop-scale));
-  height: calc(1493px * var(--aop-scale));
+  height: calc(1220px * var(--aop-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
@@ -25,7 +25,7 @@ $breakpoint-desktop: 1024px;
 .aop-canvas {
   position: relative;
   width: 1920px;
-  height: 1493px;
+  height: 1220px;
   background-color: #f7f8f9;
   overflow: hidden;
   text-align: left;
@@ -34,75 +34,14 @@ $breakpoint-desktop: 1024px;
   transform-origin: top left;
 }
 
-// ---------- Top bar ----------
-.landing-topbar {
-  position: absolute;
-  top: -1px;
-  left: 0px;
-  width: 1920px;
-  height: 106px;
-  box-shadow: 0px 4px 45px rgba(0, 0, 0, 0.16);
-  background-color: #f9fafb;
-  border-bottom: 1px solid #EAECF0;
-}
-.landing-topbar-logo {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  width: 163px;
-  height: 56px;
-  object-fit: cover;
-}
-.landing-topbar-banner {
-  position: absolute;
-  top: 1px;
-  left: 1464px;
-  width: 469px;
-  height: 96px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-// ---------- Glanceable tiles ----------
-.glance-tile {
-  position: absolute;
-  top: 132px;
-  width: 357.7px;
-  height: 143px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background-color: #de1319;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.44);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 36px;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-
-  &:hover { transform: translateY(-3px); box-shadow: 1px 8px 16px rgba(0, 0, 0, 0.5); }
-  &:active { transform: translateY(-1px); }
-  &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-}
-.glance-tile-label {
-  line-height: 16px;
-  font-weight: 800;
-  text-align: center;
-  padding: 0 20px;
-}
-.glance-tile-divider {
-  margin-top: 35.65px;
-  width: 339.4px;
-  border-top: 0.7px solid #fff;
-  box-sizing: border-box;
-}
-
 // ---------- Header (Analytics Overview section) ----------
+// The product-owned header bar and glanceable tiles that used to sit above
+// this (106px header + tiles ending at 275px) are gone — this page no
+// longer renders its own shell chrome, so Analytics Overview now starts
+// near the top of the canvas instead of at the old 305px offset.
 .aop-header {
   position: absolute;
-  top: 305px; left: 12px;
+  top: 32px; left: 12px;
   width: 1892px;
   box-sizing: border-box;
   padding: 0 8px;
@@ -145,7 +84,7 @@ $breakpoint-desktop: 1024px;
 // ---------- Tab bar (shared visual style for both the main and applications rows) ----------
 .aop-tab-bar {
   position: absolute;
-  top: 402px; left: 12px;
+  top: 129px; left: 12px;
   width: 1892px; height: 59px;
   display: flex;
   align-items: stretch;
@@ -175,7 +114,7 @@ $breakpoint-desktop: 1024px;
 
 .aop-separator {
   position: absolute;
-  top: 460.5px; left: -0.5px;
+  top: 187.5px; left: -0.5px;
   border-top: 1px solid #dde1e7;
   box-sizing: border-box;
   width: 1921px; height: 1px;
@@ -191,34 +130,6 @@ $breakpoint-desktop: 1024px;
   min-height: 100vh;
   box-sizing: border-box;
 }
-.landing-m-topbar {
-  display: flex;
-  align-items: center;
-}
-.landing-m-topbar-logo { width: 110px; height: auto; }
-
-.landing-m-tiles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.glance-tile-m {
-  flex: 1 1 calc(50% - 10px);
-  min-width: 140px;
-  border-radius: 10px;
-  background-color: #de1319;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.44);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  text-align: center;
-  padding: 18px 10px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-
-  &:active { transform: scale(0.97); }
-}
-
 .aop-m-header { display: flex; flex-direction: column; gap: 8px; }
 .aop-m-header-row { display: flex; align-items: center; gap: 10px; }
 .aop-m-header-icon { width: 36px; height: 36px; flex-shrink: 0; }

@@ -133,6 +133,11 @@
 
 // ---------- Escalation matrix (mobile card) ----------
 .m-card {
+  // Containing block for app-card-loading-overlay's position:absolute fill;
+  // overflow:hidden clips it to this card's own rounded corners (same way
+  // .the-djp-child already does for the desktop version).
+  position: relative;
+  overflow: hidden;
   background-color: #fff;
   border-radius: 18px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);

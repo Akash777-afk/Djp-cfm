@@ -1,5 +1,4 @@
 <app-cm-sidebar-nav [scale]="scale" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
-<app-cm-header-bar [scale]="scale"></app-cm-header-bar>
 <app-cm-create-po-modal
   [isOpen]="isCreatePoModalOpen"
   (closed)="onCreatePoModalClosed()"
@@ -21,12 +20,22 @@
     (callClick)="onCallClick()"
     (bookClick)="onBookClick()"
   ></app-cml-top-bar>
-
   <app-cml-stat-cards [cards]="statCards" (cardClick)="setActiveCard($event)"></app-cml-stat-cards>
 
   <app-cml-changes-panel
     [changes]="changes"
     [statusFilter]="statusFilter"
     (changeIdClick)="goToCrq($event)"
+    (dateRangeSearch)="onDateRangeSearch($event)"
   ></app-cml-changes-panel>
 
+  <!-- ===== Footer ===== -->
+  <div class="the-main-page">
+    <div class="tier-1">
+      <div class="powered-by">Powered by</div>
+      <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
+    </div>
+  </div>
+
+</div>
+</div>

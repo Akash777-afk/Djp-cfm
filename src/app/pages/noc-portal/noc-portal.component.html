@@ -581,3 +581,8 @@
 <app-noc-inventory-blueprint-modal [isOpen]="isInventoryBlueprintModalOpen" (closed)="isInventoryBlueprintModalOpen = false"></app-noc-inventory-blueprint-modal>
 <app-noc-bundle-summary-modal [isOpen]="isBundleSummaryModalOpen" (closed)="isBundleSummaryModalOpen = false"></app-noc-bundle-summary-modal>
 <app-noc-performance-kpi-modal [isOpen]="isPerformanceKpiModalOpen" (closed)="isPerformanceKpiModalOpen = false"></app-noc-performance-kpi-modal>
+
+<!-- ===== NOC AI Assistant — same reason as the modals directly above:
+     position:fixed, so it needs to sit outside the scaled canvas's own
+     transform:scale() containing block to track the real viewport. ===== -->
+<app-noc-chatbot></app-noc-chatbot>

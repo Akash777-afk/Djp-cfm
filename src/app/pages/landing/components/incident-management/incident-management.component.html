@@ -4,6 +4,10 @@
   *ngIf="variant === 'desktop'"
   [style.top.px]="top"
   [style.left.px]="left"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
 >
   <div class="frame-container">
 
@@ -22,8 +26,8 @@
         alt="Expand Incident management"
         role="button"
         tabindex="0"
-        (click)="onExpandCard()"
-        (keyup.enter)="onExpandCard()"
+        (click)="$event.stopPropagation(); onExpandCard()"
+        (keyup.enter)="$event.stopPropagation(); onExpandCard()"
       />
     </div>
 
@@ -61,10 +65,20 @@
     </div>
 
   </div>
+
+  <app-card-loading-overlay [loading]="isLoading"></app-card-loading-overlay>
 </div>
 
 <!-- ===== Incident management (mobile) ===== -->
-<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+<div
+  class="m-card"
+  *ngIf="variant === 'mobile'"
+  [style.order]="order"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
+>
   <div class="m-card-header">
     <img class="m-card-icon" src="/assets/landing/Vector-1.svg" alt="" />
     <div>
@@ -92,4 +106,6 @@
       <span class="m-bar-label">{{ incidentXLabels[i] }}</span>
     </div>
   </div>
+
+  <app-card-loading-overlay [loading]="isLoading"></app-card-loading-overlay>
 </div>

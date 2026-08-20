@@ -1,0 +1,397 @@
+:host {
+  display: contents;
+}
+
+$color-brand-red: #e40000;
+$color-brand-red-hover: #c40000;
+$color-green: #10b981;
+$color-green-bg: #f0fdf4;
+$color-border: #e5e7eb;
+$color-border-strong: #cfd4dc;
+$color-text-dark: rgba(0, 0, 0, 0.85);
+$color-text-muted: rgba(0, 0, 0, 0.5);
+$color-text-faint: #9ca3af;
+
+// Overlay + card placed outside the app's scaled 1920px canvas (same
+// convention as nstt-sr-drawer.component.scss) so position:fixed measures
+// against the *real* viewport, not the transform:scale ancestor — and
+// styled with genuine responsive units throughout (vw/vh, min()/max(),
+// flexbox/grid) rather than the rest of this app's fixed-1920-canvas
+// approach, per this feature's explicit responsive requirement.
+.csm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.csm-card {
+  width: min(1400px, 88vw);
+  height: min(820px, 86vh);
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 22px;
+  box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: Inter, sans-serif;
+  animation: csm-card-in 0.18s ease;
+}
+@keyframes csm-card-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// ---------- Header ----------
+.csm-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.14);
+}
+.csm-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: $color-brand-red;
+  line-height: 1.25;
+}
+.csm-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text-muted;
+}
+.csm-close-btn {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: 1px solid $color-border;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.55);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover { background-color: rgba(228, 0, 0, 0.06); border-color: rgba(228, 0, 0, 0.3); color: $color-brand-red; }
+}
+
+// ---------- Two-column body ----------
+.csm-columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 24px 32px;
+  box-sizing: border-box;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.csm-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fbfbfc;
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  padding: 18px;
+  box-sizing: border-box;
+
+  @media (max-width: 860px) {
+    min-height: 320px;
+  }
+}
+.csm-panel-selected {
+  background-color: $color-green-bg;
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.csm-panel-header {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+.csm-panel-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  color: $color-text-dark;
+}
+.csm-count {
+  font-weight: 600;
+  color: $color-text-muted;
+}
+.csm-count-selected {
+  color: $color-green;
+}
+
+// ---------- Search ----------
+.csm-search {
+  flex-shrink: 0;
+  position: relative;
+  margin-bottom: 14px;
+
+  input {
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
+    border-radius: 21px;
+    background-color: #f9f9f9;
+    border: 1px solid $color-border-strong;
+    padding: 0 16px 0 42px;
+    font: inherit;
+    font-size: 14px;
+    color: $color-text-dark;
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+
+    &::placeholder { color: $color-text-muted; }
+    &:focus { border-color: $color-brand-red; background-color: #fff; }
+  }
+}
+.csm-search-icon {
+  position: absolute;
+  top: 50%; left: 14px;
+  transform: translateY(-50%);
+  color: $color-text-muted;
+  pointer-events: none;
+}
+
+// ---------- List ----------
+.csm-list {
+  flex: 1 1 auto;
+  min-height: 120px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+
+  scrollbar-width: thin;
+  scrollbar-color: #d8dbe0 transparent;
+  &::-webkit-scrollbar { width: 8px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background-color: #d8dbe0; border-radius: 8px; }
+
+  // Destination highlight while something is being dragged over this list
+  // (cdk-drop-list-receiving is applied by CDK automatically) — subtle
+  // tint, not a hard border, per "highlight the destination list".
+  &.cdk-drop-list-receiving {
+    background-color: rgba(228, 0, 0, 0.04);
+  }
+}
+.csm-list-selected.cdk-drop-list-receiving {
+  background-color: rgba(16, 185, 129, 0.08);
+}
+
+.csm-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  cursor: grab;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  // Dragging text-selection is a common rough edge with custom drag UIs —
+  // explicitly prevented per the "do not allow accidental text selection"
+  // requirement.
+  user-select: none;
+  -webkit-user-select: none;
+
+  &:hover {
+    border-color: rgba(228, 0, 0, 0.35);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
+  }
+  &:active { cursor: grabbing; }
+}
+.csm-item-selected {
+  border-color: rgba(16, 185, 129, 0.3);
+  &:hover { border-color: $color-green; }
+}
+
+.csm-drag-handle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: #b8bcc4;
+  cursor: grab;
+}
+.csm-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: $color-text-dark;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.csm-transfer-btn {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.csm-item:hover .csm-transfer-btn,
+.csm-item:focus-within .csm-transfer-btn {
+  opacity: 1;
+}
+.csm-add-btn {
+  color: $color-brand-red;
+  &:hover { background-color: rgba(228, 0, 0, 0.1); }
+}
+.csm-remove-btn {
+  color: #9ca3af;
+  // Remove (×) stays a bit more visible than the available-side "+" even
+  // at rest — matches the spec's own example row "⠿ Site  ×" showing it
+  // as a persistent affordance on selected rows, not a hover-only reveal.
+  opacity: 0.7;
+  &:hover { opacity: 1; background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+}
+
+// ---------- Empty states ----------
+.csm-empty {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 16px;
+  color: $color-text-faint;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+.csm-empty-title { font-size: 14.5px; font-weight: 600; color: #94a3b8; }
+.csm-empty-hint { font-size: 13px; color: $color-text-faint; max-width: 240px; }
+
+// ---------- CDK drag state ----------
+// Placeholder = the gap left at the item's original slot while dragging —
+// styled as a dashed "drop slot" so the insertion position reads clearly,
+// per "show a clear insertion position" / "show a drop indicator".
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  border: 1.5px dashed rgba(228, 0, 0, 0.4) !important;
+  background-color: rgba(228, 0, 0, 0.04) !important;
+}
+.csm-list-selected .cdk-drag-placeholder {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  background-color: rgba(16, 185, 129, 0.08) !important;
+}
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.18);
+  background-color: #fff;
+  border: 1px solid rgba(228, 0, 0, 0.35);
+}
+.csm-drag-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 12px;
+  .csm-item-label { font-size: 14.5px; font-weight: 500; color: $color-text-dark; }
+}
+// Smooth reflow of surrounding items as the drop position changes.
+.csm-list.cdk-drop-list-dragging .csm-item:not(.cdk-drag-placeholder) {
+  transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-animating {
+  transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+
+// ---------- Footer ----------
+.csm-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 32px;
+  border-top: 1px solid rgba(100, 116, 139, 0.14);
+}
+.csm-btn {
+  height: 44px;
+  min-width: 110px;
+  padding: 0 24px;
+  border-radius: 22px;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+
+  &:active { transform: scale(0.97); }
+}
+.csm-btn-outline {
+  background-color: #fff;
+  border: 1px solid $color-border-strong;
+  color: rgba(0, 0, 0, 0.65);
+  &:hover { background-color: rgba(0, 0, 0, 0.03); }
+}
+.csm-btn-solid {
+  background-color: $color-brand-red;
+  border: 1px solid $color-brand-red;
+  color: #fff;
+  box-shadow: 0px 4px 10px rgba(228, 0, 0, 0.25);
+  &:hover { background-color: $color-brand-red-hover; border-color: $color-brand-red-hover; }
+}
+
+// ---------- Responsive tuning ----------
+@media (max-width: 1100px) {
+  .csm-card { width: min(1400px, 94vw); height: min(820px, 90vh); }
+  .csm-header, .csm-columns, .csm-footer { padding-left: 20px; padding-right: 20px; }
+}
+@media (max-width: 640px) {
+  .csm-title { font-size: 20px; }
+  .csm-columns { padding: 16px; gap: 16px; }
+  .csm-footer { padding: 14px 16px; }
+  .csm-btn { min-width: 0; flex: 1 1 0; }
+}

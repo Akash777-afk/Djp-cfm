@@ -5,6 +5,7 @@
 // Shared class applied to all 4 reorderable grid cards so their top/left
 // position animates smoothly when the analytics tab changes.
 .grid-card {
+  cursor: pointer;
   transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
 
   &:hover {
@@ -70,133 +71,138 @@
   }
 }
 
-.content-wrapper {
+// ---------- Status breakdown: bar chart (left) + pill list (right) ----------
+// Chart-left/pills-right layout replacing the old KPI-tiles-then-chart
+// stacked design (see IncidentManagementCardComponent /
+// EscalationMatrixCardComponent for that still-current pattern — this card
+// deliberately diverges from it per its own redesign).
+.cm-analytics-row {
   position: absolute;
-  width: calc(100% - 2px);
-  top: 88px; right: 2px; left: 0;
-  height: 366px;
+  top: 120px; left: 21px;
+  width: calc(100% - 42px);
+  height: 314px;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+
+// ---- Chart ----
+.cm-chart-col {
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 10px 10px 10px 0px;
-  box-sizing: border-box;
 }
-.content3 {
-  align-self: stretch;
-  background-color: #fff;
-  display: flex;
-  align-items: flex-start;
-  flex-shrink: 0;
-}
-
-.column10 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; }
-.column11 { width: 183px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; }
-.column12 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; color: #e7000b; }
-.column14 { width: 182px; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; color: #136f12; }
-
-.sr-number {
+.cm-bar-parent {
   position: relative;
-  letter-spacing: 0.6px;
-  line-height: 22px;
-  text-transform: uppercase;
+  // Must stay in sync with ChangeManagementCardComponent.barAreaHeightPx —
+  // bar heights and y-label top offsets are computed in the .ts against
+  // this exact pixel value.
+  height: 274px;
+  box-sizing: border-box;
+  padding: 0 8px 0 44px;
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+}
+.cm-y-label {
+  position: absolute;
+  left: 0;
+  width: 34px;
+  text-align: right;
+  font-size: 13px;
+  line-height: 1;
+  color: rgba(100, 116, 139, 0.66);
+  transform: translateY(-50%);
+}
+.cm-bar-col {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1;
+}
+.cm-bar-item {
+  width: 40px;
+  max-width: 70%;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  border-radius: 10px 10px 0px 0px;
+  // Same 2-color scheme as Incident Management's landing card bar chart
+  // (.bar-item / .bar-active in incident-management.component.scss) —
+  // pale pink for every individual status, solid red only for the
+  // aggregate "All Changes" bar.
+  background-color: #ffecec;
+  transition: background-color 0.3s ease, height 0.3s ease, transform 0.3s ease;
+
+  &.cm-bar-active { background-color: #ff4949; }
+  // Scheduled/Rejected nudged 10px higher than their data-driven height
+  // would otherwise place them.
+  &.cm-bar-raised { transform: translateY(-10px); }
+}
+.cm-x-labels {
+  flex: 0 0 auto;
+  margin-top: 8px;
+  padding: 0 8px 0 44px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 22px;
+}
+.cm-x-label {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(100, 116, 139, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ---- Pill list ----
+.cm-pills-col {
+  flex: 0 0 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cm-pill {
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  box-sizing: border-box;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cm-pill-label {
+  font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
-  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.escalation-level {
-  width: 146px;
-  position: relative;
-  letter-spacing: 0.6px;
-  line-height: 22px;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: inline-block;
+.cm-pill-value {
+  font-size: 20px;
+  font-weight: 700;
   flex-shrink: 0;
-  white-space: nowrap;
-  font-size: 14px;
-}
-
-.table-header-cell6 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px; font-size: 14px; color: rgba(0,0,0,0.75); }
-.table-header-cell10 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; font-size: 15px; color: rgba(0,0,0,0.75); }
-.table-header-cell11 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 13px; font-size: 15px; color: rgba(0,0,0,0.75); }
-.table-header-cell12 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 50px; font-size: 15px; color: rgba(0,0,0,0.75); }
-.table-header-cell14 { align-self: stretch; height: 70px; background-color: #fcfcfd; border-top: 1px solid #eaecf0; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 26px; font-size: 15px; color: rgba(0,0,0,0.75); }
-
-.planned-outage-id { position: relative; letter-spacing: 0.6px; line-height: 22px; text-transform: uppercase; font-weight: 600; flex-shrink: 0; }
-
-.text { display: flex; flex-direction: column; align-items: flex-start; }
-.table-cell {
-  align-self: stretch;
-  height: 70px;
-  border-bottom: 1px solid #eaecf0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  padding: 11.5px 23.1px;
-  font-size: 16px;
-}
-.table-cell4 {
-  align-self: stretch;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  padding: 11.5px 23.1px;
-  box-sizing: border-box;
-  font-size: 16px;
-}
-.table-cell43 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; }
-.table-cell46 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 44px; box-sizing: border-box; }
-.table-cell47 { align-self: stretch; height: 70px; border-bottom: 1px solid #eaecf0; box-sizing: border-box; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; }
-.table-cell50 { align-self: stretch; height: 70px; display: flex; align-items: center; padding: 11.5px 23.1px 11.5px 16px; box-sizing: border-box; }
-
-// Planned Outage ID column's data cells only (not the header, and not the
-// Implementor column, which reuses .table-cell47/.table-cell50 too) —
-// nudged right 15px for better alignment under the header.
-.po-id-cell.table-cell47,
-.po-id-cell.table-cell50 {
-  padding-left: 31px;
-}
-
-.div26 { position: relative; line-height: 20px; }
-.div27 { position: relative; line-height: 20px; flex-shrink: 0; }
-
-// ---------- Submission status badges ----------
-.status-badge {
-  height: 28px;
-  border-radius: 25px;
-  box-shadow: 0px 1px 1px rgba(0,0,0,0.22);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.badge-submitted {
-  background-color: #e2ffe2;
-  color: #136f12;
-  width: 128px;
-}
-.badge-not-submitted {
-  background-color: #ffe7e6;
-  color: #dc2626;
-  width: 147px;
-}
-.status-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  object-fit: contain;
 }
 
 // ---------- Change management (mobile card) ----------
 .m-card {
+  // Containing block for app-card-loading-overlay's position:absolute fill;
+  // overflow:hidden clips it to this card's own rounded corners (same way
+  // .frame-parent4 already does for the desktop version).
+  position: relative;
+  overflow: hidden;
   background-color: #fff;
   border-radius: 18px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
   padding: 16px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -207,38 +213,52 @@
 .m-card-title { font-size: 16px; font-weight: 600; color: #101828; }
 .m-card-subtitle { font-size: 12px; color: #717182; margin-top: 2px; }
 
-.table-scroll {
-  overflow-x: auto;
-  margin: 0 -4px;
-  padding: 0 4px;
-  -webkit-overflow-scrolling: touch;
-  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+.m-stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  gap: 8px;
 }
-.m-table {
-  width: 100%;
-  min-width: 520px;
-  border-collapse: collapse;
-  font-size: 13px;
+.m-stat-tile {
+  border-radius: 10px;
+  border: 1px solid;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08) inset;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 
-  th {
-    text-align: left;
-    font-size: 11px;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
-    padding: 10px 12px;
-    background-color: #fcfcfd;
-    border-top: 1px solid #eaecf0;
-    border-bottom: 1px solid #eaecf0;
-    white-space: nowrap;
-  }
-  td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #eaecf0;
-    white-space: nowrap;
-    color: rgba(0, 0, 0, 0.85);
-  }
+  b { font-size: 16px; line-height: 1; }
+  span { font-size: 10px; font-weight: 500; text-align: center; line-height: 1.2; }
 }
-.m-cell-danger { color: #e7000b; }
+.m-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  padding-top: 8px;
+}
+.m-bar-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.m-bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 8px 8px 0px 0px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12) inset;
+  transition: background-color 0.3s ease;
+}
+.m-bar-label {
+  font-size: 9px;
+  color: rgba(100, 116, 139, 0.75);
+  text-align: center;
+  line-height: 1.15;
+  word-break: break-word;
+}

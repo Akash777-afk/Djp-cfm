@@ -418,6 +418,14 @@ input[type='datetime-local'].field-input {
   padding: 20px 40px;
   border-top: 1.3px solid #f0f0f0;
 }
+// margin-right:auto keeps Cancel/Submit pinned exactly where they always
+// were (flex-end), rather than shifting them when the error appears.
+.form-submit-error {
+  margin-right: auto;
+  font-size: 13px;
+  font-weight: 500;
+  color: #e40000;
+}
 .step2-cancel-btn {
   height: 53px;
   min-width: 160px;

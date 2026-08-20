@@ -20,7 +20,7 @@ $fs-label: 16px;
 .srs-card {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 36px;
 }
 
 // ---------- Top info: 3 columns x 3 read-only fields ----------
@@ -37,7 +37,7 @@ $fs-label: 16px;
 .srs-top-field {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
   padding: 18px 0;
   border-bottom: 1px solid rgba(100, 116, 139, 0.12);
 }
@@ -47,98 +47,205 @@ $fs-label: 16px;
   font-weight: 500;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.45);
+  color: rgb(77, 83, 95);
 }
 .srs-top-value {
   font-size: 16px;
   font-weight: 500;
-  color: #101828;
+  color: #b6b6b6;
   // Long values (e.g. Problem Summary) wrap instead of overflowing — these
   // aren't table cells, there's no shared grid width to protect.
   word-break: break-word;
 }
 
 // ---------- Tabs + the 3 circular action buttons ----------
+// ---------- Tabs + the 3 circular action buttons ----------
 .srs-tabs-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
+  min-height: 48px;
+
   gap: 20px;
-  flex-wrap: wrap;
-  row-gap: 12px;
-  padding: 8px 20px;
-  border-radius: $radius-card;
-  background: linear-gradient(90deg, rgba(228, 0, 0, 0.1), rgba(228, 0, 0, 0.02));
+  flex-wrap: nowrap;
+
+  padding: 0;
+
+  /* Remove the old red/pink pill background */
+  background: transparent;
+
+  /* Remove rounded container */
+  border-radius: 0;
+
+  /* Clean divider like the Analytics Overview design */
+  border-bottom: 1px solid rgba(100, 116, 139, 0.12);
+
+  box-sizing: border-box;
 }
+
 .srs-tabs {
   display: flex;
-  align-items: center;
-  gap: clamp(12px, 2vw, 32px);
-  flex-wrap: wrap;
-  row-gap: 8px;
+  align-items: stretch;
+
+  flex: 1;
+  min-width: 0;
+
+  gap: 0;
+
+  flex-wrap: nowrap;
 }
+
 .srs-tab {
-  font-size: $fs-label;
-  font-weight: 600;
-  color: $color-brand-red;
-  cursor: pointer;
-  white-space: nowrap;
-  padding: 10px 8px;
-  border-radius: $radius-card;
-  transition: background-color 0.15s ease, color 0.15s ease;
-  &:hover { background-color: rgba(228, 0, 0, 0.06); }
-}
-.srs-tab-active {
-  background-color: $color-brand-red;
-  color: #fff;
-  box-shadow: 0px 4px 10px rgba(228, 0, 0, 0.28);
-  &:hover { background-color: $color-brand-red; }
-}
-.srs-quick-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-// ssr3.svg/ssr4.png/ssr5.png are already complete, self-contained circle
-// graphics (their own fill/border baked in) — this just sizes/spaces/
-// hosts the tooltip, no extra CSS border drawn on top of them.
-.srs-icon-circle {
   position: relative;
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  background: transparent;
-  padding: 0;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: 48px;
+
+  padding: 0 28px;
+
+  background: transparent;
+  border: none;
+  border-radius: 0;
+
+  font-size: $fs-tab;
+  font-weight: 500;
+
+  color: #64748b;
+
   cursor: pointer;
-  transition: transform 0.15s ease;
-  img { width: 38px; height: 38px; }
-  &:hover { transform: scale(1.08); }
-  &:active { transform: scale(0.94); }
+  white-space: nowrap;
+
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(228, 0, 0, 0.025);
+    color: $color-brand-red;
+  }
 }
+
+.srs-tab-active {
+  background: transparent;
+  color: $color-brand-red;
+
+  box-shadow: none;
+
+  /* Only the thin red active indicator remains */
+  &::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+
+    background-color: $color-brand-red;
+  }
+
+  &:hover {
+    background-color: transparent;
+    color: $color-brand-red;
+  }
+}
+
+
+// ---------- Right-side circular action buttons ----------
+.srs-quick-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 28px;
+
+  flex-shrink: 0;
+
+  padding-right: 4px;
+}
+
+.srs-icon-circle {
+  position: relative;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: #fff;
+
+  padding: 0;
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+
+  img {
+    width: 44px;
+    height: 44px;
+    display: block;
+  }
+
+  &:hover {
+    background-color: rgba(228, 0, 0, 0.04);
+    border-color: rgba(228, 0, 0, 0.25);
+    transform: scale(1.04);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+
+// ---------- Tooltip ----------
 .srs-tooltip {
   position: absolute;
+
   top: calc(100% + 8px);
   right: 0;
+
   white-space: nowrap;
+
   background-color: #1e2939;
   color: #fff;
+
   font-size: 13px;
   font-weight: 600;
+
   padding: 5px 10px;
+
   border-radius: 6px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
   opacity: 0;
   pointer-events: none;
+
   transition: opacity 0.15s ease;
+
   z-index: 5;
 }
+
 .srs-icon-circle:hover .srs-tooltip,
 .srs-icon-circle:focus-visible .srs-tooltip {
   opacity: 1;
@@ -196,6 +303,17 @@ $fs-label: 16px;
   color: #939494bd;
   word-break: break-word;
 }
+// Resolution Tasks / Date-Time's not-yet-editing display (see
+// srsFieldGrid's realInputDisplay) — a real readonly <input>, not a <span>,
+// same "field-input[readonly]" convention used elsewhere in this app
+// (Product Details on the LSI dashboard): cursor:text so hovering it reads
+// as an actual field even before the pencil turns readonly off. Combined
+// selector (not .srs-form-value alone) so it wins over .srs-form-input's
+// own color further down despite coming first in the file.
+.srs-form-input.srs-form-readonly-input {
+  color: #939494bd;
+  cursor: text;
+}
 .srs-form-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -215,26 +333,31 @@ $fs-label: 16px;
   background-color: #fff;
 }
 
-// edit.png is a white pencil (already used that way in .np-nav-icon-btn's
-// red circle) — invisible on this field's light background as a bare <img>,
-// so it gets the same "colored circle behind a white icon" treatment
-// instead of recoloring the raster asset itself. Small/subtle, not a
-// prominent button.
 .srs-edit-btn {
   appearance: none;
   -webkit-appearance: none;
   border: none;
+  background: transparent;
   flex-shrink: 0;
   width: 20px; height: 20px;
-  border-radius: 50%;
-  background-color: #b0b8c4;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.15s ease;
-  img { width: 10px; height: 10px; }
-  &:hover { background-color: $color-brand-red; }
+  transition: transform 0.15s ease;
+  // edit.png is a solid white pencil with nothing else in its own asset to
+  // give it contrast — the dark circle used to be what made it visible on
+  // this field's light background. Now that the circle's gone, brightness(0)
+  // turns its opaque pixels black and opacity fades that to a muted gray
+  // instead, so the pencil alone reads correctly without any backing shape.
+  img {
+    width: 14px; height: 14px;
+    filter: brightness(0);
+    opacity: 0.45;
+    transition: opacity 0.15s ease;
+  }
+  &:hover img { opacity: 0.8; }
   &:active { transform: scale(0.92); }
 }
 
@@ -243,7 +366,9 @@ $fs-label: 16px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
+  row-gap: 10px;
   margin-top: 14px;
 }
 .srs-saved-msg {
@@ -251,21 +376,142 @@ $fs-label: 16px;
   font-weight: 600;
   color: #15803d;
 }
-.srs-save-btn {
+// Base shared by all 4 buttons in .srs-save-row (Resolve/Assign task/View
+// notes/Create note) — .srs-btn-outline and .srs-btn-solid below only add
+// the color treatment, same "shared base + variant" split as .np-btn /
+// .np-btn-blue elsewhere on this page.
+.srs-btn {
   appearance: none;
   -webkit-appearance: none;
   border: none;
   height: 40px;
-  padding: 0 22px;
+  padding: 0 20px;
   border-radius: 999px;
-  background-color: $color-brand-red;
-  color: #fff;
   font: inherit;
   font-size: $fs-label;
   font-weight: 700;
   cursor: pointer;
-  transition: filter 0.15s ease, transform 0.15s ease;
-  &:hover:not(:disabled) { filter: brightness(1.08); }
+  box-sizing: border-box;
+  transition: filter 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
   &:active:not(:disabled) { transform: scale(0.98); }
-  &:disabled { opacity: 0.6; cursor: default; }
+  // Callback task's Submit reuses this base and needs a real disabled
+  // state (validation-gated) — harmless for the other buttons since none
+  // of them are ever actually disabled.
+  &:disabled { opacity: 0.5; cursor: default; }
+}
+// Resolve / Assign task — same outline language as .np-reset-btn.
+.srs-btn-outline {
+  background-color: #fff;
+  border: 1px solid $color-brand-red;
+  color: $color-brand-red;
+  &:hover:not(:disabled) { background-color: rgba(228, 0, 0, 0.05); }
+}
+// View notes / Create note / Callback task's Submit — same solid language
+// the old .srs-save-btn had.
+.srs-btn-solid {
+  background-color: $color-brand-red;
+  color: #fff;
+  &:hover:not(:disabled) { filter: brightness(1.08); }
+}
+
+// ---------- Callback task ----------
+.srs-cb-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 40px;
+}
+// The dropdown chevron sits in the same end-of-flex-row slot .srs-edit-btn
+// normally occupies — .srs-form-input-wrap is already a
+// space-between flex row, so no extra positioning needed here.
+.srs-select-chevron {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.srs-form-input-wrap select.srs-form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  &::-ms-expand { display: none; }
+}
+// Native browser calendar icon on datetime-local inputs already matches
+// "reuse an existing icon/component instead of a new SVG" — nothing extra
+// to style here beyond the shared .srs-form-input look.
+
+// ---------- Relationship ----------
+.srs-rel-search-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.srs-rel-search-box {
+  width: 320px;
+  flex-shrink: 0;
+}
+.srs-rel-table-wrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.srs-rel-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 20px;
+    text-align: left;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: $fs-label;
+    color: #64748b;
+    white-space: nowrap;
+  }
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: $fs-label;
+    color: #101828;
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+}
+.srs-rel-view-notes-btn {
+  height: 32px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+.srs-rel-empty {
+  padding: 32px 0;
+  text-align: center;
+  font-size: $fs-value;
+  color: rgba(0, 0, 0, 0.4);
+}
+.srs-rel-topology-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-brand-red;
+  margin-bottom: 16px;
+}
+.srs-rel-topology-field {
+  max-width: 340px;
+}
+
+// ---------- SR history ----------
+// app-noc-all-srs's own .asr-card has margin-top:37px, tuned for sitting
+// directly under the LSI Health Index card on the NOC Portal dashboard —
+// nested inside this tab's own padding instead, that reads as dead space
+// above the table. ::ng-deep here is scoped to just app-noc-all-srs inside
+// this component's tab body, so the LSI Dashboard's own direct usage
+// (outside .srs-tab-body entirely) keeps its original 37px untouched.
+.srs-tab-body app-noc-all-srs ::ng-deep .asr-card {
+  margin-top: 0;
 }

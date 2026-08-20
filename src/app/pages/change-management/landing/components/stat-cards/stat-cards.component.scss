@@ -3,11 +3,17 @@
 }
 
 // ---------- Stat cards ----------
+// Card height fixed at 155px (was 177px) — font sizes below are untouched;
+// the 22px came entirely out of top/bottom padding and inter-element gaps,
+// plus a slightly smaller icon-badge/arrow-button (decorative containers,
+// not text, so free to shrink). Width/pitch/horizontal gap unchanged.
 .cml-stat-card {
   position: absolute;
-  top: 281px;
+  // top = welcome text's bottom edge (32 + 26 line-height = 58) + the
+  // universal 32px component gap (no fixed header to clear anymore).
+  top: 90px;
   width: 267.5px;
-  height: 177px;
+  height: 155px;
   box-sizing: border-box;
   border-radius: 16px;
   background-color: #fff;
@@ -40,7 +46,7 @@
 }
 .cml-stat-label {
   position: absolute;
-  top: 28px; left: 28.36px;
+  top: 20px; left: 24px;
   line-height: 26px;
   font-weight: 600;
   font-size: 22px;
@@ -48,37 +54,39 @@
 }
 .cml-stat-icon-badge {
   position: absolute;
-  top: 19px; left: 186.17px;
-  width: 57.9px; height: 47px;
-  border-radius: 22px;
+  top: 14px; left: 199.5px;
+  width: 48px; height: 40px;
+  border-radius: 18px;
   background-color: var(--stat-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 
-  img { height: 26px; width: 26px; object-fit: contain; }
+  img { height: 22px; width: 22px; object-fit: contain; }
 }
 .cml-stat-count {
   position: absolute;
-  top: 73px; left: 28.36px;
-  font-size: 38px;
+  top: 52px; left: 24px;
+  // Count font size reduced 38 -> 34 (-4px) per the typography pass — CM is
+  // the source of truth IM/EM copy this from, kept in lockstep with both.
+  font-size: 34px;
   letter-spacing: -2px;
-  line-height: 44px;
+  line-height: 40px;
   font-weight: 600;
   color: #111827;
 }
 .cml-stat-view {
   position: absolute;
-  top: 128px; left: 28.36px;
+  top: 104px; left: 24px;
   font-size: 16px;
   line-height: 20px;
   color: #9ca3af;
-  width: 137px;
+  width: 140px;
 }
 .cml-stat-arrow {
   position: absolute;
-  top: 121px; left: 203px;
-  width: 32px; height: 32px;
+  top: 100px; left: 219.5px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   box-sizing: border-box;
   background-color: rgba(100, 116, 139, 0.08);
@@ -91,7 +99,7 @@
   transform: rotate(0deg);
   transition: transform 0.2s ease, background-color 0.15s ease;
 
-  svg { width: 16px; height: 16px; }
+  svg { width: 14px; height: 14px; }
 
   &:hover { background-color: rgba(100, 116, 139, 0.16); }
 }

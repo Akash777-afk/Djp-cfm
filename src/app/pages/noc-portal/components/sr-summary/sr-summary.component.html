@@ -39,57 +39,223 @@
     </div>
   </div>
 
-  <!-- Tab body: SR Details is fully built; the other 6 tabs are
-       functional (they switch activeTab, get highlighted) but don't invent
-       content that hasn't been specified yet. -->
-  <div class="srs-tab-body">
-    <ng-container *ngIf="activeTab === 'details'; else srsTabPlaceholder">
+  <!-- Shared field-grid template — SR Details / Resolution Tasks / Date-Time
+       all render the exact same SrSummaryField[][] shape with the exact
+       same pencil-to-edit interaction, so they share this one template
+       instead of tripling the markup. `realInputDisplay` (Resolution +
+       Date-Time only) swaps the not-yet-editing display from a plain
+       <span> to a real readonly <input> — same "field-input[readonly]"
+       convention used elsewhere in this app — so it reads/feels like a
+       proper input field even before the pencil is clicked. SR Details
+       keeps the original <span> display since that wasn't asked to change. -->
+  <ng-template #srsFieldGrid let-grid let-realInputDisplay="realInputDisplay">
+    <div class="srs-form">
+      <div class="srs-form-col" *ngFor="let col of grid">
+        <div class="srs-form-field" *ngFor="let field of col">
+          <div class="srs-form-label">{{ field.label }}</div>
 
+          <div class="srs-form-input-wrap" [class.srs-form-editing]="isEditing(field)">
+            <input
+              *ngIf="isEditing(field); else srsFieldDisplay"
+              type="text"
+              class="srs-form-input"
+              [(ngModel)]="draft[field.key]"
+              (keyup.enter)="saveChanges()"
+            />
+            <ng-template #srsFieldDisplay>
+              <input
+                *ngIf="realInputDisplay; else srsFieldSpan"
+                type="text"
+                class="srs-form-input srs-form-readonly-input"
+                [value]="field.value"
+                readonly
+                [attr.aria-label]="field.label"
+              />
+              <ng-template #srsFieldSpan>
+                <span class="srs-form-value">{{ field.value }}</span>
+              </ng-template>
+            </ng-template>
+
+            <button
+              type="button"
+              class="srs-edit-btn"
+              *ngIf="field.editable && !isEditing(field)"
+              aria-label="Edit field"
+              (click)="startEdit(field)"
+            >
+              <img src="/assets/NOC_Portal/edit.png" alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Shared SR-level action row — Resolve/Assign task/View notes/Create
+       note, identical on every tab that uses it. -->
+  <ng-template #srsActionRow>
+    <div class="srs-save-row">
+      <span class="srs-saved-msg" *ngIf="justSaved">Changes saved</span>
+      <button type="button" class="srs-btn srs-btn-outline" (click)="onResolve()">Resolve</button>
+      <button type="button" class="srs-btn srs-btn-outline" (click)="onAssignTask()">Assign task</button>
+      <button type="button" class="srs-btn srs-btn-solid" (click)="onViewNotes()">View notes</button>
+      <button type="button" class="srs-btn srs-btn-solid" (click)="onCreateNote()">Create note</button>
+    </div>
+  </ng-template>
+
+  <!-- Tab body — SR Details / Relationship / Callback task / Resolution /
+       SR history / Date/Time are fully built; SR Management stays a
+       placeholder on purpose (its requirements come separately). -->
+  <div class="srs-tab-body" [ngSwitch]="activeTab">
+
+    <!-- SR Details -->
+    <ng-container *ngSwitchCase="'details'">
       <div class="srs-form-card">
+        <ng-container [ngTemplateOutlet]="srsFieldGrid" [ngTemplateOutletContext]="{ $implicit: summary.details }"></ng-container>
+        <ng-container [ngTemplateOutlet]="srsActionRow"></ng-container>
+      </div>
+    </ng-container>
+
+    <!-- Relationship -->
+    <ng-container *ngSwitchCase="'relationship'">
+      <div class="srs-rel-search-row">
+        <div class="srs-form-input-wrap srs-rel-search-box">
+          <input
+            type="text"
+            class="srs-form-input"
+            placeholder="Incident Number"
+            [(ngModel)]="incidentSearchQuery"
+            (keyup.enter)="onIncidentSearch()"
+          />
+        </div>
+        <button type="button" class="srs-btn srs-btn-solid" (click)="onIncidentSearch()">Search</button>
+      </div>
+
+      <div class="srs-rel-table-wrap">
+        <table class="srs-rel-table">
+          <thead>
+            <tr>
+              <th>INC Number</th>
+              <th>Location</th>
+              <th>Actual Event Time</th>
+              <th>Status</th>
+              <th>Status Reason</th>
+              <th>ERT</th>
+              <th>Up Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of summary.relationship.incidents">
+              <td>{{ row.incNumber }}</td>
+              <td>{{ row.location }}</td>
+              <td>{{ row.actualEventTime }}</td>
+              <td>{{ row.status }}</td>
+              <td>{{ row.statusReason }}</td>
+              <td>{{ row.ert }}</td>
+              <td>{{ row.upTime }}</td>
+              <td>
+                <button type="button" class="srs-btn srs-btn-solid srs-rel-view-notes-btn" (click)="onViewIncidentNotes(row)">View Notes</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="srs-rel-empty" *ngIf="summary.relationship.incidents.length === 0">No related incidents found</div>
+      </div>
+
+    </ng-container>
+
+    <!-- Callback task -->
+    <ng-container *ngSwitchCase="'callback'">
+      <div class="srs-form-card">
+        <div class="srs-cb-title">Create Call Back Task</div>
+
         <div class="srs-form">
-          <div class="srs-form-col" *ngFor="let col of summary.details">
-            <div class="srs-form-field" *ngFor="let field of col">
-              <div class="srs-form-label">{{ field.label }}</div>
+          <div class="srs-form-col">
+            <div class="srs-form-field">
+              <div class="srs-form-label">Customer Name</div>
+              <div class="srs-form-input-wrap">
+                <input type="text" class="srs-form-input" placeholder="Enter customer name" [(ngModel)]="summary.callbackTask.customerName" />
+              </div>
+            </div>
+            <div class="srs-form-field">
+              <div class="srs-form-label">Alternate Contact Number</div>
+              <div class="srs-form-input-wrap">
+                <input type="text" class="srs-form-input" placeholder="Enter alternate contact number" [(ngModel)]="summary.callbackTask.alternateContactNumber" />
+              </div>
+            </div>
+          </div>
 
-              <div class="srs-form-input-wrap" [class.srs-form-editing]="isEditing(field)">
-                <input
-                  *ngIf="isEditing(field); else srsFieldDisplay"
-                  type="text"
-                  class="srs-form-input"
-                  [(ngModel)]="draft[field.key]"
-                  (keyup.enter)="saveChanges()"
-                />
-                <ng-template #srsFieldDisplay>
-                  <span class="srs-form-value">{{ field.value }}</span>
-                </ng-template>
+          <div class="srs-form-col">
+            <div class="srs-form-field">
+              <div class="srs-form-label">Customer Contact Number</div>
+              <div class="srs-form-input-wrap">
+                <input type="text" class="srs-form-input" placeholder="Enter contact number" [(ngModel)]="summary.callbackTask.customerContactNumber" />
+              </div>
+            </div>
+            <div class="srs-form-field">
+              <div class="srs-form-label">Reason For Callback</div>
+              <div class="srs-form-input-wrap">
+                <select class="srs-form-input" [(ngModel)]="summary.callbackTask.reasonForCallback">
+                  <option value="" disabled hidden>Select reason</option>
+                  <option *ngFor="let opt of reasonForCallbackOptions" [ngValue]="opt">{{ opt }}</option>
+                </select>
+                <img class="srs-select-chevron" src="/assets/shared/Dropdown-topbar.svg" alt="" />
+              </div>
+            </div>
+          </div>
 
-                <button
-                  type="button"
-                  class="srs-edit-btn"
-                  *ngIf="field.editable && !isEditing(field)"
-                  aria-label="Edit field"
-                  (click)="startEdit(field)"
-                >
-                  <img src="/assets/NOC_Portal/edit.png" alt="" />
-                </button>
+          <div class="srs-form-col">
+            <div class="srs-form-field">
+              <div class="srs-form-label">Customer Email Address</div>
+              <div class="srs-form-input-wrap">
+                <input type="email" class="srs-form-input" placeholder="Enter email address" [(ngModel)]="summary.callbackTask.customerEmailAddress" />
+              </div>
+            </div>
+            <div class="srs-form-field">
+              <div class="srs-form-label">Customer Availability Time</div>
+              <div class="srs-form-input-wrap">
+                <input type="datetime-local" class="srs-form-input" [(ngModel)]="summary.callbackTask.customerAvailabilityTime" />
               </div>
             </div>
           </div>
         </div>
 
         <div class="srs-save-row">
-          <span class="srs-saved-msg" *ngIf="justSaved">Changes saved</span>
-          <button type="button" class="srs-save-btn" [disabled]="isSaving" (click)="saveChanges()">
-            {{ isSaving ? 'Saving…' : 'Save changes' }}
-          </button>
+          <span class="srs-saved-msg" *ngIf="callbackSubmitted">Callback task created</span>
+          <button type="button" class="srs-btn srs-btn-solid" [disabled]="!isCallbackValid" (click)="onCallbackSubmit()">Submit</button>
         </div>
-      </div>
 
+        <ng-container [ngTemplateOutlet]="srsActionRow"></ng-container>
+      </div>
     </ng-container>
 
-    <ng-template #srsTabPlaceholder>
-      <div class="srs-tab-placeholder">{{ activeTabLabel }} — content coming soon</div>
-    </ng-template>
+    <!-- Resolution tasks -->
+    <ng-container *ngSwitchCase="'resolution'">
+      <div class="srs-form-card">
+        <ng-container [ngTemplateOutlet]="srsFieldGrid" [ngTemplateOutletContext]="{ $implicit: summary.resolutionTasks, realInputDisplay: true }"></ng-container>
+        <ng-container [ngTemplateOutlet]="srsActionRow"></ng-container>
+      </div>
+    </ng-container>
+
+    <!-- Date/Time -->
+    <ng-container *ngSwitchCase="'datetime'">
+      <div class="srs-form-card">
+        <ng-container [ngTemplateOutlet]="srsFieldGrid" [ngTemplateOutletContext]="{ $implicit: summary.dateTime, realInputDisplay: true }"></ng-container>
+        <ng-container [ngTemplateOutlet]="srsActionRow"></ng-container>
+      </div>
+    </ng-container>
+
+    <!-- SR history — reuses the existing All SRs table component wholesale
+         (same table/pagination/sort/search/service already built for the
+         LSI dashboard) rather than a second table implementation. -->
+    <ng-container *ngSwitchCase="'history'">
+      <app-noc-all-srs></app-noc-all-srs>
+    </ng-container>
+
+    <!-- SR Management + anything else stays a placeholder — no
+         requirements given for those yet. -->
+    <div class="srs-tab-placeholder" *ngSwitchDefault>{{ activeTabLabel }} — content coming soon</div>
   </div>
 
 </div>

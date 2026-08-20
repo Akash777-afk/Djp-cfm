@@ -11,6 +11,9 @@ export class ChangeManagementLandingChangesPanelComponent implements OnChanges {
   @Input() changes: DashboardChangeRow[] = [];
   @Input() statusFilter: string | null = null;
   @Output() changeIdClick = new EventEmitter<string>();
+  // Real date-range search (API #1) — parent owns the service call, same
+  // convention as EM/IM's tables having no service dependency of their own.
+  @Output() dateRangeSearch = new EventEmitter<{ fromDate?: string; toDate?: string }>();
 
   fromDate = '';
   toDate = '';
@@ -82,7 +85,14 @@ export class ChangeManagementLandingChangesPanelComponent implements OnChanges {
   }
 
   onSearch(): void {
-    // TODO: wire up to backend / filter service using this.fromDate / this.toDate
+    if (!this.fromDate && !this.toDate) { return; }
+    // <input type="date"> gives "YYYY-MM-DD" — DJP's own format has no
+    // separator between date and time ("YYYY-MM-DDHH:mm:ss"); defaults to
+    // start-of-day for "from" and end-of-day for "to" since the date picker
+    // has no time component to carry over.
+    const from = this.fromDate ? `${this.fromDate}00:00:00` : undefined;
+    const to = this.toDate ? `${this.toDate}23:59:59` : undefined;
+    this.dateRangeSearch.emit({ fromDate: from, toDate: to });
   }
   onExport(): void {
     console.log('Export clicked');

@@ -1,15 +1,47 @@
 <!-- ===================== PANEL BACKGROUND ===================== -->
 <div class="the-djp-change-management-child2"></div>
 
-<div class="button6" role="button" tabindex="0" (click)="assigneeClick.emit()" (keyup.enter)="assigneeClick.emit()">
+<div class="button6" role="button" tabindex="0" [class.is-busy]="isSaving" (click)="assigneeClick.emit()" (keyup.enter)="assigneeClick.emit()" aria-label="Save changes" title="Save changes">
   <img class="icon2" src="/assets/change-management/cm-3-ic1.svg" alt="Assignee">
 </div>
-<div class="button7" role="button" tabindex="0" (click)="notifyClick.emit()" (keyup.enter)="notifyClick.emit()">
+<div class="button7" role="button" tabindex="0" [class.is-busy]="isNotifying" (click)="notifyClick.emit()" (keyup.enter)="notifyClick.emit()" aria-label="Notify" title="Notify">
   <img class="icon2" src="/assets/change-management/cm-3-ic2.svg" alt="Notifications">
 </div>
 <div class="button8" role="button" tabindex="0" (click)="moreOptionsClick.emit()" (keyup.enter)="moreOptionsClick.emit()">
   <img class="icon2" src="/assets/change-management/cm-3-ic3.svg" alt="More options">
 </div>
+
+<!-- Link Status (API #10) — one small button, checks the outage's first
+     linked LSI on demand, same as DJP's own single-LSI on-demand check.
+     No new table column, matches the existing button6/7/8 icon treatment. -->
+<div
+  class="button9 cm-link-status-btn"
+  *ngIf="hasLinkedLsi"
+  role="button"
+  tabindex="0"
+  [class.is-busy]="linkStatusState === 'checking'"
+  (click)="checkLinkStatus()"
+  (keyup.enter)="checkLinkStatus()"
+  aria-label="Check link status"
+  title="Check link status"
+>
+  <svg class="icon2" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 12L12 8M7 13L5.5 14.5C4.4 15.6 2.6 15.6 1.5 14.5C0.4 13.4 0.4 11.6 1.5 10.5L4.5 7.5C5.6 6.4 7.4 6.4 8.5 7.5M13 7L14.5 5.5C15.6 4.4 15.6 2.6 14.5 1.5C13.4 0.4 11.6 0.4 10.5 1.5L7.5 4.5C6.4 5.6 6.4 7.4 7.5 8.5" stroke="#6b7280" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+</div>
+<div class="cm-link-status-result" *ngIf="linkStatusState !== 'idle'" [class]="'cm-link-status-' + linkStatusState">
+  <ng-container [ngSwitch]="linkStatusState">
+    <span *ngSwitchCase="'checking'">Checking {{ linkStatusLsi }}&hellip;</span>
+    <span *ngSwitchCase="'up'">{{ linkStatusLsi }}: Link Up</span>
+    <span *ngSwitchCase="'down'">{{ linkStatusLsi }}: Link Down</span>
+    <span *ngSwitchCase="'error'">{{ linkStatusLsi }}: Unable to check</span>
+  </ng-container>
+</div>
+
+<!-- Save / Notify feedback — inline text next to the icon row, same
+     minimal treatment as the link-status result above. -->
+<div class="cm-action-message cm-save-message" *ngIf="saveMessage" [class.cm-action-error]="saveMessage.type === 'error'">{{ saveMessage.text }}</div>
+<div class="cm-action-message cm-notify-message" *ngIf="notifyMessage" [class.cm-action-error]="notifyMessage.type === 'error'">{{ notifyMessage.text }}</div>
 
 <!-- ===================== DETAIL PANEL ===================== -->
 <div class="rectangle-group" *ngIf="selectedOutage">
@@ -184,12 +216,85 @@
 
   </div>
 
-  <div *ngIf="activeDetailTab === 'additionalDetails'">
-    <!-- TODO: additional details fields -->
+  <div class="tab-content-area" *ngIf="activeDetailTab === 'additionalDetails'">
+    <div class="cm-section-header">
+      <div class="cm-section-title">Impacted LSI ({{ impactedLsis.length }})</div>
+      <button type="button" class="cm-add-btn" (click)="addLsiClick.emit()">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2.5V13.5M2.5 8H13.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Add Impacted LSI
+      </button>
+    </div>
+
+    <div class="cm-table-wrap" *ngIf="impactedLsis.length > 0; else lsiEmpty">
+      <table class="cm-detail-table">
+        <thead>
+          <tr>
+            <th>LSI</th>
+            <th>Service Type</th>
+            <th>Party</th>
+            <th>Status</th>
+            <th>Implementer</th>
+            <th>Remarks</th>
+            <th class="cm-actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of impactedLsis">
+            <td class="cm-lsi-cell">{{ row.lsi }}</td>
+            <td>{{ row.serviceType }}</td>
+            <td>{{ row.party }}</td>
+            <td><span class="cm-status-pill" [attr.data-status]="row.status">{{ row.status }}</span></td>
+            <td>{{ row.implementer }}</td>
+            <td class="cm-remarks-cell">{{ row.remarks }}</td>
+            <td class="cm-actions-col">
+              <button type="button" class="cm-row-action-btn" (click)="editLsiClick.emit(row)" aria-label="Edit">Edit</button>
+              <button type="button" class="cm-row-action-btn cm-row-action-danger" (click)="removeLsi(row)" aria-label="Remove">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #lsiEmpty>
+      <div class="cm-empty-state">No impacted LSIs recorded for this outage yet.</div>
+    </ng-template>
   </div>
 
-  <div *ngIf="activeDetailTab === 'outageCommunications'">
-    <!-- TODO: outage communications thread -->
+  <div class="tab-content-area" *ngIf="activeDetailTab === 'outageCommunications'">
+    <div class="cm-section-header">
+      <div class="cm-section-title">Outage Communications ({{ selectedOutage.communications?.length || 0 }})</div>
+    </div>
+
+    <div class="cm-table-wrap" *ngIf="selectedOutage.communications && selectedOutage.communications.length > 0; else commEmpty">
+      <table class="cm-detail-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Contact Type</th>
+            <th>Journey</th>
+            <th>Trigger Time</th>
+            <th>Sender Email</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let comm of selectedOutage.communications">
+            <td>{{ comm.type }}</td>
+            <td><span class="cm-status-pill" [attr.data-status]="comm.status">{{ comm.status }}</span></td>
+            <td>{{ comm.contactType }}</td>
+            <td>{{ comm.journey }}</td>
+            <td>{{ comm.triggerTime }}</td>
+            <td>{{ comm.senderEmail }}</td>
+            <td class="cm-remarks-cell">{{ comm.remarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #commEmpty>
+      <div class="cm-empty-state">No communications sent for this outage yet.</div>
+    </ng-template>
   </div>
 
 </div>

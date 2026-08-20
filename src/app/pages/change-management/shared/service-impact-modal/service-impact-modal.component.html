@@ -28,7 +28,7 @@
       </div>
       <div class="si-actions">
         <button type="button" class="si-reset-btn" (click)="reset()">Reset</button>
-        <button type="button" class="si-search-btn" (click)="search()">Search</button>
+        <button type="button" class="si-search-btn" [disabled]="isSearching" (click)="search()">{{ isSearching ? 'Searching…' : 'Search' }}</button>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
       </div>
 
       <div class="si-table-wrap">
-        <table class="si-table">
+        <table class="si-table" *ngIf="totalRows > 0">
           <thead>
             <tr>
               <th>LSI</th>
@@ -63,6 +63,7 @@
             </tr>
           </tbody>
         </table>
+        <div class="si-empty" *ngIf="totalRows === 0">No impacted LSIs found for this domain/node</div>
       </div>
 
       <div class="si-pagination">

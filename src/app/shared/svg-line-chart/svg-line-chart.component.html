@@ -1,0 +1,111 @@
+<div class="slc-root">
+
+  <!-- Empty state — per-chart (not whole-card), same tray-icon pattern used
+       site-wide, so a chart with genuinely no data never renders a
+       misleading wave. -->
+  <div class="slc-empty" *ngIf="!hasData">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="slc-empty-text">{{ emptyText }}</div>
+  </div>
+
+  <ng-container *ngIf="hasData">
+    <svg
+      #svgEl
+      class="slc-svg"
+      [attr.viewBox]="'0 0 ' + vbWidth + ' ' + vbHeight"
+      preserveAspectRatio="none"
+      (mousemove)="onPointerMove($event)"
+      (mouseleave)="onPointerLeave()"
+    >
+      <defs>
+        <linearGradient *ngFor="let s of plotted" [attr.id]="s.gradientId" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" [attr.stop-color]="s.color" stop-opacity="0.32" />
+          <stop offset="100%" [attr.stop-color]="s.color" stop-opacity="0" />
+        </linearGradient>
+        <!-- Subtle glow on the active line — professional monitoring feel,
+             not a decorative bloom (small stdDeviation, merged with the
+             crisp source line rather than replacing it). -->
+        <filter id="slc-glow-{{ uid }}" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3" result="slc-blur" />
+          <feMerge>
+            <feMergeNode in="slc-blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- Threshold / SLA reference lines -->
+      <g class="slc-thresholds">
+        <line
+          *ngFor="let t of plottedThresholds"
+          [attr.x1]="0" [attr.x2]="vbWidth" [attr.y1]="t.y" [attr.y2]="t.y"
+          [attr.stroke]="t.color"
+        ></line>
+      </g>
+
+      <!-- Hover guide line -->
+      <line
+        *ngIf="hoverIndex !== null"
+        class="slc-hover-guide"
+        [attr.x1]="(hoverIndex / (pointCount - 1 || 1)) * vbWidth"
+        [attr.x2]="(hoverIndex / (pointCount - 1 || 1)) * vbWidth"
+        y1="0" [attr.y2]="vbHeight"
+      ></line>
+
+      <!-- Area fills (drawn first, under the lines) -->
+      <ng-container *ngIf="variant === 'area'">
+        <path
+          *ngFor="let s of plotted"
+          class="slc-area"
+          [attr.d]="s.areaD"
+          [attr.fill]="'url(#' + s.gradientId + ')'"
+          [class.slc-dimmed]="hoverSeriesKey && hoverSeriesKey !== s.key"
+        ></path>
+      </ng-container>
+
+      <!-- Curves -->
+      <path
+        *ngFor="let s of plotted"
+        class="slc-line"
+        [class.slc-line-active]="hoverSeriesKey === s.key"
+        [class.slc-dimmed]="hoverSeriesKey && hoverSeriesKey !== s.key"
+        [attr.d]="s.lineD"
+        [attr.stroke]="s.color"
+        [attr.filter]="hoverSeriesKey === s.key ? ('url(#slc-glow-' + uid + ')') : null"
+        (mouseenter)="onSeriesHover(s.key)"
+        (mouseleave)="onSeriesHover(null)"
+      ></path>
+
+      <!-- Hover markers -->
+      <ng-container *ngIf="hoverIndex !== null">
+        <circle
+          *ngFor="let s of plotted"
+          class="slc-marker"
+          [attr.cx]="s.points[hoverIndex]?.x"
+          [attr.cy]="s.points[hoverIndex]?.y"
+          [attr.fill]="s.color"
+          r="6"
+        ></circle>
+      </ng-container>
+    </svg>
+
+    <!-- Tooltip — HTML (not SVG <text>) for crisp, easily-styled type;
+         positioned as a % of the rendered box width so it tracks correctly
+         regardless of the SVG's own internal viewBox scale. -->
+    <div
+      class="slc-tooltip"
+      *ngIf="hoverIndex !== null"
+      [style.left.%]="hoverXPercent()"
+    >
+      <div class="slc-tooltip-label" *ngIf="hoverLabel()">{{ hoverLabel() }}</div>
+      <div class="slc-tooltip-row" *ngFor="let s of plotted">
+        <span class="slc-tooltip-dot" [style.backgroundColor]="s.color"></span>
+        <span class="slc-tooltip-name">{{ s.label }}</span>
+        <span class="slc-tooltip-value">{{ formatValue(s.points[hoverIndex]?.value) }}</span>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

@@ -1,0 +1,57 @@
+<div class="nsd-overlay" *ngIf="row as r" role="presentation" (click)="close()">
+  <div class="nsd-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="nsd-header">
+      <div class="nsd-title-group">
+        <div class="nsd-title">{{ r.nstt }}</div>
+        <div class="nsd-subtitle">{{ r.site }} &middot; {{ r.status }}</div>
+      </div>
+      <div class="nsd-stats">
+        <div class="nsd-stat">
+          <div class="nsd-stat-value">{{ r.srCount }}</div>
+          <div class="nsd-stat-label">SR count</div>
+        </div>
+        <div class="nsd-stat">
+          <div class="nsd-stat-value">{{ r.uniqueLsiCount }}</div>
+          <div class="nsd-stat-label">Unique LSIs</div>
+        </div>
+        <div class="nsd-stat">
+          <div class="nsd-stat-value">{{ r.nsttOwner }}</div>
+          <div class="nsd-stat-label">Owner</div>
+        </div>
+      </div>
+      <button type="button" class="nsd-close-btn" aria-label="Close" (click)="close()">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5L15 15M15 5L5 15" stroke="#4b5563" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="nsd-body">
+      <table class="nsd-table" *ngIf="r.srDetails.length > 0; else nsdEmpty">
+        <thead>
+          <tr>
+            <th>SR Number</th>
+            <th>LSI Number</th>
+            <th>Owner</th>
+            <th>SLA</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sr of r.srDetails">
+            <td>{{ sr.srNumber }}</td>
+            <td>{{ sr.lsiNumber || '—' }}</td>
+            <td>{{ sr.owner || '—' }}</td>
+            <td>{{ sr.sla || '—' }}</td>
+            <td>{{ sr.outcome || '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #nsdEmpty>
+        <div class="nsd-empty">No child SRs for this NSTT</div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

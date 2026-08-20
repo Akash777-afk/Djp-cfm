@@ -4,6 +4,10 @@
   *ngIf="variant === 'desktop'"
   [style.top.px]="top"
   [style.left.px]="left"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
 >
 
   <!-- Card header -->
@@ -21,8 +25,8 @@
       alt="Expand SR overview"
       role="button"
       tabindex="0"
-      (click)="onExpandCard()"
-      (keyup.enter)="onExpandCard()"
+      (click)="$event.stopPropagation(); onExpandCard()"
+      (keyup.enter)="$event.stopPropagation(); onExpandCard()"
     />
   </div>
 
@@ -135,7 +139,15 @@
 </div>
 
 <!-- ===== SR overview (mobile) ===== -->
-<div class="m-card" *ngIf="variant === 'mobile'" [style.order]="order">
+<div
+  class="m-card"
+  *ngIf="variant === 'mobile'"
+  [style.order]="order"
+  role="button"
+  tabindex="0"
+  (click)="onExpandCard()"
+  (keyup.enter)="onExpandCard()"
+>
   <div class="m-card-header">
     <img class="m-card-icon" src="/assets/landing/Vector-4.svg" alt="" />
     <div>

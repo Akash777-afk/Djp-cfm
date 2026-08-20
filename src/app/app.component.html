@@ -1,1 +1,7 @@
 <router-outlet></router-outlet>
+
+<!-- Single global instance — every page's loading state feeds this one
+     overlay via LoadingService, instead of each page rendering its own
+     inline loading indicator. Mounted here (app root, outside every page's
+     own scaled canvas) so it always covers the true viewport. -->
+<app-loading-overlay></app-loading-overlay>

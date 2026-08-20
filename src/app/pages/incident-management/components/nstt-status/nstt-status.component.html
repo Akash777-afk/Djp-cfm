@@ -1,69 +1,30 @@
-<div class="rectangle-parent">
-  <div class="group-item"></div>
-  <div class="group-container">
-
-    <!-- Stat tiles -->
-    <div class="container-parent">
-      <div
-        class="stat-tile"
-        *ngFor="let tile of statTiles; let i = index"
-        [class.stat-tile-active]="tile.key === activeKey"
-        [style.left.px]="i * 227.5"
-        [style.backgroundColor]="tile.bg"
-        [style.borderTopColor]="tile.borderColor"
-        [style.borderRightColor]="tile.borderColor"
-        [style.borderBottomColor]="tile.borderColor"
-        [style.color]="tile.textColor"
-        role="button"
-        tabindex="0"
-        (click)="tileClick.emit(tile.key)"
-        (keyup.enter)="tileClick.emit(tile.key)"
-      >
-        <!-- Icon box -->
-        <div class="tile-icon-box" [style.borderColor]="tile.badgeBorderColor">
-          <img class="icon2" [src]="tile.icon" alt="" />
-        </div>
-        <!-- Label -->
-        <div class="tile-label">{{ tile.label }}</div>
-        <!-- Divider bar -->
-        <div class="tile-divider"></div>
-        <!-- Value -->
-        <b class="tile-value" [style.left.px]="tile.valueLeft">{{ tile.value }}</b>
-        <!-- Badge -->
-        <div class="tile-badge-wrap">
-          <div
-            class="tile-badge"
-            [style.borderColor]="tile.badgeBorderColor"
-          >
-            <img class="icon3" [src]="tile.badgeIcon" alt="" />
-            <div class="text">
-              <div class="needs-review">{{ tile.badge }}</div>
-            </div>
-            <div class="text6" *ngIf="tile.badgeExtra">
-              <div class="vs-yesterday">{{ tile.badgeExtra }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ===== Status cards — same design as Change Management's stat cards
+     (app-cml-stat-cards): title top-left, icon badge top-right, count,
+     "View X" + arrow bottom, colored bottom border. No wrapping panel or
+     heading — just the 8 cards. ===== -->
+<div class="im-stat-row">
+  <div
+    class="im-stat-card"
+    *ngFor="let tile of statTiles; let i = index"
+    [class.im-stat-card-active]="tile.key === activeKey"
+    [style.left.px]="i * 232"
+    [style.--stat-color]="tile.borderColor"
+    [style.--stat-bg]="tile.bg"
+    role="button"
+    tabindex="0"
+    (click)="tileClick.emit(tile.key)"
+    (keyup.enter)="tileClick.emit(tile.key)"
+  >
+    <div class="im-stat-label">{{ tile.label }}</div>
+    <div class="im-stat-icon-badge">
+      <img [src]="tile.icon" alt="" />
     </div>
-
-    <!-- Separator -->
-    <div class="group-inner"></div>
-
-    <!-- NSTT Status Header -->
-    <div class="nstt-status-parent">
-      <b class="nstt-status">NSTT status</b>
-      <div class="container20"></div>
-      <img
-        class="frame-icon"
-        src="\assets/incident-management/im-2-refresh.svg"
-        alt="Refresh"
-        role="button"
-        tabindex="0"
-        (click)="refreshClick.emit()"
-        (keyup.enter)="refreshClick.emit()"
-      />
+    <div class="im-stat-count">{{ tile.value }}</div>
+    <div class="im-stat-view">{{ tile.viewText }}</div>
+    <div class="im-stat-arrow" [class.im-stat-arrow-down]="tile.key === activeKey">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,10 +23,13 @@ import { ChangeManagementHeaderBarComponent } from './pages/change-management/sh
 import { CreatePoModalComponent } from './pages/change-management/shared/create-po-modal/create-po-modal.component';
 import { ServiceImpactModalComponent } from './pages/change-management/shared/service-impact-modal/service-impact-modal.component';
 import { ContactCentreModalComponent } from './pages/change-management/shared/contact-centre-modal/contact-centre-modal.component';
+import { ImpactedLsiModalComponent } from './pages/change-management/shared/impacted-lsi-modal/impacted-lsi-modal.component';
 import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
 import { IncidentManagementHeaderBarComponent } from './pages/incident-management/components/header-bar/header-bar.component';
 import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
 import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
+import { NsttSrDrawerComponent } from './pages/incident-management/components/nstt-sr-drawer/nstt-sr-drawer.component';
+import { ColumnSettingsModalComponent } from './pages/incident-management/components/column-settings-modal/column-settings-modal.component';
 import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
 import { EscalationLevelsComponent } from './pages/escalation-matrix/components/escalation-levels/escalation-levels.component';
 import { EscalatedSrsComponent } from './pages/escalation-matrix/components/escalated-srs/escalated-srs.component';
@@ -40,6 +44,10 @@ import { PerformanceKpiModalComponent } from './pages/noc-portal/components/moda
 import { AccordionSectionComponent } from './pages/noc-portal/components/accordion-section/accordion-section.component';
 import { WorkNotesComponent } from './pages/noc-portal/components/work-notes/work-notes.component';
 import { SrSummaryComponent } from './pages/noc-portal/components/sr-summary/sr-summary.component';
+import { NocChatbotComponent } from './pages/noc-portal/components/chatbot/noc-chatbot.component';
+import { LoadingOverlayComponent } from './shared/loading-overlay/loading-overlay.component';
+import { CardLoadingOverlayComponent } from './shared/card-loading-overlay/card-loading-overlay.component';
+import { SvgLineChartComponent } from './shared/svg-line-chart/svg-line-chart.component';
 
 @NgModule({
   declarations: [
@@ -61,10 +69,13 @@ import { SrSummaryComponent } from './pages/noc-portal/components/sr-summary/sr-
     CreatePoModalComponent,
     ServiceImpactModalComponent,
     ContactCentreModalComponent,
+    ImpactedLsiModalComponent,
     IncidentManagementComponent,
     IncidentManagementHeaderBarComponent,
     NsttStatusComponent,
     AllNsttsComponent,
+    NsttSrDrawerComponent,
+    ColumnSettingsModalComponent,
     EscalationMatrixComponent,
     EscalationLevelsComponent,
     EscalatedSrsComponent,
@@ -78,11 +89,16 @@ import { SrSummaryComponent } from './pages/noc-portal/components/sr-summary/sr-
     PerformanceKpiModalComponent,
     AccordionSectionComponent,
     WorkNotesComponent,
-    SrSummaryComponent
+    SrSummaryComponent,
+    LoadingOverlayComponent,
+    CardLoadingOverlayComponent,
+    SvgLineChartComponent,
+    NocChatbotComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     AppRoutingModule,
     DragDropModule
   ],

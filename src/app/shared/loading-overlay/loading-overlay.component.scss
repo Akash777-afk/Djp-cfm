@@ -1,0 +1,94 @@
+// Global full-screen loading overlay — single instance mounted at the app
+// root (app.component.html), outside any page's own scaled canvas wrapper,
+// so position:fixed measures against the real viewport no matter which
+// page is currently active (same reasoning as nstt-sr-drawer/
+// column-settings-modal being placed outside their page's transform:scale
+// ancestor).
+.dlo-overlay {
+  position: fixed;
+  inset: 0;
+  // Higher than every other overlay in the app (modals top out around
+  // z-index:1000) — this needs to sit above literally everything, including
+  // an already-open modal, since a modal's own content can itself be
+  // mid-fetch.
+  z-index: 100000;
+  background-color: rgba(0, 0, 0, 0.5); // #00000080
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  // A position:fixed element covering the full viewport already intercepts
+  // every click underneath it by default — nothing else needed to satisfy
+  // "prevent user interaction with the underlying application while loading".
+}
+
+// Caption under the spinner — white/light since it sits on the dark
+// rgba(0,0,0,0.5) tint, unlike the card overlay's caption (which has no
+// tint to read against).
+.dlo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.2px;
+}
+
+.dlo-spinner {
+  position: relative;
+  width: 106px;
+  height: 106px;
+  // Explicitly transparent — the spinner is just the ring + logo, no
+  // background fill of its own.
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dlo-ring {
+  position: absolute;
+  inset: 0;
+  // rotate(0deg) -> rotate(360deg) is a clockwise sweep.
+  animation: dlo-spin 1s linear infinite;
+  transform-origin: 50% 50%;
+}
+.dlo-track {
+  stroke: #E0E0E0;
+}
+.dlo-arc {
+  stroke: #ED1C24;
+  stroke-linecap: round;
+  // Circumference of r=42 is ~264 (2*pi*42) — dashoffset 198 draws ~25% of
+  // the ring as the moving arc, the rest as gap (classic "comet" spinner).
+  stroke-dasharray: 264;
+  stroke-dashoffset: 198;
+}
+@keyframes dlo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Icon-only crop of Airtel-logo 5.png (a 489x168 horizontal lockup: red
+// swirl mark + "airtel" wordmark, ~2.9:1). No separate swirl-only asset
+// exists in the project, so rather than importing a new image, the swirl is
+// isolated with a background-image crop: scale the *whole* source image up
+// via background-size so the swirl portion renders at the desired icon
+// size, then clip everything past it with a same-width, overflow-hidden
+// container — the wordmark never enters the visible box.
+// Measured against the actual source pixels (see verification): the swirl
+// occupies roughly the first 35% of the image's width, and the "airtel"
+// text starts at ~38% — cropping at 36% sits safely in that gap (an
+// earlier 40% cut was clipping into the "a"). background-position stays
+// 0 0 since the swirl sits flush against the source image's left/top edge.
+.dlo-logo {
+  position: relative;
+  width: 64px;
+  height: 61px; // matches the source's own aspect ratio at this scale (168/489 * 178)
+  background-image: url('/assets/shared/Airtel-logo 5.png');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 178px auto; // 64px / 0.36 (crop fraction) = 178px full-image width
+  filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.18));
+}

@@ -1,26 +1,6 @@
 <div class="aop-scale-wrapper" [style.--aop-scale]="scale">
 <div class="aop-canvas">
 
-  <!-- ===== Top bar ===== -->
-  <div class="landing-topbar">
-    <img class="landing-topbar-logo" src="/assets/shared/Airtel-logo 5.png" alt="Airtel logo" />
-    <img class="landing-topbar-banner" src="/assets/shared/header-topright2.png" alt="" />
-  </div>
-
-  <!-- ===== Glanceable tiles ===== -->
-  <div
-    class="glance-tile"
-    *ngFor="let tile of glanceTiles; let i = index"
-    [style.left.px]="31 + i * 374.83"
-    role="button"
-    tabindex="0"
-    (click)="tile.action('desktop')"
-    (keyup.enter)="tile.action('desktop')"
-  >
-    <div class="glance-tile-label">{{ tile.label }}</div>
-    <div class="glance-tile-divider"></div>
-  </div>
-
   <!-- ===== Analytics Overview section ===== -->
   <div class="aop-header" id="analytics-overview-section">
     <img class="aop-header-icon" src="/assets/landing/Icon-5.svg" alt="" />
@@ -86,21 +66,6 @@
      Responsive layout (< 1024px) — natively-flowing rebuild.
      ========================================================= -->
 <div class="aop-mobile-layout">
-
-  <div class="landing-m-topbar">
-    <img class="landing-m-topbar-logo" src="/assets/shared/Airtel-logo 5.png" alt="Airtel logo" />
-  </div>
-
-  <div class="landing-m-tiles">
-    <div
-      class="glance-tile-m"
-      *ngFor="let tile of glanceTiles"
-      role="button"
-      tabindex="0"
-      (click)="tile.action('mobile')"
-      (keyup.enter)="tile.action('mobile')"
-    >{{ tile.label }}</div>
-  </div>
 
   <div class="aop-m-header" id="analytics-overview-section-m">
     <div class="aop-m-header-row">

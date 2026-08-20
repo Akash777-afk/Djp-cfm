@@ -1,4 +1,15 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ALL_NSTT_COLUMNS, DEFAULT_SELECTED_COLUMNS, NsttColumnField, TABLE_RENDERABLE_COLUMNS,
+} from '../../incident-management.constants';
+
+export interface NsttChildSr {
+  srNumber: string;
+  lsiNumber: string;
+  owner: string;
+  sla: string;
+  outcome: string;
+}
 
 export interface NsttRow {
   vipType: 'diamond' | 'account';
@@ -10,12 +21,33 @@ export interface NsttRow {
   assignedGroup: string;
   lastErtTime: string;
   upTime: string;
+  // Added for real API integration — DJP's NSTT rows are always a group of
+  // child SRs (SR count + "SR details for each NSTT"), not a flat entity;
+  // srCount/srDetails/nsttOwner carry that grouping through to the table.
+  srCount: number;
+  srDetails: NsttChildSr[];
+  nsttOwner: string;
+  // Unique LSI count from the dependent getLSIByNSTT call (API #2) — shown
+  // in the expand drawer rather than as a new table column, to avoid
+  // changing the existing fixed-pixel table layout.
+  uniqueLsiCount: number;
 }
 
 interface PaginationPage {
   label: string;
   active: boolean;
 }
+
+// Which NsttRow field each renderable optional column reads from — the
+// generalized version of the old 6 hardcoded {{ row.x }} template bindings.
+const OPTIONAL_VALUE_ACCESSORS: Record<string, (row: NsttRow) => string> = {
+  Site: r => r.site,
+  Status: r => r.status,
+  'Actual Incident Time': r => r.actualIncidentTime,
+  'Assigned Group': r => r.assignedGroup,
+  'Last ERT Time': r => r.lastErtTime,
+  'Up Time': r => r.upTime,
+};
 
 @Component({
   selector: 'app-all-nstts',
@@ -26,9 +58,45 @@ export class AllNsttsComponent implements OnChanges {
 
   @Input() nsttRows: NsttRow[] = [];
   @Input() statusFilter: string | null = null;
+  // Real "assigned group" values from the NSTT list response — replaces the
+  // old hardcoded groupOptions mock list.
+  @Input() groupOptionsSource: string[] = [];
+  // Ordered list of currently-selected column keys (full 34-field universe,
+  // not just the 6 renderable ones) — owned by the parent, which is also
+  // what feeds the Custom Settings modal. This component only cares about
+  // the subset that intersects TABLE_RENDERABLE_COLUMNS, via
+  // visibleOptionalColumns below.
+  @Input() selectedColumnOrder: string[] = DEFAULT_SELECTED_COLUMNS.slice();
+
+  // Bin selection changes which NSTTs the parent fetches — a real re-fetch,
+  // not a client-side filter, so it's an output rather than local state.
+  @Output() binChange = new EventEmitter<string[]>();
+  // Settings icon click bubbles up to the parent, which owns the Custom
+  // Settings modal (placed outside the scaled canvas wrapper, same
+  // position:fixed-containment reason as nstt-sr-drawer) and
+  // IncidentManagementService — this component has no service dependency
+  // of its own, same convention as EscalatedSrsComponent in Escalation Matrix.
+  @Output() openColumnSettings = new EventEmitter<void>();
+  @Output() expandRow = new EventEmitter<NsttRow>();
 
   get filteredRows(): NsttRow[] {
-    return this.statusFilter ? this.nsttRows.filter(r => r.status === this.statusFilter) : this.nsttRows;
+    let result = this.statusFilter ? this.nsttRows.filter(r => r.status === this.statusFilter) : this.nsttRows;
+
+    const checkedGroups = this.groupOptions.filter(o => o.checked).map(o => o.label);
+    if (checkedGroups.length > 0) {
+      result = result.filter(r => checkedGroups.includes(r.assignedGroup));
+    }
+    const checkedOwners = this.ownerOptions.filter(o => o.checked).map(o => o.label);
+    if (checkedOwners.length > 0) {
+      result = result.filter(r => checkedOwners.includes(r.nsttOwner));
+    }
+
+    const q = this.tableSearchQuery.trim().toLowerCase();
+    if (q) {
+      result = result.filter(r => [r.nstt, r.site, r.status, r.assignedGroup, r.nsttOwner]
+        .some(field => field.toLowerCase().includes(q)));
+    }
+    return result;
   }
 
   // Table title follows whichever stat tile is active up in the parent —
@@ -48,35 +116,65 @@ export class AllNsttsComponent implements OnChanges {
     return this.statusToTitle[this.statusFilter] ?? 'All NSTTs';
   }
 
+  // The reorderable optional-column set — selectedColumnOrder filtered down
+  // to the keys this table can actually render (see TABLE_RENDERABLE_COLUMNS'
+  // doc comment), in the user's chosen order. No per-column pixel geometry
+  // needed anymore — table-layout:auto (see .all-nstts-table) sizes each
+  // column to its own widest current value natively, so reordering only
+  // changes position, same as before, without hand-tuned widths to carry.
+  get visibleOptionalColumns(): NsttColumnField[] {
+    return this.selectedColumnOrder
+      .filter(key => TABLE_RENDERABLE_COLUMNS.has(key))
+      .map(key => ({
+        key,
+        label: ALL_NSTT_COLUMNS.find(c => c.key === key)?.label ?? key,
+      }));
+  }
+  getOptionalValue(row: NsttRow, key: string): string {
+    return OPTIONAL_VALUE_ACCESSORS[key]?.(row) ?? '';
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     // Whichever stat tile is active changed (or the source data did) — start
     // back at page 1 rather than stranding the user on a now-invalid page.
     if (changes['statusFilter'] || changes['nsttRows']) {
       this.currentPage = 1;
     }
+    if (changes['groupOptionsSource']) {
+      const checkedBefore = new Set(this.groupOptions.filter(o => o.checked).map(o => o.label));
+      this.groupOptions = this.groupOptionsSource.map(label => ({ label, checked: checkedBefore.has(label) }));
+    }
+    if (changes['nsttRows']) {
+      const checkedBefore = new Set(this.ownerOptions.filter(o => o.checked).map(o => o.label));
+      const owners = Array.from(new Set(this.nsttRows.map(r => r.nsttOwner).filter(o => o && o !== 'Update')));
+      this.ownerOptions = owners.map(label => ({ label, checked: checkedBefore.has(label) }));
+    }
   }
 
   // ---------- Toolbar interactions ----------
+  // filteredRows already reacts live to tableSearchQuery on every keystroke
+  // (it's a plain getter re-evaluated each change-detection pass) —
+  // onTableSearch() just resets pagination.
   tableSearchQuery = '';
   onTableSearch(): void {
-    console.log('Searching NSTTs for:', this.tableSearchQuery);
+    this.currentPage = 1;
   }
 
-  // Brief spin animation on the refresh icon to signal the table reloaded —
-  // there's no real backend yet, so this just re-runs the paging/filter
-  // pipeline from page 1 rather than fetching anything new.
+  // Brief spin animation on the refresh icon, plus the real re-fetch (parent
+  // owns the service call, same as EscalationMatrix's escalated-srs table).
   isTableRefreshing = false;
   onToolbarRefresh(): void {
     this.isTableRefreshing = true;
     this.currentPage = 1;
+    this.binChange.emit(this.checkedBinLabels());
     setTimeout(() => { this.isTableRefreshing = false; }, 700);
   }
 
-  // Settings panel has no real options yet — placeholder until a layout is
-  // provided, same pattern as the other toolbar dropdowns.
-  isSettingsOpen = false;
+  // ---------- Settings (Custom Settings modal, column preferences API #5) ----------
+  // The modal itself lives in the parent (see class comment on
+  // openColumnSettings above) — this just bubbles the click up.
   onToolbarSettings(): void {
-    this.isSettingsOpen = !this.isSettingsOpen;
+    this.openColumnSettings.emit();
     this.isBinOpen = false;
     this.isFilterOpen = false;
     this.isOwnerOpen = false;
@@ -87,7 +185,6 @@ export class AllNsttsComponent implements OnChanges {
     this.isBinOpen = !this.isBinOpen;
     this.isFilterOpen = false;
     this.isOwnerOpen = false;
-    this.isSettingsOpen = false;
   }
 
   binOptions = [
@@ -95,8 +192,14 @@ export class AllNsttsComponent implements OnChanges {
     { label: 'OUTAGE_RF', checked: true },
     { label: 'OUTAGE_IM', checked: true },
   ];
+  private checkedBinLabels(): string[] {
+    return this.binOptions.filter(o => o.checked).map(o => o.label);
+  }
   toggleBinOption(opt: { checked: boolean }): void {
     opt.checked = !opt.checked;
+    // Real re-fetch — the bin selection is a query parameter of API #1, not
+    // a client-side filter over already-loaded rows.
+    this.binChange.emit(this.checkedBinLabels());
   }
 
   isFilterOpen = false;
@@ -104,23 +207,19 @@ export class AllNsttsComponent implements OnChanges {
     this.isFilterOpen = !this.isFilterOpen;
     this.isBinOpen = false;
     this.isOwnerOpen = false;
-    this.isSettingsOpen = false;
   }
 
   groupSearchQuery = '';
-  groupOptions = [
-    { label: 'NOC_NS', checked: false },
-    { label: 'CEN_Network', checked: false },
-    { label: 'NOC_S&D', checked: false },
-    { label: 'NOC_NS_ANG', checked: false },
-    { label: 'NSG-ITMC', checked: false },
-  ];
+  // Populated from groupOptionsSource (real "assigned group" list from the
+  // API) in ngOnChanges — starts empty until the first load resolves.
+  groupOptions: { label: string; checked: boolean }[] = [];
   get filteredGroupOptions() {
     const q = this.groupSearchQuery.trim().toLowerCase();
     return q ? this.groupOptions.filter(o => o.label.toLowerCase().includes(q)) : this.groupOptions;
   }
   toggleGroupOption(opt: { checked: boolean }): void {
     opt.checked = !opt.checked;
+    this.currentPage = 1;
   }
 
   isOwnerOpen = false;
@@ -128,24 +227,20 @@ export class AllNsttsComponent implements OnChanges {
     this.isOwnerOpen = !this.isOwnerOpen;
     this.isBinOpen = false;
     this.isFilterOpen = false;
-    this.isSettingsOpen = false;
   }
 
   ownerSearchQuery = '';
-  ownerOptions = [
-    { label: 'Annu Sharma', id: 'A1NYLWE8', checked: false },
-    { label: 'Tanmay Kasaudhan', id: 'A19MCFF0', checked: false },
-    { label: 'Shivam Kumar', id: 'A1I6HZS0', checked: false },
-    { label: 'Suraj Yadav', id: 'A1SPB4XK', checked: false },
-    { label: '. Pandey Anupam', id: 'A1DUP8OJ', checked: false },
-    { label: 'Pallavi Kumari', id: 'A1NQEDSG', checked: false },
-  ];
+  // Derived from nsttRows' own computed nsttOwner field (single-owner NSTTs
+  // only — "Update" is a prompt state, not a real owner, so it's excluded)
+  // in ngOnChanges, replacing the old hardcoded name/id mock list.
+  ownerOptions: { label: string; checked: boolean }[] = [];
   get filteredOwnerOptions() {
     const q = this.ownerSearchQuery.trim().toLowerCase();
     return q ? this.ownerOptions.filter(o => o.label.toLowerCase().includes(q)) : this.ownerOptions;
   }
   toggleOwnerOption(opt: { checked: boolean }): void {
     opt.checked = !opt.checked;
+    this.currentPage = 1;
   }
 
   // false = normal "All NSTTs" table (default). true = the reduced
@@ -156,12 +251,16 @@ export class AllNsttsComponent implements OnChanges {
     this.toggleOn = !this.toggleOn;
   }
 
-  // Mock total for the "SR without NSTT" reduced view — there's no real
-  // data source for this yet, only the single count shown in the design.
+  // Still mock — "SR without NSTT" is its own bucket in the real API
+  // response, not covered by this pass's in-scope APIs (#1/#2/#4/#5 only).
   srWithoutNsttCount = 9;
 
-  onRowRefresh(row: NsttRow): void {
-    console.log('Refresh row:', row.nstt);
+  // NSTT cell click → expand-to-child-SRs drawer. DJP itself navigates to a
+  // whole separate page for this; the drawer shows the same
+  // "SR details for each NSTT" data DJP's own page would, just as an
+  // overlay instead of a route change — see NsttSrDrawerComponent.
+  onRowExpand(row: NsttRow): void {
+    this.expandRow.emit(row);
   }
 
   onExport(): void {
@@ -220,7 +319,4 @@ export class AllNsttsComponent implements OnChanges {
     if (page < 1 || page > this.totalPages) { return; }
     this.currentPage = page;
   }
-
-  // Row spacing constant (px between rows in the column-major table)
-  readonly ROW_GAP = 71;
 }

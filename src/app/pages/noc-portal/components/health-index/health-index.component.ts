@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ASSET } from '../../noc-portal.constants';
+import { HealthIndexService } from '../../services/health-index.service';
+import { ChartSeries, ChartThreshold, CurveStyle } from '../../../../shared/svg-line-chart/svg-line-chart.component';
 
 export interface HealthChartLegendItem {
   label: string;
@@ -10,52 +12,52 @@ export interface HealthChart {
   key: string;
   title: string;
   legend: HealthChartLegendItem[];
-  yAxisLabels: string[]; // top → bottom
-  xAxisLabels: string[]; // left → right
-  graphImage: string;
-  graphAlt: string;
-  // Each source SVG's own viewBox aspect ratio doesn't match the (fixed)
-  // plot box's ~2.45:1 aspect equally well: 'contain' (the default look)
-  // shrinks-to-fit and can letterbox a graph that's relatively "taller"
-  // than the plot box, leaving it visibly narrower than the gridlines —
-  // that's what happened to the latency graph (1.74:1, much more square
-  // than the plot box). 'cover' fills the box completely by cropping the
-  // excess instead, which is safe there because that SVG has huge built-in
-  // vertical margin (its curve only occupies the middle ~52% of its own
-  // viewBox height) for the crop to eat into. The other two graphs are
-  // already wider than the plot box under 'contain' (no letterboxing) and
-  // have almost no horizontal margin, so 'cover' would crop straight into
-  // their curves — they stay 'contain'.
-  imgFit: 'contain' | 'cover';
-  // Only meaningful when imgFit is 'cover' (it controls which part of the
-  // oversized image survives the crop). The latency SVG's built-in margin
-  // isn't split evenly above/below its curve — there's more blank space
-  // below the 0-line than above the peak — so a centered crop still left a
-  // visible gap between the wave's baseline and the 0ms gridline. Anchoring
-  // the crop to 'top' instead eats into the (larger) bottom margin first,
-  // pulling the baseline down flush with the gridline. Defaults to center.
-  imgPosition?: string;
+  yAxisLabels: string[]; // top → bottom, display only
+  xAxisLabels: string[]; // left → right, display + tooltip labels
+  // Numeric range backing yAxisLabels above — kept in sync with it by hand
+  // (yAxisLabels is presentation text, e.g. "1250ms"; yMin/yMax are what
+  // app-svg-line-chart actually plots against) since the two must always
+  // describe the same scale.
+  yMin: number;
+  yMax: number;
+  variant: 'line' | 'area';
+  curve: CurveStyle;
+  thresholds?: ChartThreshold[];
+  // Populated from HealthIndexService — starts empty so the chart's own
+  // per-series empty-state renders correctly during the brief window before
+  // the first response lands, rather than a chart with stale/wrong shape.
+  series: ChartSeries[];
 }
 
-// The 3 chart CURVES are the real designer-provided SVG waves (LSI Wave
-// Graph asset) rendered as-is via <img>, layered over hand-built axis
-// labels / gridlines / legend chrome — not a computed/data-bound chart, per
-// the brief: "Preserve its appearance". Swap for a live chart library bound
-// to real data once the backend exists. Legend dot colors are read directly
-// from each SVG's own fill/stroke values (not guessed), so they always
-// match their curve.
+// The 3 chart CURVES are now a real data-driven SVG visualization
+// (app-svg-line-chart) bound to HealthIndexService — not the earlier static
+// designer wave images. Axis labels / gridlines / legend chrome around them
+// stay hand-built exactly as before (see health-index.component.html) —
+// only the innermost .nhi-chart-img was replaced. Legend dot colors here
+// must keep matching each series' own color 1:1 (both are still hand-kept
+// in sync, same as before — there was never a single shared source for
+// this, just discipline about not editing one without the other).
 @Component({
   selector: 'app-noc-health-index',
   templateUrl: './health-index.component.html',
   styleUrls: ['./health-index.component.scss']
 })
-export class NocHealthIndexComponent {
+export class NocHealthIndexComponent implements OnInit {
+  constructor(private healthIndexService: HealthIndexService) {}
+
   // Real designer-provided badge asset (red-gradient box + chart glyph
   // baked into one SVG) — supersedes the earlier graph.svg-in-a-CSS-box
   // stand-in now that this exists.
   readonly headingIcon = `${ASSET}/LSIHI.svg`;
   readonly refreshIcon = `${ASSET}/Frame 13.svg`;
   readonly dropdownIcon = `${ASSET}/Frame 14.svg`;
+
+  // Drives app-card-loading-overlay — true for exactly as long as
+  // getHealthIndexData()'s call is in flight, same reactive-to-the-real-
+  // Observable pattern used by every other card in this app (no fixed
+  // timeout). See IncidentManagementCardComponent.isLoading for the fuller
+  // rationale — it applies identically here.
+  isLoading = true;
 
   charts: HealthChart[] = [
     {
@@ -67,10 +69,14 @@ export class NocHealthIndexComponent {
       ],
       yAxisLabels: ['1250ms', '1000ms', '750ms', '500ms', '250ms', '0ms'],
       xAxisLabels: ['13:20', '13:35', '14:05', '14:20', '14:35', '14:50', '15:05', '15:10'],
-      graphImage: `${ASSET}/Group 427319876.svg`,
-      graphAlt: 'Latency and packet loss graph',
-      imgFit: 'cover',
-      imgPosition: 'top',
+      yMin: 0,
+      yMax: 1250,
+      variant: 'area',
+      // Sharp straight-segment lines here (not the smooth curve default) —
+      // per explicit request, latency/packet-loss reads as raw sampled
+      // readings rather than an interpolated trend.
+      curve: 'sharp',
+      series: [],
     },
     {
       key: 'bandwidth',
@@ -78,9 +84,11 @@ export class NocHealthIndexComponent {
       legend: [{ label: 'Bandwidth Throughput', color: '#E6B415' }],
       yAxisLabels: ['1250ms', '1000ms', '750ms', '500ms', '250ms', '0ms'],
       xAxisLabels: ['13:20', '13:35', '14:05', '14:20', '14:35', '14:50', '15:05', '15:10'],
-      graphImage: `${ASSET}/Group 427319873.svg`,
-      graphAlt: 'Bandwidth throughput graph',
-      imgFit: 'contain',
+      yMin: 0,
+      yMax: 1250,
+      variant: 'area',
+      curve: 'smooth',
+      series: [],
     },
     {
       key: 'traffic',
@@ -91,15 +99,39 @@ export class NocHealthIndexComponent {
       ],
       yAxisLabels: ['120kbps', '100kbps', '75kbps', '50kbps', '25kbps', '0kbps'],
       xAxisLabels: ['11 Mar 12:00 pm', '11 Mar 12:10 pm', '11 Mar 12:20 pm', '11 Mar 12:30 pm'],
-      graphImage: `${ASSET}/traffic.svg`,
-      graphAlt: 'Traffic utilization graph',
-      imgFit: 'contain',
+      yMin: 0,
+      yMax: 120,
+      variant: 'area',
+      curve: 'smooth',
+      series: [],
     },
   ];
 
-  onRefresh(): void {
-    console.log('LSI Health Index refresh clicked');
+  ngOnInit(): void {
+    this.fetchHealthIndex();
   }
+
+  onRefresh(): void {
+    this.fetchHealthIndex();
+  }
+
+  private fetchHealthIndex(): void {
+    this.isLoading = true;
+    this.healthIndexService.getHealthIndexData().subscribe(data => {
+      this.isLoading = false;
+      const byKey: Record<string, { series: ChartSeries[]; thresholds?: ChartThreshold[] }> = {
+        latency: data.latency,
+        bandwidth: data.bandwidth,
+        traffic: data.traffic,
+      };
+      this.charts = this.charts.map(chart => ({
+        ...chart,
+        series: byKey[chart.key]?.series ?? [],
+        thresholds: byKey[chart.key]?.thresholds ?? chart.thresholds,
+      }));
+    });
+  }
+
   onDropdownClick(): void {
     console.log('LSI Health Index dropdown clicked');
   }

@@ -1,26 +1,25 @@
-<app-im-header-bar
-  [scale]="scale"
-  breadcrumbImage="/assets/escalation-matrix/E1m.png"
-  breadcrumbAlt="Escalation Matrix"
-></app-im-header-bar>
-
 <div class="the-djp-escalation-matrix-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-escalation-matrix">
 
   <!-- ===== Welcome banner ===== -->
   <div class="im-welcome">Welcome back, {{ userName }} !</div>
-  <button type="button" class="im-quick-btn im-quick-book" aria-label="Documentation" (click)="onBookClick()">
-    <img src="/assets/shared/famicons_book.png" alt="" />
+  <button type="button" class="im-quick-btn im-quick-book" aria-label="Knowledge Management" (click)="onBookClick()">
+    <img src="/assets/escalation-matrix/Knowledge-managemnt.svg" alt="" />
+    <span class="header-icon-tooltip">Knowledge Management</span>
   </button>
-
   <app-escalation-levels
     [tiles]="levelTiles"
     [activeKey]="activeCardKey"
-    (refreshClick)="onLevelsRefresh()"
     (tileClick)="setActiveCard($event)"
   ></app-escalation-levels>
 
-  <app-escalated-srs [rows]="srRows" [levelFilter]="levelFilter"></app-escalated-srs>
+  <app-escalated-srs
+    [rows]="srRows"
+    [levelFilter]="levelFilter"
+    (rowClick)="onRowClick($event)"
+    (lsiClick)="onLsiClick($event)"
+    (refreshClick)="onTableRefresh()"
+  ></app-escalated-srs>
 
   <!-- ===== Footer ===== -->
   <div class="the-main-page">

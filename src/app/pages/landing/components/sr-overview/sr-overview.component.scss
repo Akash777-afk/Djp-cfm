@@ -5,6 +5,7 @@
 // Shared class applied to all 4 reorderable grid cards so their top/left
 // position animates smoothly when the analytics tab changes.
 .grid-card {
+  cursor: pointer;
   transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
 
   &:hover {
@@ -235,6 +236,7 @@
   border-radius: 18px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
   padding: 16px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 14px;

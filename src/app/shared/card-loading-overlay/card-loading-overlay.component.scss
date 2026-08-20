@@ -1,0 +1,69 @@
+// Card-scoped loading overlay — fills whichever card contains it
+// (position:absolute against that card's own position:absolute/relative
+// root, not the viewport — see card-loading-overlay.component.ts's class
+// comment). No background tint of any kind (no dark/grey/white/translucent
+// fill) — the card's own content stays at its normal brightness/opacity
+// underneath; only a light blur (half the original 6px) softens it, so it
+// reads as "still loading" without washing out or darkening anything.
+// Spinner keeps the same #ED1C24 arc / #E0E0E0 track / clockwise spin as
+// the global overlay for brand consistency; no logo, the ring is the only
+// element.
+.clo-overlay {
+  position: absolute;
+  inset: 0;
+  // Above this card's own content, but nowhere near the global overlay's
+  // z-index — this only ever needs to sit above its own card, and multiple
+  // cards can legitimately be loading at once side by side.
+  z-index: 20;
+  // Deliberately no background-color — blur only, brightness untouched.
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  // Same reasoning as the global overlay: a full-size absolutely-positioned
+  // layer already intercepts clicks on the card underneath by default.
+}
+
+// Caption under the spinner. The overlay itself has no background tint, so
+// this can sit over any card content (light or colored) once blurred —
+// text-shadow gives it a soft white halo for legibility without adding an
+// actual background fill (which would count as dimming, which the card
+// overlay deliberately never does).
+.clo-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85), 0 0 6px rgba(255, 255, 255, 0.65);
+}
+
+.clo-spinner {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clo-ring {
+  position: absolute;
+  inset: 0;
+  animation: clo-spin 1s linear infinite;
+  transform-origin: 50% 50%;
+}
+.clo-track { stroke: #E0E0E0; }
+.clo-arc {
+  stroke: #ED1C24;
+  stroke-linecap: round;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 198;
+}
+@keyframes clo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

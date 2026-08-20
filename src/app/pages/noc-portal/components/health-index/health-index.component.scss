@@ -4,6 +4,11 @@ $radius-card: 22px;
 $shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
 
 .nhi-card {
+  // Containing block for app-card-loading-overlay's position:absolute fill
+  // (same pattern as .frame-parent4/.the-djp-inner/.m-card elsewhere) —
+  // overflow:hidden clips it to this card's own rounded corners.
+  position: relative;
+  overflow: hidden;
   box-shadow: $shadow-card;
   border-radius: $radius-card;
   background-color: #fff;
@@ -101,20 +106,6 @@ $shadow-card: 0px 2px 12px rgba(0, 0, 0, 0.22);
   justify-content: space-between;
   span { border-top: 1px solid #edeef1; }
 }
-.nhi-chart-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  // object-fit is set per-chart via [style.objectFit]="chart.imgFit" (see
-  // HealthChart.imgFit's comment in health-index.component.ts) — the 3
-  // source SVGs have different native aspect ratios against the same fixed
-  // plot box, so one fit mode doesn't suit all of them. This is just the
-  // fallback if that binding is ever missing.
-  object-fit: contain;
-  display: block;
-}
-
 .nhi-xaxis {
   flex-shrink: 0;
   display: flex;

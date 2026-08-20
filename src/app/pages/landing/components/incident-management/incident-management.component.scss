@@ -5,6 +5,7 @@
 // Shared class applied to all 4 reorderable grid cards so their top/left
 // position animates smoothly when the analytics tab changes.
 .grid-card {
+  cursor: pointer;
   transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
 
   &:hover {
@@ -123,7 +124,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0px 8px 0px 90px;
+  // justify-content:flex-end + the 17px bottom padding anchor .bar-parent
+  // (the only in-flow child — .group/.y-label/.x-label are all
+  // position:absolute) to the chart's bottom baseline instead of letting it
+  // sit at the container's top (the default flex-start), which is what
+  // made the bars look like they were floating disconnected from the
+  // x-axis: 214px box height − 17px bottom padding = a 197px content box,
+  // matching .x-label's own top:197px exactly, so .bar-parent's bottom
+  // edge lines up flush with the row the x-axis labels start on. Bar
+  // heights themselves are already fully data-driven (barMaxHeightPx=182 in
+  // the component, well under the 197px available) — this only fixes where
+  // that already-correct height sits vertically, not how it's computed.
+  padding: 0px 8px 17px 90px;
+  justify-content: flex-end;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
@@ -148,7 +161,7 @@
 }
 .x-label {
   position: absolute;
-  top: 197px;
+  top: 207px; // 10px below the bars' own baseline (bar-parent's bottom, still 197px) so the category names sit with a touch more breathing room under the bars
   line-height: 16.5px;
   font-size: 14px;
   color: rgba(100, 116, 139, 0.66);
@@ -174,10 +187,17 @@
 
 // ---------- Incident management (mobile card) ----------
 .m-card {
+  // Containing block for app-card-loading-overlay's position:absolute fill;
+  // overflow:hidden clips it to this card's own rounded corners (same way
+  // .the-djp-inner already does for the desktop version) rather than
+  // needing to chain border-radius:inherit through the component boundary.
+  position: relative;
+  overflow: hidden;
   background-color: #fff;
   border-radius: 18px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
   padding: 16px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 14px;

@@ -1,16 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardChangeRow, DashboardChangeStatus, StatCard } from './change-management-landing.types';
+import { DashboardChangeRow, StatCard } from './change-management-landing.types';
 import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav.component';
-
-interface StatCardMeta {
-  key: string;
-  label: string;
-  viewText: string;
-  color: string;
-  bg: string;
-  icon: string;
-}
+import { ChangeManagementService } from '../services/change-management.service';
+import { SessionService } from '../../../services/session.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-change-management-landing',
@@ -19,13 +13,30 @@ interface StatCardMeta {
 })
 export class ChangeManagementLandingComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private cmService: ChangeManagementService,
+    private session: SessionService,
+    private loadingService: LoadingService,
+  ) {}
 
   private static readonly DESIGN_WIDTH = 1920;
   scale = 1;
 
   ngOnInit(): void {
     this.updateScale();
+    this.fetchDashboard();
+
+    this.session.getCurrentUser().subscribe(user => {
+      const name = user?.userData?.givenName;
+      if (name) { this.userName = name; }
+    });
+    this.session.logActivity({
+      System: 'Change Management',
+      'OLM ID': this.userName,
+      Action: 'View',
+      Comments: 'User viewed Change Management dashboard',
+    }).subscribe();
   }
 
   @HostListener('window:resize')
@@ -35,70 +46,42 @@ export class ChangeManagementLandingComponent implements OnInit {
 
   userName = 'Akash Ganapathy2';
 
-  // 43 mock changes, split roughly evenly across Emergency/Planned/Open — none
-  // of which are tracked stat-card categories, so only "All Changes" carries a
-  // real count; Scheduled, Rejected, In Progress, Completed and Cancelled stay
-  // genuinely empty.
-  changes: DashboardChangeRow[] = this.buildMockChanges();
+  // ---------- Dashboard data (stat cards + changes) ----------
+  isLoading = true;
+  changes: DashboardChangeRow[] = [];
+  statCards: StatCard[] = [];
 
-  private buildMockChanges(): DashboardChangeRow[] {
-    const statuses: DashboardChangeStatus[] = ['Emergency', 'Planned', 'Open'];
-    const total = 43;
-    const rows: DashboardChangeRow[] = [];
-    for (let i = 0; i < total; i++) {
-      const outageId = 1100461492 + i;
-      rows.push({
-        changeId: i === 0 ? 'CRQ000005963007' : `CRQ0000${(6792249 + i).toString()}`,
-        plannedOutageId: outageId.toString(),
-        status: statuses[i % statuses.length],
-        createdOn: '01 July 2026, 09:23 AM',
-      });
-    }
-    return rows;
+  private fetchDashboard(fromDate?: string, toDate?: string): void {
+    this.isLoading = true;
+    this.loadingService.show();
+    this.cmService.getDashboardData(fromDate, toDate).subscribe(({ statCards, changes }) => {
+      this.statCards = statCards.map(c => ({ ...c, special: c.key === this.activeCardKey }));
+      this.changes = changes;
+      this.isLoading = false;
+      this.loadingService.hide();
+    });
+  }
+
+  // Re-fetches with an explicit date range — mirrors DJP's onSubmit().
+  onDateRangeSearch(range: { fromDate?: string; toDate?: string }): void {
+    this.fetchDashboard(range.fromDate, range.toDate);
   }
 
   // Which single card is currently "active" (special style + table filter).
-  // Defaults to 'all' since the table starts out showing every change.
   activeCardKey = 'all';
 
-  private readonly cardMeta: StatCardMeta[] = [
-    { key: 'all',          label: 'All Changes', viewText: 'View all changes', color: '#ed7199', bg: 'rgba(237, 113, 153, 0.08)', icon: '/assets/change-management/Icon-6.png' },
-    { key: 'scheduled',    label: 'Scheduled',   viewText: 'View scheduled',   color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)',  icon: '/assets/change-management/Iconsch.png' },
-    { key: 'rejected',     label: 'Rejected',    viewText: 'View rejected',    color: '#e60012', bg: '#fef2f2',                    icon: '/assets/change-management/Icon-5.png' },
-    { key: 'in-progress',  label: 'In Progress', viewText: 'View in progress', color: '#4664aa', bg: 'rgba(70, 100, 170, 0.08)',  icon: '/assets/change-management/Icon-4.png' },
-    { key: 'completed',    label: 'Completed',   viewText: 'View completed',   color: '#22c55e', bg: 'rgba(99, 205, 90, 0.08)',   icon: '/assets/change-management/Icon-3.png' },
-    { key: 'cancelled',    label: 'Cancelled',   viewText: 'View cancelled',   color: '#ff9900', bg: 'rgba(255, 153, 0, 0.08)',   icon: '/assets/change-management/Icon-2.png' },
-  ];
-
-  private readonly keyToStatus: Record<string, DashboardChangeStatus> = {
-    scheduled: 'Scheduled',
-    rejected: 'Rejected',
-    'in-progress': 'In Progress',
-    completed: 'Completed',
-    cancelled: 'Cancelled',
+  private readonly keyToStatus: Record<string, string> = {
+    scheduled: 'Scheduled', rejected: 'Rejected', 'in-progress': 'In Progress',
+    completed: 'Completed', cancelled: 'Cancelled',
   };
 
-  get statCards(): StatCard[] {
-    const count = (status: DashboardChangeStatus) => this.changes.filter(c => c.status === status).length;
-    return this.cardMeta.map(meta => ({
-      key: meta.key,
-      label: meta.label,
-      count: meta.key === 'all' ? this.changes.length : count(this.keyToStatus[meta.key]),
-      viewText: meta.viewText,
-      color: meta.color,
-      bg: meta.bg,
-      icon: meta.icon,
-      special: meta.key === this.activeCardKey,
-    }));
-  }
-
-  // null = no filter (show every row), matching the 'all' card.
-  get statusFilter(): DashboardChangeStatus | null {
+  get statusFilter(): string | null {
     return this.activeCardKey === 'all' ? null : this.keyToStatus[this.activeCardKey];
   }
 
   setActiveCard(key: string): void {
     this.activeCardKey = key;
+    this.statCards = this.statCards.map(c => ({ ...c, special: c.key === key }));
   }
 
   // The dashboard has no planned-outages table of its own to append a new
@@ -135,8 +118,12 @@ export class ChangeManagementLandingComponent implements OnInit {
     this.isContactCentreModalOpen = false;
   }
 
+  // Real broadcast-call hyperlink (shared API, same as EM/IM's onCallClick).
   onCallClick(): void {
-    console.log('Call clicked');
+    this.session.getHyperLinkNavurls().subscribe(data => {
+      const url = data?.IM?.broadCastCall;
+      if (url) { window.open(url); }
+    });
   }
   onBookClick(): void {
     console.log('Book clicked');

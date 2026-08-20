@@ -7,16 +7,17 @@
 .the-djp-incident-management-scale-wrapper {
   --djp-scale: 1; // fallback for first paint, before JS runs
   width: calc(1920px * var(--djp-scale));
-  height: calc(1379px * var(--djp-scale));
+  height: calc(1091px * var(--djp-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
 }
 
+// Fixed header bar (app-im-header-bar) removed — no more margin-top offset
+// needed to clear it; the canvas now starts at the true top of the page.
 .the-djp-incident-management {
   width: 1920px;
-  height: 1427px;
-  margin-top: -38px;
+  height: 1091px;
   position: relative;
   background-color: #f7f8f9;
   overflow: hidden;
@@ -29,39 +30,92 @@
 }
 
 // ---------- Welcome banner ----------
+// top:32px = universal DJP-CFM top-of-page spacing (no fixed header left to
+// clear anymore). Font size reduced 30->28 (-2px) per the typography pass.
 .im-welcome {
   position: absolute;
-  top: 207px; left: 37px;
-  font-size: 30px;
-  line-height: 27.5px;
+  top: 32px; left: 37px;
+  font-size: 28px;
+  line-height: 26px;
   font-weight: 500;
   color: rgba(17, 16, 16, 0.79);
 }
+
 .im-quick-btn {
   position: absolute;
-  top: 197px;
-  width: 42px; height: 42px;
+  // Styled to match the All NSTTs toolbar's Settings/Refresh icon-buttons
+  // (icon fills the button fully, circular hover/active chrome), sized to
+  // 36x36 — top = 45 (welcome text's vertical center: 32 + 26/2) - 18 (half
+  // of 36).
+  top: 27px;
+  width: 36px; height: 36px;
   appearance: none;
   -webkit-appearance: none;
   border: none;
   background: transparent;
   padding: 0;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  // Needed so the button (and its .header-icon-tooltip child) stacks above
+  // the NSTT status card below it. On :hover the button gets `transform:
+  // scale(...)`, which creates its own stacking context — that traps the
+  // tooltip's z-index:5 *inside* the button, so it no longer competes
+  // directly with later siblings like .rectangle-parent. Giving the button
+  // itself an explicit z-index fixes the button-vs-card ordering in the
+  // outer context, regardless of hover state.
+  z-index: 10;
 
-  img { width: 100%; height: 100%; }
+  img { width: 36px; height: 36px; }
 
-  &:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.08); }
-  &:active { transform: scale(0.94); }
+  &:hover { background-color: rgba(15, 23, 42, 0.06); }
+  &:active { transform: scale(0.92); }
 }
-.im-quick-call { left: 1744px; }
-.im-quick-book { left: 1841px; }
+// Right edges anchored to their original (38px-button) positions: call was
+// 1748+38=1786, book was 1845+38=1883 — the same 59px gap between them is
+// preserved, just re-derived for the new 36px button width.
+.im-quick-call { left: 1752px; }
+.im-quick-book { left: 1847px; }
+
+// Hover tooltip for the welcome-banner quick-action icons — same dark-bubble
+// hover-reveal pattern already used for NOC Portal's top utility icons
+// (.np-top-icon-tooltip in noc-portal.component.scss), reused rather than
+// building a new tooltip mechanism. .im-quick-btn is already position:absolute,
+// so it's already the containing block for this — no extra wrapper needed.
+// Purely opacity-driven (no width/height/position change on anything that
+// participates in layout), so it can't shift the header or any icon, and
+// right:0 (not centered) keeps it inside the canvas's overflow:hidden bounds
+// for the rightmost icon — same reason NOC Portal's version isn't centered.
+.header-icon-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  white-space: nowrap;
+  background-color: #1e2939;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 5;
+}
+.im-quick-btn:hover .header-icon-tooltip,
+.im-quick-btn:focus-visible .header-icon-tooltip {
+  opacity: 1;
+}
 
 // ---------- Footer ----------
+// top = all-nstts' bottom edge (277 + 696 = 973) + the universal 32px gap.
 .the-main-page {
   position: absolute;
-  top: 1336px; left: 37px;
+  top: 1005px; left: 37px;
   width: 125px; height: 54px;
   font-size: 14px;
   color: #b5b7c0;

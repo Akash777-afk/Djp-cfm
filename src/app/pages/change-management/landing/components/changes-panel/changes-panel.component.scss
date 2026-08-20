@@ -5,7 +5,10 @@
 // ---------- Changes panel ----------
 .cml-panel {
   position: absolute;
-  top: 495px; left: 129px;
+  // 277px = stat-cards row's bottom edge (90 + 155 = 245) + the universal
+  // 32px component gap used app-wide between a card row and the table
+  // below it.
+  top: 277px; left: 129px;
   width: 1754px;
   height: 772px;
   box-sizing: border-box;
@@ -243,11 +246,19 @@
   font-size: 16px;
   font-weight: 500;
 }
-.cml-status-completed { background-color: #f0fdf4; border: 1.3px solid #bbf7d0; color: #16a34a; }
-.cml-status-scheduled { background-color: #eff6ff; border: 1.3px solid #bfdbfe; color: #2563eb; }
-.cml-status-emergency { background-color: #fef2f2; border: 1.3px solid #fecaca; color: #dc2626; }
-.cml-status-planned   { background-color: #f0fdf4; border: 1.3px solid #bbf7d0; color: #16a34a; }
-.cml-status-open      { background-color: #fffbeb; border: 1.3px solid #fde68a; color: #d97706; }
+.cml-status-completed   { background-color: #f0fdf4; border: 1.3px solid #bbf7d0; color: #16a34a; }
+.cml-status-scheduled   { background-color: #eff6ff; border: 1.3px solid #bfdbfe; color: #2563eb; }
+.cml-status-emergency   { background-color: #fef2f2; border: 1.3px solid #fecaca; color: #dc2626; }
+.cml-status-planned     { background-color: #f0fdf4; border: 1.3px solid #bbf7d0; color: #16a34a; }
+.cml-status-open        { background-color: #fffbeb; border: 1.3px solid #fde68a; color: #d97706; }
+// The 3 statuses below were missing entirely — [ngClass] built the class
+// name fine (cml-status-in-progress / -rejected / -cancelled) but with no
+// matching rule the badge fell back to unstyled plain text. Colors match
+// each status's own KPI card (see CARD_META in change-management.service.ts
+// / .mock.ts) so the table badges and the cards above stay in sync.
+.cml-status-in-progress { background-color: #eef1f8; border: 1.3px solid #c3cee7; color: #4664aa; }
+.cml-status-rejected    { background-color: #fdeced; border: 1.3px solid #f6a6ac; color: #e60012; }
+.cml-status-cancelled   { background-color: #fff7eb; border: 1.3px solid #ffdba6; color: #ff9900; }
 
 // ---------- Pagination ----------
 .cml-pagination {

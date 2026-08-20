@@ -40,7 +40,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  // scrollPositionRestoration: 'top' — global, router-level fix rather than
+  // per-page logic: Angular's router remembers each URL's last scroll
+  // position by default (so browser back/forward feels natural), which is
+  // exactly what was showing up as "IM loads already scrolled down" —
+  // navigating to a route the user had previously scrolled on restored
+  // that old position instead of starting fresh. 'top' resets to (0, 0) on
+  // every successful navigation instead, covering all current and future
+  // routes with no per-component code.
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

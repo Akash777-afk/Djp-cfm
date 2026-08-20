@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 export interface EscalationLevelTile {
   key: string;          // 'all' | 'level-1' ... 'level-6'
-  label: string;        // 'Counts' | 'Level 1' ...
+  label: string;        // 'Count' | 'Level 1' ...
   value: number;
-  accent: string;       // border / icon-box / dot color
-  bg: string;           // tinted card background
-  icon: string;         // path to the tile's icon image (/assets/...)
-  filledDots: number;   // 0 for the 'all' tile (shows pillText instead), else 1-6
-  pillText?: string;    // only set on the 'all' tile: 'All Escalated SRs'
+  accent: string;       // border / icon-badge / title color
+  bg: string;            // tinted icon-badge background
+  icon: string;          // path to the tile's icon image (/assets/...)
+  filledDots: number;    // unused by this card design, kept for interface stability
+  pillText?: string;     // unused by this card design, kept for interface stability
 }
 
 @Component({
@@ -20,9 +20,14 @@ export class EscalationLevelsComponent {
 
   @Input() tiles: EscalationLevelTile[] = [];
   @Input() activeKey = 'all';
-  @Output() refreshClick = new EventEmitter<void>();
   @Output() tileClick = new EventEmitter<string>();
 
-  // Fixed 6-slot dot track shared by every tile — only the filled count differs.
-  readonly dotSlots = [0, 1, 2, 3, 4, 5];
+  // Count card ('all'): "View total count" (all-lowercase, matching CM's
+  // "View X" convention). Level cards: "View Level N SRs" — keeps "Level N"
+  // capitalized as-is and appends "SRs", a different format than the Count
+  // card's, per the explicit per-tile-type wording requested.
+  viewText(tile: EscalationLevelTile): string {
+    if (tile.key === 'all') { return `View ${tile.label.toLowerCase()}`; }
+    return `View ${tile.label} SRs`;
+  }
 }

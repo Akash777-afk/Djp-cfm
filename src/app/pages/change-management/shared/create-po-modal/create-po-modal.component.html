@@ -41,9 +41,9 @@
               <button type="button" class="button" (click)="cancel()">
                 <div class="cancel">Cancel</div>
               </button>
-              <button type="button" class="button2" [disabled]="!crqNumber.trim()" (click)="goToForm()">
-                <div class="next">Next</div>
-                <svg class="icon3" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button type="button" class="button2" [disabled]="!crqNumber.trim() || isValidatingCrq" (click)="goToForm()">
+                <div class="next">{{ isValidatingCrq ? 'Checking…' : 'Next' }}</div>
+                <svg class="icon3" *ngIf="!isValidatingCrq" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2 7.5H13M13 7.5L8.5 3M13 7.5L8.5 12" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
@@ -205,11 +205,12 @@
       </div>
 
       <div class="form-footer">
+        <div class="form-submit-error" *ngIf="submitError">{{ submitError }}</div>
         <button type="button" class="step2-cancel-btn" (click)="cancel()">
           <div class="cancel">Cancel</div>
         </button>
-        <button type="button" class="step2-submit-btn" (click)="submit()">
-          <div class="submit">Submit</div>
+        <button type="button" class="step2-submit-btn" [disabled]="isSubmitting" (click)="submit()">
+          <div class="submit">{{ isSubmitting ? 'Submitting…' : 'Submit' }}</div>
         </button>
       </div>
     </div>

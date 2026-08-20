@@ -3,11 +3,6 @@ export interface NavTabItem {
   active: boolean;
 }
 
-export interface GlanceTile {
-  label: string;
-  action: (variant?: SectionVariant) => void;
-}
-
 export type MainCardKey = 'sr' | 'incident' | 'change' | 'escalation';
 
 export type SectionVariant = 'desktop' | 'mobile';
@@ -44,11 +39,14 @@ export interface EscalationLevel {
   isLast: boolean;
 }
 
+// Field names mirror ChangeManagementService's real DashboardChangeRow
+// exactly (changeId/plannedOutageId/status/createdOn) — this card maps
+// straight from that API shape, so there's no need for a differently-named
+// local shape in between.
 export interface ChangeRow {
-  outageId: string;
-  crq: string;
-  impact: string;
-  implementor: string;
-  submitted: boolean;
+  changeId: string;
+  plannedOutageId: string;
+  status: string;
+  createdOn: string;
   isLast: boolean;
 }

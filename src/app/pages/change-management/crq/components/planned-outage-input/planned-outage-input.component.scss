@@ -57,6 +57,74 @@
   position: relative;
 }
 
+// Busy state for the two icon buttons that now trigger real API calls —
+// same dim+no-pointer treatment, no layout change.
+.button6.is-busy,
+.button7.is-busy,
+.button9.is-busy {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+// ---- Link Status (API #10) — extends the button6/7/8 row leftward rather
+// than past button8's right edge, which would overflow the 1754px-wide
+// card. Same 71px spacing, same visual treatment. ----
+.button9 {
+  position: absolute;
+  top: 589px;
+  left: 1584px;
+  z-index: 1;
+  border-radius: 45px;
+  background-color: #f7f8f9;
+  border: 0.7px solid #cfd4dc;
+  box-sizing: border-box;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    background-color: #eef1f5;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+// Sits in the ~72px gap between the icon row (ends at top:635) and the
+// field grid (starts at top:707) — doesn't overlap either.
+.cm-link-status-result {
+  position: absolute;
+  top: 640px;
+  left: 1584px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cm-link-status-up { color: #16a34a; }
+.cm-link-status-down { color: #e40000; }
+.cm-link-status-checking { color: #6b7280; }
+.cm-link-status-error { color: #6b7280; }
+
+.cm-action-message {
+  position: absolute;
+  top: 645px;
+  max-width: 220px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #16a34a;
+
+  &.cm-action-error { color: #e40000; }
+}
+.cm-save-message { left: 1640px; }
+.cm-notify-message { left: 1640px; top: 668px; }
+
 // ---- Detail panel ----
 .rectangle-group {
   position: absolute;
@@ -221,4 +289,153 @@
 input[type='datetime-local'].field-input {
   padding-right: 16px;
   cursor: pointer;
+}
+
+// ---- Additional Details / Outage Communications tabs — sits in the same
+// slot field-grid occupies (top:118 within group-inner), flex/table content
+// instead of the fixed 3-column field layout since these are row-based
+// tables of variable length rather than a fixed field set. ----
+.tab-content-area {
+  position: absolute;
+  top: 118px;
+  left: 55px;
+  width: 1588px;
+  height: 606px;
+  overflow-y: auto;
+  text-align: left;
+  font-family: Inter, sans-serif;
+
+  scrollbar-width: thin;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.15); border-radius: 3px; }
+}
+
+.cm-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cm-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #101828;
+}
+.cm-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0px 20px;
+  border-radius: 22px;
+  background-color: #e40000;
+  border: none;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+
+  svg { width: 15px; height: 15px; }
+  &:hover { filter: brightness(1.08); }
+}
+
+.cm-table-wrap {
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.cm-detail-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #eaecf0;
+    padding: 13px 20px;
+    text-align: left;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.44);
+    white-space: nowrap;
+  }
+  td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #eaecf0;
+    font-size: 14px;
+    color: #374151;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+}
+.cm-lsi-cell {
+  font-weight: 600;
+  color: #101828;
+  white-space: nowrap;
+}
+.cm-remarks-cell {
+  max-width: 260px;
+}
+.cm-actions-col {
+  white-space: nowrap;
+}
+
+.cm-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  background-color: #f1f5f9;
+  color: #475569;
+
+  &[data-status='Active'],
+  &[data-status='Sent'],
+  &[data-status='Delivered'],
+  &[data-status='Newly Provisioned'] {
+    background-color: #f0fdf4;
+    color: #16a34a;
+  }
+  &[data-status='Pending'],
+  &[data-status='Pending Migration'],
+  &[data-status='Under Maintenance'] {
+    background-color: #fffbeb;
+    color: #b45309;
+  }
+  &[data-status='Failed'],
+  &[data-status='Decommissioned'] {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.cm-row-action-btn {
+  border: none;
+  background: transparent;
+  color: #e40000;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 6px;
+
+  &:hover { text-decoration: underline; }
+}
+.cm-row-action-danger {
+  color: #6b7280;
+}
+
+.cm-empty-state {
+  padding: 48px 0;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 15px;
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-radius: 12px;
 }

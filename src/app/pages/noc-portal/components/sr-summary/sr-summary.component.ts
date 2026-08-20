@@ -19,12 +19,49 @@ export interface SrSummaryTab {
   label: string;
 }
 
+// ---------- Relationship tab ----------
+export interface IncidentRow {
+  incNumber: string;
+  location: string;
+  actualEventTime: string;
+  status: string;
+  statusReason: string;
+  ert: string;
+  upTime: string;
+}
+export interface RelationshipData {
+  incidents: IncidentRow[];
+  circuitTopology: {
+    elanNumber: string;
+    entityId: string;
+  };
+}
+
+// ---------- Callback task tab — a real create-form (always-editable
+// inputs), not the SR Details tab's display-then-edit-on-pencil pattern, so
+// it gets its own plain data shape rather than SrSummaryField[][]. ----------
+export interface CallbackTaskData {
+  customerName: string;
+  customerContactNumber: string;
+  customerEmailAddress: string;
+  alternateContactNumber: string;
+  reasonForCallback: string;
+  customerAvailabilityTime: string;
+}
+
 export interface SrSummaryData {
   // 3 columns x 3 fields — SR Number/Impact/Type, Problem Summary/Severity/
   // Sub Type, SR Raised Date/Case Type/Sub Sub Type.
   topInfo: SrSummaryField[][];
   // 3 columns x (5, 5, 4) fields — the SR Details tab's form.
   details: SrSummaryField[][];
+  relationship: RelationshipData;
+  callbackTask: CallbackTaskData;
+  // Same SrSummaryField[][] shape as `details` on purpose — both tabs reuse
+  // the exact same .srs-form-card template/pencil-to-edit interaction
+  // instead of introducing a second form pattern.
+  resolutionTasks: SrSummaryField[][];
+  dateTime: SrSummaryField[][];
 }
 
 interface QuickAction {
@@ -100,9 +137,12 @@ export class SrSummaryComponent implements OnInit, OnChanges {
 
   // ---------- SR Details form: per-field inline editing. Clicking a
   // field's pencil swaps its display span for a real <input> (its own draft
-  // value seeded from the current one); Save Changes commits every field
-  // currently being edited at once — the reference only shows a single
-  // Save button for the whole form, not a save per field. ----------
+  // value seeded from the current one); pressing Enter in that input commits
+  // every field currently being edited at once via saveChanges() below. The
+  // row that used to hold a dedicated "Save changes" button now holds the 4
+  // SR-level action buttons instead — Create note is the one that also
+  // commits any in-progress edits (see its own comment below), so Enter-to-
+  // commit isn't the only way to save anymore. ----------
   private editingKeys = new Set<string>();
   draft: Record<string, string> = {};
   isEditing(field: SrSummaryField): boolean {
@@ -123,11 +163,19 @@ export class SrSummaryComponent implements OnInit, OnChanges {
     // commit the draft into local state, same "swap the inside of this one
     // method later" convention as every mock service in this app. Blank
     // edits are dropped rather than saved, per "validate where appropriate".
-    for (const col of this.data.details) {
-      for (const field of col) {
-        const next = this.draft[field.key];
-        if (this.editingKeys.has(field.key) && next?.trim()) {
-          field.value = next.trim();
+    // Covers every SrSummaryField[][] grid on this component (SR Details,
+    // Resolution Tasks, Date/Time) in one pass, not just `details` — a
+    // field being edited on any of those 3 tabs commits correctly
+    // regardless of which tab happens to be active when Create note is
+    // clicked, since editingKeys/draft are keyed by field.key across all of
+    // them already.
+    for (const grid of [this.data.details, this.data.resolutionTasks, this.data.dateTime]) {
+      for (const col of grid) {
+        for (const field of col) {
+          const next = this.draft[field.key];
+          if (this.editingKeys.has(field.key) && next?.trim()) {
+            field.value = next.trim();
+          }
         }
       }
     }
@@ -137,5 +185,69 @@ export class SrSummaryComponent implements OnInit, OnChanges {
       this.justSaved = true;
       setTimeout(() => { this.justSaved = false; }, 1600);
     }, 400);
+  }
+
+  // ---------- The 4 SR-level action buttons in place of the old single
+  // Save changes button — Resolve/Assign task (outline) and View notes/
+  // Create note (solid). No spec given yet for what each actually does, so
+  // these stay console.log stubs, same convention as every other
+  // not-yet-specified action in this app. ----------
+  onResolve(): void {
+    console.log('SR Summary: Resolve clicked', this.srNumber);
+  }
+  onAssignTask(): void {
+    console.log('SR Summary: Assign task clicked', this.srNumber);
+  }
+  onViewNotes(): void {
+    console.log('SR Summary: View notes clicked', this.srNumber);
+  }
+  onCreateNote(): void {
+    // Doubles as this form's save action — there's no dedicated "Save
+    // changes" button anymore, and Create note is the one of the 4 that's
+    // meant to commit whatever fields are currently being edited (per
+    // explicit confirmation), on top of whatever "create a note" itself
+    // ends up doing once that's specified.
+    this.saveChanges();
+    console.log('SR Summary: Create note clicked', this.srNumber);
+  }
+
+  // ---------- Relationship tab: incident search + Circuit Topology link.
+  // No incident-search API specified yet, so this stays a stub like every
+  // other not-yet-specified action here — the table itself already renders
+  // real (mock) data regardless of what's searched. ----------
+  incidentSearchQuery = '';
+  onIncidentSearch(): void {
+    console.log('Relationship: incident search', this.srNumber, this.incidentSearchQuery);
+  }
+  onViewIncidentNotes(row: IncidentRow): void {
+    console.log('Relationship: view notes for incident', row.incNumber);
+  }
+  onViewCircuitTopology(): void {
+    console.log('Relationship: view circuit topology', this.data?.relationship.circuitTopology);
+  }
+
+  // ---------- Callback task tab: a real create-form, own validation/submit
+  // rather than the pencil-to-edit pattern (see CallbackTaskData's own
+  // comment). Row 1 (name/contact/email) is what actually identifies who to
+  // call back, so those 3 are required; row 2 stays optional. ----------
+  readonly reasonForCallbackOptions: string[] = [
+    'Customer requested update',
+    'Escalation follow-up',
+    'Resolution confirmation',
+    'Additional information needed',
+  ];
+  callbackSubmitted = false;
+  get isCallbackValid(): boolean {
+    const cb = this.data?.callbackTask;
+    return !!cb && !!cb.customerName.trim() && !!cb.customerContactNumber.trim() && !!cb.customerEmailAddress.trim();
+  }
+  onCallbackSubmit(): void {
+    if (!this.isCallbackValid) { return; }
+    // Real API call (e.g. POST /sr/{srNumber}/callback-tasks) goes here
+    // later — for now just confirm, same mock-first convention as
+    // saveChanges() above.
+    console.log('Callback task: submit', this.data?.callbackTask);
+    this.callbackSubmitted = true;
+    setTimeout(() => { this.callbackSubmitted = false; }, 1600);
   }
 }

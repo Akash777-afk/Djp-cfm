@@ -1,0 +1,63 @@
+<div class="ilm-overlay" *ngIf="isOpen" role="presentation" (click)="cancel()">
+  <div class="ilm-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="ilm-header">
+      <div class="ilm-title">{{ mode === 'edit' ? 'Edit Impacted LSI' : 'Add Impacted LSI' }}</div>
+      <div class="ilm-close" role="button" tabindex="0" aria-label="Close" (click)="cancel()" (keyup.enter)="cancel()">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5L15 15M15 5L5 15" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="ilm-body">
+      <div class="ilm-field">
+        <div class="ilm-label">LSI<span class="ilm-required">*</span></div>
+        <input class="ilm-input" type="text" placeholder="Enter LSI number" [(ngModel)]="lsi" />
+      </div>
+
+      <div class="ilm-field">
+        <div class="ilm-label">Service Type<span class="ilm-required">*</span></div>
+        <div class="ilm-select-box">
+          <select class="ilm-select" [(ngModel)]="serviceType" [class.is-placeholder]="!serviceType">
+            <option value="" disabled hidden>Select service type</option>
+            <option *ngFor="let opt of serviceTypeOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="ilm-select-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
+        </div>
+      </div>
+
+      <div class="ilm-field">
+        <div class="ilm-label">Party<span class="ilm-required">*</span></div>
+        <input class="ilm-input" type="text" placeholder="Enter party/customer name" [(ngModel)]="party" />
+      </div>
+
+      <div class="ilm-field">
+        <div class="ilm-label">LSI Status<span class="ilm-required">*</span></div>
+        <div class="ilm-select-box">
+          <select class="ilm-select" [(ngModel)]="status" [class.is-placeholder]="!status">
+            <option value="" disabled hidden>Select status</option>
+            <option *ngFor="let opt of statusOptions" [ngValue]="opt">{{ opt }}</option>
+          </select>
+          <img class="ilm-select-icon" src="/assets/shared/Dropdown-topbar.svg" alt="" />
+        </div>
+      </div>
+
+      <div class="ilm-field">
+        <div class="ilm-label">Implementer<span class="ilm-required">*</span></div>
+        <input class="ilm-input" type="text" placeholder="Enter implementer email" [(ngModel)]="implementer" />
+      </div>
+
+      <div class="ilm-field ilm-field-full">
+        <div class="ilm-label">Remarks</div>
+        <textarea class="ilm-textarea" placeholder="Enter remarks" rows="3" [(ngModel)]="remarks"></textarea>
+      </div>
+    </div>
+
+    <div class="ilm-footer">
+      <button type="button" class="ilm-cancel-btn" (click)="cancel()">Cancel</button>
+      <button type="button" class="ilm-save-btn" [disabled]="!isValid" (click)="submit()">{{ mode === 'edit' ? 'Save changes' : 'Add LSI' }}</button>
+    </div>
+
+  </div>
+</div>

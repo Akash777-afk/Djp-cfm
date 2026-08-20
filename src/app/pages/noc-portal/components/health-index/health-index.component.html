@@ -33,7 +33,15 @@
             <div class="nhi-gridlines">
               <span *ngFor="let y of chart.yAxisLabels"></span>
             </div>
-            <img class="nhi-chart-img" [src]="chart.graphImage" [alt]="chart.graphAlt" [style.objectFit]="chart.imgFit" [style.objectPosition]="chart.imgPosition || 'center'" />
+            <app-svg-line-chart
+              [series]="chart.series"
+              [yMin]="chart.yMin"
+              [yMax]="chart.yMax"
+              [variant]="chart.variant"
+              [curve]="chart.curve"
+              [thresholds]="chart.thresholds || []"
+              [xLabels]="chart.xAxisLabels"
+            ></app-svg-line-chart>
           </div>
           <div class="nhi-xaxis">
             <span *ngFor="let x of chart.xAxisLabels">{{ x }}</span>
@@ -44,4 +52,5 @@
     </div>
   </div>
 
+  <app-card-loading-overlay [loading]="isLoading"></app-card-loading-overlay>
 </div>

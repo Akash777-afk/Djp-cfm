@@ -1,0 +1,135 @@
+// Fills whatever box the host places it in (e.g. .nhi-chart-plot) — same
+// inset:0 fill contract the old <img class="nhi-chart-img"> used, so this
+// drops in as a direct replacement with no host CSS changes needed.
+:host {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.slc-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slc-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+// ---------- Empty state ----------
+// Same tray-icon pattern used site-wide (all-nstts/escalated-srs/
+// changes-panel/all-srs/work-notes/change-management), scaled down to suit
+// this component's much smaller ~230px plot box.
+.slc-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.slc-empty-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+// ---------- Threshold lines ----------
+.slc-thresholds line {
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+  opacity: 0.6;
+}
+
+// ---------- Hover guide ----------
+.slc-hover-guide {
+  stroke: rgba(100, 116, 139, 0.35);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+// ---------- Area fill ----------
+.slc-area {
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  // Draw-in: fades up alongside its line rather than popping in instantly.
+  animation: slc-fade-in 0.9s ease both;
+}
+
+// ---------- Curves ----------
+.slc-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition: stroke-width 0.15s ease, opacity 0.2s ease;
+  // "Draws in" left-to-right on load/data change rather than appearing all
+  // at once — a professional, one-time reveal (not a looping/decorative
+  // animation). 3000 comfortably exceeds any real path length at this
+  // viewBox scale, so the dash pattern itself is never visible mid-draw.
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation: slc-draw 1.1s ease forwards;
+}
+.slc-line-active { stroke-width: 4.5; }
+.slc-dimmed { opacity: 0.35; }
+
+@keyframes slc-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes slc-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// ---------- Hover markers ----------
+.slc-marker {
+  stroke: #fff;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+// ---------- Tooltip ----------
+.slc-tooltip {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.14);
+  padding: 8px 10px;
+  min-width: 120px;
+  pointer-events: none;
+  z-index: 5;
+}
+.slc-tooltip-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+.slc-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #334155;
+  white-space: nowrap;
+  & + & { margin-top: 3px; }
+}
+.slc-tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.slc-tooltip-name { flex: 1; color: #64748b; }
+.slc-tooltip-value { font-weight: 600; color: #0f172a; }

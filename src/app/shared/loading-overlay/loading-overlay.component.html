@@ -1,0 +1,14 @@
+<div class="dlo-overlay" *ngIf="visible$ | async" role="status" aria-live="polite" aria-label="Loading">
+  <div class="dlo-spinner">
+    <svg class="dlo-ring" viewBox="0 0 100 100" width="106" height="106" aria-hidden="true">
+      <circle class="dlo-track" cx="50" cy="50" r="42" fill="none" stroke-width="6"></circle>
+      <circle class="dlo-arc" cx="50" cy="50" r="42" fill="none" stroke-width="6"></circle>
+    </svg>
+    <!-- Icon-only crop of the existing full logo asset (swirl + "airtel"
+         wordmark) — no separate icon asset exists, so the swirl is isolated
+         via a background-image crop (see .dlo-logo) rather than importing
+         a new image. -->
+    <div class="dlo-logo" aria-hidden="true"></div>
+  </div>
+  <div class="dlo-text">Loading, please wait...</div>
+</div>

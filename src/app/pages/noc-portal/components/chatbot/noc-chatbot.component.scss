@@ -1,0 +1,374 @@
+// Design tokens mirror noc-portal.component.scss's own literal values
+// (that file's $variables are SCSS-compile-time, not importable across
+// component stylesheets under Angular's view encapsulation — see its own
+// header comment) rather than a shared import, matching how every other
+// page/component in this app keeps its own self-contained token set.
+$color-brand-red: #e40000;
+$radius-panel: 20px;
+$shadow-panel: 0px 12px 40px rgba(0, 0, 0, 0.18), 0px 2px 12px rgba(0, 0, 0, 0.1);
+$font-family: Inter, sans-serif;
+
+:host {
+  display: contents;
+  font-family: $font-family;
+}
+
+// ========================================================
+// Floating launcher
+// ========================================================
+.nch-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background-color: $color-brand-red;
+  box-shadow: 0px 6px 20px rgba(228, 0, 0, 0.35), 0px 2px 8px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover { transform: scale(1.08); box-shadow: 0px 8px 24px rgba(228, 0, 0, 0.42), 0px 2px 8px rgba(0, 0, 0, 0.2); }
+  &:active { transform: scale(0.96); }
+  &:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+}
+
+.nch-fab-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid $color-brand-red;
+  animation: nch-pulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes nch-pulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  70%  { transform: scale(1.45); opacity: 0; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+
+// ========================================================
+// Panel
+// ========================================================
+.nch-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  width: 400px;
+  height: min(640px, calc(100vh - 48px));
+  background-color: #fff;
+  border-radius: $radius-panel;
+  box-shadow: $shadow-panel;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: nch-panel-in 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nch-panel-minimized {
+  height: auto;
+  cursor: pointer;
+}
+@keyframes nch-panel-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// ---------- Header ----------
+// Red is an accent (icon box + status dot only) rather than a full-red
+// header band, per spec.
+.nch-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 16px 18px;
+  border-bottom: 1px solid #eef0f2;
+  background-color: #fff;
+}
+.nch-panel-minimized .nch-header { border-bottom: none; }
+.nch-header-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, $color-brand-red, #b30000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 8px rgba(228, 0, 0, 0.3);
+}
+.nch-header-text { flex: 1 1 auto; min-width: 0; }
+.nch-header-title { font-size: 16px; font-weight: 700; color: #0f172a; line-height: 1.25; }
+.nch-header-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.nch-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+  flex-shrink: 0;
+}
+.nch-header-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.nch-icon-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  &:hover { background-color: #f1f5f9; color: #0f172a; }
+}
+
+// ---------- Body ----------
+.nch-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafbfc;
+}
+
+// Welcome state
+.nch-welcome {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: nch-fade-slide 0.25s ease both;
+}
+.nch-welcome-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+}
+.nch-quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.nch-quick-card {
+  appearance: none;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    border-color: rgba(228, 0, 0, 0.35);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+  &:active { transform: translateY(0) scale(0.98); }
+}
+.nch-quick-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background-color: rgba(228, 0, 0, 0.08);
+  color: $color-brand-red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.nch-quick-label { font-size: 12.5px; font-weight: 600; color: #334155; line-height: 1.3; }
+
+// Messages
+.nch-messages { display: flex; flex-direction: column; gap: 14px; }
+.nch-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 92%;
+  animation: nch-fade-slide 0.2s ease both;
+}
+@keyframes nch-fade-slide {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.nch-msg-user { align-self: flex-end; flex-direction: row-reverse; }
+.nch-msg-ai { align-self: flex-start; }
+
+.nch-msg-avatar {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-brand-red, #b30000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nch-bubble {
+  min-width: 0;
+  border-radius: 14px;
+  padding: 10px 13px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.nch-msg-user .nch-bubble {
+  background-color: rgba(228, 0, 0, 0.08);
+  color: #1e293b;
+  border-bottom-right-radius: 4px;
+}
+.nch-msg-ai .nch-bubble {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-bottom-left-radius: 4px;
+}
+.nch-bubble-text { margin: 0; white-space: pre-line; }
+
+// Structured dashboard-style summary
+.nch-summary { display: flex; flex-direction: column; gap: 8px; min-width: 190px; }
+.nch-summary-title { font-size: 13.5px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+.nch-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.nch-summary-icon { flex-shrink: 0; font-size: 12px; line-height: 1; }
+.nch-summary-label { flex: 1 1 auto; color: #475569; }
+.nch-summary-value { font-weight: 700; }
+.nch-summary-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed #d8dce1;
+  font-size: 13px;
+  color: #334155;
+  b { color: #0f172a; font-size: 14px; }
+}
+
+.nch-msg-action {
+  appearance: none;
+  border: 1px solid $color-brand-red;
+  background-color: #fff;
+  color: $color-brand-red;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  &:hover { background-color: $color-brand-red; color: #fff; }
+}
+
+// AI thinking indicator
+.nch-thinking { display: flex; align-items: center; gap: 6px; }
+.nch-thinking-text { font-size: 12.5px; color: #64748b; margin-right: 2px; }
+.nch-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: $color-brand-red;
+  animation: nch-dot-bounce 1.1s ease-in-out infinite;
+  &:nth-child(3) { animation-delay: 0.12s; }
+  &:nth-child(4) { animation-delay: 0.24s; }
+}
+@keyframes nch-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+// ---------- Input ----------
+.nch-input-row {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid #eef0f2;
+  background-color: #fff;
+}
+.nch-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 13.5px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder { color: #94a3b8; }
+  &:focus {
+    border-color: $color-brand-red;
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 3px rgba(228, 0, 0, 0.1);
+  }
+}
+.nch-send-btn {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background-color: $color-brand-red;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+
+  &:hover:not(:disabled) { filter: brightness(1.1); }
+  &:active:not(:disabled) { transform: scale(0.94); }
+  &:disabled { opacity: 0.4; cursor: default; }
+}
+
+// ========================================================
+// Responsive
+// ========================================================
+@media (max-width: 1023px) {
+  .nch-panel { width: 350px; height: min(560px, calc(100vh - 40px)); }
+}
+
+@media (max-width: 640px) {
+  .nch-fab { right: 16px; bottom: 16px; }
+  .nch-panel {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    top: 12px;
+    width: auto;
+    height: auto;
+  }
+}

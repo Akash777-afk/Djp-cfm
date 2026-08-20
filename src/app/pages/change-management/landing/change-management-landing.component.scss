@@ -5,30 +5,46 @@
 .cml-scale-wrapper {
   --cml-scale: 1;
   width: calc(1920px * var(--cml-scale));
-  height: calc(1263px * var(--cml-scale));
+  height: calc(1167px * var(--cml-scale));
   max-width: 100%;
   overflow: hidden;
   margin: 0 auto;
 }
 
+// Fixed header bar (app-cm-header-bar) removed — no more margin-top offset
+// needed to clear it; the canvas now starts at the true top of the page.
 .cml-canvas {
   position: relative;
   width: 1920px;
-  height: 1310px;
-  // Every child below is absolutely positioned relative to this canvas
-  // using literal top values baked in against the OLD 170px-tall header
-  // (e.g. .cml-quick-btn was top:206 = 170 + the standard ~37px gap).
-  // Rather than hunt down and re-number every one of them now that the
-  // header is 122px tall, this single negative margin shifts the whole
-  // canvas (and everything positioned relative to it) up by 47px, landing
-  // every child at the new 159px (122 + 37) gap with zero risk of missing
-  // one. The wrapper's height above is reduced by the same 47px so
-  // nothing is left clipped or leaves a blank gap.
-  margin-top: -37px;
+  height: 1167px;
   background-color: #f7f8f9;
   overflow: hidden;
   text-align: left;
   font-family: 'Inter', sans-serif;
   transform: scale(var(--cml-scale));
   transform-origin: top left;
+}
+
+.the-main-page {
+  position: absolute;
+  top: 1081px; left: 129px;
+  width: 125px; height: 54px;
+  font-size: 14px;
+  color: #b5b7c0;
+  font-family: Poppins, sans-serif;
+}
+.tier-1 { position: absolute; top: 0; left: 0; width: 125px; height: 54px; }
+.powered-by {
+  position: absolute;
+  top: 0; left: 5.38px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  display: inline-block;
+  width: 119.6px; height: 29.5px;
+}
+.t1-4-icon {
+  position: absolute;
+  top: 18px; left: 0;
+  width: 107px; height: 36px;
+  object-fit: cover;
 }

@@ -59,8 +59,9 @@
           <div class="checkbox-list">
             <label class="checkbox-row" *ngFor="let opt of filteredOwnerOptions">
               <input type="checkbox" [checked]="opt.checked" (change)="toggleOwnerOption(opt)" />
-              <span>{{ opt.label }} <span class="owner-id">({{ opt.id }})</span></span>
+              <span>{{ opt.label }}</span>
             </label>
+            <div class="checkbox-empty" *ngIf="filteredOwnerOptions.length === 0">No assigned owners yet</div>
           </div>
         </div>
       </div>
@@ -134,7 +135,8 @@
         (keyup.enter)="onToolbarRefresh()"
       />
 
-      <!-- Settings -->
+      <!-- Settings — opens the Custom Settings modal (owned by the parent
+           page, see AllNsttsComponent's openColumnSettings doc comment). -->
       <div class="settings-control">
         <img
           class="group-child4"
@@ -142,11 +144,9 @@
           alt="Settings"
           role="button"
           tabindex="0"
-          [attr.aria-expanded]="isSettingsOpen"
           (click)="onToolbarSettings()"
           (keyup.enter)="onToolbarSettings()"
         />
-        <div class="dropdown-panel settings-panel" *ngIf="isSettingsOpen" (click)="$event.stopPropagation()">Table settings — coming soon</div>
       </div>
 
       <!-- Toggle -->
@@ -187,135 +187,67 @@
     <ng-container *ngIf="!toggleOn">
     <ng-container *ngIf="filteredRows.length > 0; else nsttEmptyState">
 
-    <!-- SR Count column (icons) -->
-    <div class="frame-group">
-      <img *ngFor="let row of pagedRows; let i = index"
-        class="sr-count-icon"
-        [style.top.px]="62 + i * 71"
-        src="\assets/incident-management/im-3-tablerefresh.svg"
-        alt="Refresh row"
-        role="button"
-        tabindex="0"
-        (click)="onRowRefresh(row)"
-        (keyup.enter)="onRowRefresh(row)" />
-      <div class="col-header sr-count-header">sr count</div>
-    </div>
-
-    <!-- VIP Flag column -->
-    <div class="vip-flag-parent">
-      <div class="col-header vip-flag-header">VIP flag</div>
-      <div class="icbaseline-diamond-parent">
-        <ng-container *ngFor="let row of pagedRows; let i = index">
-          <img
-            *ngIf="row.vipType === 'diamond'"
-            class="vip-icon"
-            [style.top.px]="i * 70"
-            src="\assets/incident-management/im-3-vipflag1.svg"
-            alt="Diamond VIP" />
-          <img
-            *ngIf="row.vipType === 'account'"
-            class="vip-icon vip-icon-account"
-            [style.top.px]="i * 70"
-            src="\assets/incident-management/im-3-vipflag2.svg"
-            alt="Account VIP" />
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- NSTT column -->
-    <div class="nstt-parent">
-      <div class="col-header nstt-header">NStt</div>
-      <div class="network-outage-in-east-coast-d-parent">
-        <div
-          class="col-cell nstt-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.nstt }}</div>
-      </div>
-    </div>
-
-    <!-- NSTT Ageing column -->
-    <div class="nstt-ageing-parent">
-      <div class="col-header nstt-ageing-header">nstt ageing</div>
-      <div class="parent">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.nsttAgeing }}</div>
-      </div>
-    </div>
-
-    <!-- Site column -->
-    <div class="site-parent">
-      <div class="col-header site-header">site</div>
-      <div class="network-outage-in-east-coast-d-group">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.site }}</div>
-      </div>
-    </div>
-
-    <!-- Status column -->
-    <div class="status-parent">
-      <div class="col-header status-header">status</div>
-      <div class="network-outage-in-east-coast-d-container">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.status }}</div>
-      </div>
-    </div>
-
-    <!-- Actual Incident Time column -->
-    <div class="actual-incident-time-parent">
-      <div class="col-header actual-incident-header">Actual incident time</div>
-      <div class="network-outage-in-east-coast-d-parent2">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.actualIncidentTime }}</div>
-      </div>
-    </div>
-
-    <!-- Assigned Group column -->
-    <div class="assigned-group-parent">
-      <div class="col-header assigned-group-header">Assigned group</div>
-      <div class="network-outage-in-east-coast-d-parent3">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.assignedGroup }}</div>
-      </div>
-    </div>
-
-    <!-- Last ERT Time column -->
-    <div class="last-ert-time-parent">
-      <div class="col-header last-ert-time-header">Last ert time</div>
-      <div class="network-outage-in-east-coast-d-parent4">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.lastErtTime }}</div>
-      </div>
-    </div>
-
-    <!-- Up Time column -->
-    <div class="up-time-parent">
-      <div class="col-header up-time-header">up time</div>
-      <div class="network-outage-in-east-coast-d-parent4">
-        <div
-          class="col-cell"
-          *ngFor="let row of pagedRows; let i = index"
-          [style.top.px]="i * ROW_GAP"
-        >{{ row.upTime }}</div>
-      </div>
+    <!-- Real <table> — was a column-major grid of absolutely-positioned,
+         fixed-width divs (each with ellipsis-truncated text); converted so
+         real backend values (long Site/Status/Assigned Group names, long
+         NSTT/ageing strings, etc.) show in full instead of truncating.
+         table-layout:auto sizes every column to its own widest current
+         value with zero JS; the wrapper scrolls horizontally as one unit
+         (header + body together) if the total width needs it. Same pattern
+         already used by Escalation Matrix's escalated-srs table and Change
+         Management's planned-outages table. -->
+    <div class="table-scroll-container">
+      <table class="all-nstts-table">
+        <thead>
+          <tr>
+            <th class="sr-count-th">SR count</th>
+            <th class="vip-flag-th">VIP flag</th>
+            <th>NStt</th>
+            <th>nstt ageing</th>
+            <th *ngFor="let col of visibleOptionalColumns">{{ col.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of pagedRows">
+            <td class="sr-count-td">
+              <img
+                class="sr-count-icon"
+                src="\assets/incident-management/im-3-tablerefresh.svg"
+                alt="View SR details"
+                role="button"
+                tabindex="0"
+                (click)="onRowExpand(row)"
+                (keyup.enter)="onRowExpand(row)" />
+            </td>
+            <td class="vip-flag-td">
+              <img
+                *ngIf="row.vipType === 'diamond'"
+                class="vip-icon"
+                src="\assets/incident-management/im-3-vipflag1.svg"
+                alt="Diamond VIP" />
+              <img
+                *ngIf="row.vipType === 'account'"
+                class="vip-icon vip-icon-account"
+                src="\assets/incident-management/im-3-vipflag2.svg"
+                alt="Account VIP" />
+            </td>
+            <td>
+              <a
+                class="nstt-cell-link"
+                role="button"
+                tabindex="0"
+                [title]="row.nstt"
+                (click)="onRowExpand(row)"
+                (keyup.enter)="onRowExpand(row)"
+              >{{ row.nstt }}</a>
+            </td>
+            <td [title]="row.nsttAgeing">{{ row.nsttAgeing }}</td>
+            <td *ngFor="let col of visibleOptionalColumns" [title]="getOptionalValue(row, col.key)">
+              {{ getOptionalValue(row, col.key) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     </ng-container>
@@ -326,7 +258,7 @@
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 7L5 3H19L21 7M3 7V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V7M3 7H21M8 11H16" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <div class="nstt-empty-text">No data available</div>
+        <div class="nstt-empty-text">No data to display</div>
       </div>
     </ng-template>
 

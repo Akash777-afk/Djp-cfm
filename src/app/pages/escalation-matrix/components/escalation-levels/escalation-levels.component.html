@@ -1,74 +1,45 @@
-<div class="rectangle-parent">
-  <div class="group-child"></div>
-  <div class="group-parent">
-    <div class="group-container">
-
-      <!-- Heading row -->
-      <div class="group-div">
-        <div class="escalation-levels-parent">
-          <div class="container"></div>
-          <b class="escalation-levels">Escalation levels</b>
-        </div>
-        <img
-          class="frame-icon"
-          src="\assets/shared/Refresh.png"
-          alt="Refresh"
-          role="button"
-          tabindex="0"
-          (click)="refreshClick.emit()"
-          (keyup.enter)="refreshClick.emit()"
-        />
-      </div>
-
-      <!-- Tiles row -->
-      <div class="container-parent">
-        <div
-          class="level-tile"
-          *ngFor="let tile of tiles; let i = index"
-          [class.level-tile-active]="tile.key === activeKey"
-          [style.left.px]="i * 259"
-          [style.backgroundColor]="tile.bg"
-          [style.borderTopColor]="tile.accent"
-          [style.borderRightColor]="tile.accent"
-          [style.borderBottomColor]="tile.accent"
-          [style.color]="tile.accent"
-          role="button"
-          tabindex="0"
-          (click)="tileClick.emit(tile.key)"
-          (keyup.enter)="tileClick.emit(tile.key)"
-        >
-          <!-- Icon box -->
-          <div class="tile-icon-box" [style.borderColor]="tile.accent">
-            <img
-              class="tile-icon"
-              [class.tile-icon-compact]="tile.key === 'level-1' || tile.key === 'level-2' || tile.key === 'level-3'"
-              [src]="tile.icon"
-              alt=""
-            />
-          </div>
-
-          <!-- Label -->
-          <div class="tile-label">{{ tile.label }}</div>
-          <!-- Value -->
-          <b class="tile-value">{{ tile.value }}</b>
-
-          <!-- Bottom pill: dot track for level tiles, plain text for the 'all' tile -->
-          <div class="tile-pill" [style.borderColor]="tile.accent">
-            <ng-container *ngIf="tile.filledDots > 0; else pillTextTpl">
-              <span
-                class="dot"
-                *ngFor="let d of dotSlots"
-                [class.dot-filled]="d < tile.filledDots"
-                [style.backgroundColor]="d < tile.filledDots ? tile.accent : null"
-              ></span>
-            </ng-container>
-            <ng-template #pillTextTpl>
-              <span class="pill-text">{{ tile.pillText }}</span>
-            </ng-template>
-          </div>
-        </div>
-      </div>
-
+<!-- ===== Escalation cards (Count + L1-L6) — same design as Change
+     Management's app-cml-stat-cards: title top-left, icon badge top-right,
+     count, "View X" + arrow bottom, colored bottom border. No wrapping
+     panel or heading — just the 7 cards. Icon is recolored to the card's
+     own accent via a CSS mask (see .el-stat-icon) rather than shown at its
+     original PNG color. ===== -->
+<div class="el-card-row">
+  <div
+    class="el-stat-card"
+    *ngFor="let tile of tiles; let i = index"
+    [class.el-stat-card-active]="tile.key === activeKey"
+    [style.left.px]="i * 267"
+    [style.--stat-color]="tile.accent"
+    [style.--stat-bg]="tile.bg"
+    role="button"
+    tabindex="0"
+    (click)="tileClick.emit(tile.key)"
+    (keyup.enter)="tileClick.emit(tile.key)"
+  >
+    <div class="el-stat-label">{{ tile.label }}</div>
+    <div class="el-stat-icon-badge">
+      <div
+        class="el-stat-icon"
+        [style.background-color]="tile.accent"
+        [ngStyle]="{
+          '-webkit-mask-image': 'url(&quot;' + tile.icon + '&quot;)',
+          '-webkit-mask-size': 'contain',
+          '-webkit-mask-repeat': 'no-repeat',
+          '-webkit-mask-position': 'center',
+          'mask-image': 'url(&quot;' + tile.icon + '&quot;)',
+          'mask-size': 'contain',
+          'mask-repeat': 'no-repeat',
+          'mask-position': 'center'
+        }"
+      ></div>
+    </div>
+    <div class="el-stat-count">{{ tile.value }}</div>
+    <div class="el-stat-view">{{ viewText(tile) }}</div>
+    <div class="el-stat-arrow" [class.el-stat-arrow-down]="tile.key === activeKey">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
   </div>
 </div>

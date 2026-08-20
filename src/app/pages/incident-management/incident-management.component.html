@@ -1,25 +1,31 @@
-<app-im-header-bar [scale]="scale"></app-im-header-bar>
-
 <div class="the-djp-incident-management-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-incident-management">
 
   <!-- ===== Welcome banner ===== -->
   <div class="im-welcome">Welcome back, {{ userName }} !</div>
-  <button type="button" class="im-quick-btn im-quick-call" aria-label="Call" (click)="onCallClick()">
-    <img src="/assets/incident-management/im-1-broadcast.svg" alt="" />
+  <button type="button" class="im-quick-btn im-quick-call" aria-label="Broadcast" (click)="onCallClick()">
+    <img src="/assets/incident-management/IM-Broadcast.svg" alt="" />
+    <span class="header-icon-tooltip">Broadcast</span>
   </button>
-  <button type="button" class="im-quick-btn im-quick-book" aria-label="Documentation" (click)="onBookClick()">
-    <img src="/assets/shared/famicons_book.png" alt="" />
+  <button type="button" class="im-quick-btn im-quick-book" aria-label="Knowledge Management" (click)="onBookClick()">
+    <img src="/assets/escalation-matrix/Knowledge-managemnt.svg" alt="" />
+    <span class="header-icon-tooltip">Knowledge Management</span>
   </button>
-
   <app-nstt-status
     [statTiles]="statTiles"
     [activeKey]="activeCardKey"
-    (refreshClick)="onNsttStatusRefresh()"
     (tileClick)="setActiveCard($event)"
   ></app-nstt-status>
 
-  <app-all-nstts [nsttRows]="nsttRows" [statusFilter]="statusFilter"></app-all-nstts>
+  <app-all-nstts
+    [nsttRows]="nsttRows"
+    [statusFilter]="statusFilter"
+    [groupOptionsSource]="groupOptions"
+    [selectedColumnOrder]="selectedColumnOrder"
+    (binChange)="onBinChange($event)"
+    (openColumnSettings)="openColumnSettings()"
+    (expandRow)="onExpandRow($event)"
+  ></app-all-nstts>
 
   <!-- ===== Footer ===== -->
   <div class="the-main-page">
@@ -31,3 +37,15 @@
 
 </div>
 </div>
+
+<!-- Placed outside the scaled canvas wrapper on purpose — position:fixed
+     inside a transform:scale ancestor is contained by that ancestor, not
+     the real viewport. Same placement convention as NOC Portal's modals. -->
+<app-nstt-sr-drawer [row]="expandedRow" (closed)="onDrawerClosed()"></app-nstt-sr-drawer>
+
+<app-column-settings-modal
+  [open]="isColumnSettingsOpen"
+  [selectedKeys]="selectedColumnOrder"
+  (save)="onColumnSettingsSave($event)"
+  (closed)="onColumnSettingsClosed()"
+></app-column-settings-modal>
