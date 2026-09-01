@@ -1,0 +1,44 @@
+<!-- top=90 matches the stat cards' own top offset (.cml-stat-card) now that
+     the header bar is gone — the sidebar-nav component's top=108 default is
+     a stale leftover from when a 122px header still needed clearing. -->
+<app-cm-sidebar-nav [scale]="scale" [top]="90" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
+<app-cm-create-po-modal
+  [isOpen]="isCreatePoModalOpen"
+  (closed)="onCreatePoModalClosed()"
+></app-cm-create-po-modal>
+<app-cm-service-impact-modal
+  [isOpen]="isServiceImpactModalOpen"
+  (closed)="onServiceImpactModalClosed()"
+></app-cm-service-impact-modal>
+<app-cm-contact-centre-modal
+  [isOpen]="isContactCentreModalOpen"
+  (closed)="onContactCentreModalClosed()"
+></app-cm-contact-centre-modal>
+
+<div class="cml-scale-wrapper" [style.--cml-scale]="scale">
+<div class="cml-canvas">
+
+  <app-cml-top-bar
+    [userName]="userName"
+    (callClick)="onCallClick()"
+    (bookClick)="onBookClick()"
+  ></app-cml-top-bar>
+  <app-cml-stat-cards [cards]="statCards" (cardClick)="setActiveCard($event)"></app-cml-stat-cards>
+
+  <app-cml-changes-panel
+    [changes]="changes"
+    [statusFilter]="statusFilter"
+    (changeIdClick)="goToCrq($event)"
+    (dateRangeSearch)="onDateRangeSearch($event)"
+  ></app-cml-changes-panel>
+
+  <!-- ===== Footer ===== -->
+  <div class="the-main-page">
+    <div class="tier-1">
+      <div class="powered-by">Powered by</div>
+      <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
+    </div>
+  </div>
+
+</div>
+</div>
