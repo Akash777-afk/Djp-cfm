@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardChangeRow, StatCard } from './change-management-landing.types';
-import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav.component';
+import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../components/sidebar-nav/sidebar-nav.component';
 import { ChangeManagementService } from '../services/change-management.service';
 import { SessionService } from '../../../services/session.service';
 import { LoadingService } from '../../../services/loading.service';

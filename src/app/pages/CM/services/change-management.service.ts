@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, timeout } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { DashboardChangeRow, DashboardChangeStatus, StatCard } from '../landing/change-management-landing.types';
-import { PlannedOutage } from '../shared/types';
+import { PlannedOutage } from '../components/types';
 import {
   getMockCrqPageData, getMockDashboardData, getMockDropdownValues, getMockLinkStatusResponse,
   getMockMailOutageResponse, getMockPoInternalResponse, getMockServiceImpactRows, getMockSyncPoResponse,

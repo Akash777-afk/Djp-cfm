@@ -6,48 +6,46 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LandingComponent } from './pages/landing/landing.component';
-import { SrOverviewComponent } from './pages/landing/components/sr-overview/sr-overview.component';
-import { IncidentManagementCardComponent } from './pages/landing/components/incident-management/incident-management.component';
-import { ChangeManagementCardComponent } from './pages/landing/components/change-management/change-management.component';
-import { EscalationMatrixCardComponent } from './pages/landing/components/escalation-matrix/escalation-matrix.component';
-import { ChangeManagementLandingComponent } from './pages/change-management/landing/change-management-landing.component';
-import { ChangeManagementLandingTopBarComponent } from './pages/change-management/landing/components/top-bar/top-bar.component';
-import { ChangeManagementLandingStatCardsComponent } from './pages/change-management/landing/components/stat-cards/stat-cards.component';
-import { ChangeManagementLandingChangesPanelComponent } from './pages/change-management/landing/components/changes-panel/changes-panel.component';
-import { ChangeManagementCrqComponent } from './pages/change-management/crq/change-management-crq.component';
-import { CrqPlannedOutagesComponent } from './pages/change-management/crq/components/crq-planned-outages/crq-planned-outages.component';
-import { PlannedOutageInputComponent } from './pages/change-management/crq/components/planned-outage-input/planned-outage-input.component';
-import { ChangeManagementSidebarNavComponent } from './pages/change-management/shared/sidebar-nav/sidebar-nav.component';
-import { ChangeManagementHeaderBarComponent } from './pages/change-management/shared/header-bar/header-bar.component';
-import { CreatePoModalComponent } from './pages/change-management/shared/create-po-modal/create-po-modal.component';
-import { ServiceImpactModalComponent } from './pages/change-management/shared/service-impact-modal/service-impact-modal.component';
-import { ContactCentreModalComponent } from './pages/change-management/shared/contact-centre-modal/contact-centre-modal.component';
-import { ImpactedLsiModalComponent } from './pages/change-management/shared/impacted-lsi-modal/impacted-lsi-modal.component';
-import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
-import { IncidentManagementHeaderBarComponent } from './pages/incident-management/components/header-bar/header-bar.component';
-import { NsttStatusComponent } from './pages/incident-management/components/nstt-status/nstt-status.component';
-import { AllNsttsComponent } from './pages/incident-management/components/all-nstts/all-nstts.component';
-import { NsttSrDrawerComponent } from './pages/incident-management/components/nstt-sr-drawer/nstt-sr-drawer.component';
-import { ColumnSettingsModalComponent } from './pages/incident-management/components/column-settings-modal/column-settings-modal.component';
-import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
-import { EscalationLevelsComponent } from './pages/escalation-matrix/components/escalation-levels/escalation-levels.component';
-import { EscalatedSrsComponent } from './pages/escalation-matrix/components/escalated-srs/escalated-srs.component';
-import { NocPortalComponent } from './pages/noc-portal/noc-portal.component';
-import { NocHealthIndexComponent } from './pages/noc-portal/components/health-index/health-index.component';
-import { NocAllSrsComponent } from './pages/noc-portal/components/all-srs/all-srs.component';
-import { TopologyModalComponent } from './pages/noc-portal/components/modals/topology-modal/topology-modal.component';
-import { LinkStatusModalComponent } from './pages/noc-portal/components/modals/link-status-modal/link-status-modal.component';
-import { InventoryBlueprintModalComponent } from './pages/noc-portal/components/modals/inventory-blueprint-modal/inventory-blueprint-modal.component';
-import { BundleSummaryModalComponent } from './pages/noc-portal/components/modals/bundle-summary-modal/bundle-summary-modal.component';
-import { PerformanceKpiModalComponent } from './pages/noc-portal/components/modals/performance-kpi-modal/performance-kpi-modal.component';
-import { AccordionSectionComponent } from './pages/noc-portal/components/accordion-section/accordion-section.component';
-import { WorkNotesComponent } from './pages/noc-portal/components/work-notes/work-notes.component';
-import { SrSummaryComponent } from './pages/noc-portal/components/sr-summary/sr-summary.component';
-import { NocChatbotComponent } from './pages/noc-portal/components/chatbot/noc-chatbot.component';
+import { LandingComponent } from './pages/Landing/landing.component';
+import { SrOverviewComponent } from './pages/Landing/components/sr-overview/sr-overview.component';
+import { IncidentManagementCardComponent } from './pages/Landing/components/incident-management/incident-management.component';
+import { ChangeManagementCardComponent } from './pages/Landing/components/change-management/change-management.component';
+import { EscalationMatrixCardComponent } from './pages/Landing/components/escalation-matrix/escalation-matrix.component';
+import { ChangeManagementLandingComponent } from './pages/CM/landing/change-management-landing.component';
+import { ChangeManagementLandingTopBarComponent } from './pages/CM/landing/components/top-bar/top-bar.component';
+import { ChangeManagementLandingStatCardsComponent } from './pages/CM/landing/components/stat-cards/stat-cards.component';
+import { ChangeManagementLandingChangesPanelComponent } from './pages/CM/landing/components/changes-panel/changes-panel.component';
+import { ChangeManagementCrqComponent } from './pages/CM/crq/change-management-crq.component';
+import { CrqPlannedOutagesComponent } from './pages/CM/crq/components/crq-planned-outages/crq-planned-outages.component';
+import { PlannedOutageInputComponent } from './pages/CM/crq/components/planned-outage-input/planned-outage-input.component';
+import { ChangeManagementSidebarNavComponent } from './pages/CM/components/sidebar-nav/sidebar-nav.component';
+import { CreatePoModalComponent } from './pages/CM/components/create-po-modal/create-po-modal.component';
+import { ServiceImpactModalComponent } from './pages/CM/components/service-impact-modal/service-impact-modal.component';
+import { ContactCentreModalComponent } from './pages/CM/components/contact-centre-modal/contact-centre-modal.component';
+import { ImpactedLsiModalComponent } from './pages/CM/components/impacted-lsi-modal/impacted-lsi-modal.component';
+import { IncidentManagementComponent } from './pages/IM/incident-management.component';
+import { NsttStatusComponent } from './pages/IM/components/nstt-status/nstt-status.component';
+import { AllNsttsComponent } from './pages/IM/components/all-nstts/all-nstts.component';
+import { NsttSrDrawerComponent } from './pages/IM/components/nstt-sr-drawer/nstt-sr-drawer.component';
+import { ColumnSettingsModalComponent } from './pages/IM/components/column-settings-modal/column-settings-modal.component';
+import { EscalationMatrixComponent } from './pages/EM/escalation-matrix.component';
+import { EscalationLevelsComponent } from './pages/EM/components/escalation-levels/escalation-levels.component';
+import { EscalatedSrsComponent } from './pages/EM/components/escalated-srs/escalated-srs.component';
+import { NocPortalComponent } from './pages/NOC/noc-portal.component';
+import { NocHealthIndexComponent } from './pages/NOC/components/health-index/health-index.component';
+import { NocAllSrsComponent } from './pages/NOC/components/all-srs/all-srs.component';
+import { TopologyModalComponent } from './pages/NOC/components/modals/topology-modal/topology-modal.component';
+import { LinkStatusModalComponent } from './pages/NOC/components/modals/link-status-modal/link-status-modal.component';
+import { InventoryBlueprintModalComponent } from './pages/NOC/components/modals/inventory-blueprint-modal/inventory-blueprint-modal.component';
+import { BundleSummaryModalComponent } from './pages/NOC/components/modals/bundle-summary-modal/bundle-summary-modal.component';
+import { PerformanceKpiModalComponent } from './pages/NOC/components/modals/performance-kpi-modal/performance-kpi-modal.component';
+import { AccordionSectionComponent } from './pages/NOC/components/accordion-section/accordion-section.component';
+import { WorkNotesComponent } from './pages/NOC/components/work-notes/work-notes.component';
+import { SrSummaryComponent } from './pages/NOC/components/sr-summary/sr-summary.component';
+import { NocChatbotComponent } from './pages/NOC/components/chatbot/noc-chatbot.component';
 import { LoadingOverlayComponent } from './shared/loading-overlay/loading-overlay.component';
 import { CardLoadingOverlayComponent } from './shared/card-loading-overlay/card-loading-overlay.component';
-import { SvgLineChartComponent } from './shared/svg-line-chart/svg-line-chart.component';
+import { SvgLineChartComponent } from './pages/NOC/components/svg-line-chart/svg-line-chart.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +61,6 @@ import { SvgLineChartComponent } from './shared/svg-line-chart/svg-line-chart.co
     ChangeManagementLandingChangesPanelComponent,
     ChangeManagementCrqComponent,
     ChangeManagementSidebarNavComponent,
-    ChangeManagementHeaderBarComponent,
     CrqPlannedOutagesComponent,
     PlannedOutageInputComponent,
     CreatePoModalComponent,
@@ -71,7 +68,6 @@ import { SvgLineChartComponent } from './shared/svg-line-chart/svg-line-chart.co
     ContactCentreModalComponent,
     ImpactedLsiModalComponent,
     IncidentManagementComponent,
-    IncidentManagementHeaderBarComponent,
     NsttStatusComponent,
     AllNsttsComponent,
     NsttSrDrawerComponent,

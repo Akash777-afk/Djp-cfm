@@ -1,5 +1,5 @@
 import { DashboardChangeRow, StatCard } from '../landing/change-management-landing.types';
-import { PlannedOutage } from '../shared/types';
+import { PlannedOutage } from '../components/types';
 
 // ---------- API #1: Get Live CRQ/PO Data ----------
 // GET {apiEndPoint}/cfm-mise/cm-api/getRemedyCRQLiveSelectedData?fromDate=&toDate=

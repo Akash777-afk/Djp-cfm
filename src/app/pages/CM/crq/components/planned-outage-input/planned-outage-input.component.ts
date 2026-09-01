@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ImpactedLsiDetail, PlannedOutage } from '../../../shared/types';
+import { ImpactedLsiDetail, PlannedOutage } from '../../../components/types';
 import { ChangeManagementService } from '../../../services/change-management.service';
 
 export type DetailTab = 'plannedOutage' | 'additionalDetails' | 'outageCommunications';

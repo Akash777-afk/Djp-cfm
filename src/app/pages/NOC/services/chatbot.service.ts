@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IncidentManagementService } from '../../incident-management/services/incident-management.service';
-import { EscalationMatrixService } from '../../escalation-matrix/services/escalation-matrix.service';
+import { IncidentManagementService } from '../../IM/services/incident-management.service';
+import { EscalationMatrixService } from '../../EM/services/escalation-matrix.service';
 import { ChatMessage, ChatResponseKind, ChatStatRow, QuickAction } from './chatbot.types';
 
 export const QUICK_ACTIONS: QuickAction[] = [
@@ -13,23 +13,6 @@ export const QUICK_ACTIONS: QuickAction[] = [
   { key: 'alerts', label: 'Show Recent Alerts', icon: 'alerts' },
   { key: 'analysis', label: 'Analyze NOC Data', icon: 'analysis' },
 ];
-
-// Singleton (providedIn: 'root') so the conversation survives navigating
-// away from and back to the NOC Portal within the same browser session —
-// only a full reload resets it. Owns both the open/minimized UI state and
-// the response engine, so NocChatbotComponent stays a thin presentational
-// shell (matches the rest of this app's service/component split, e.g.
-// IncidentManagementService vs IncidentManagementCardComponent).
-//
-// Response engine: two of the six quick actions (Active Incidents,
-// Escalations) call this app's own real IncidentManagementService /
-// EscalationMatrixService — the same real-API-with-mock-fallback calls the
-// actual Incident Management / Escalation Matrix pages already make, so
-// their numbers are genuinely live, not invented. No NOC "network status" /
-// "alerts" / "service request summary" API exists anywhere in this
-// codebase (same situation HealthIndexService was in) — those three, plus
-// free-text replies the classifier can't match, use representative sample
-// data with a clearly-marked spot for a real endpoint later.
 @Injectable({
   providedIn: 'root'
 })
@@ -71,6 +54,11 @@ export class ChatbotService {
     this.isMinimized = false;
   }
 
+  clearConversation(): void {
+    this.messages = [];
+    this.isThinking = false;
+  }
+
   sendQuickAction(action: QuickAction): void {
     this.pushUser(action.label);
     this.thinkThen(this.buildResponse(action.key));
@@ -86,11 +74,6 @@ export class ChatbotService {
   private pushUser(text: string): void {
     this.messages.push({ id: this.uid(), sender: 'user', kind: 'text', text, timestamp: Date.now() });
   }
-
-  // Guarantees a small, deliberate "AI is analyzing..." beat even when the
-  // underlying Observable resolves instantly (the mock-data paths do, via
-  // of(...)) — without this, quick actions would feel like they didn't
-  // register at all rather than like an assistant that's genuinely working.
   private thinkThen(response$: Observable<ChatMessage>): void {
     this.isThinking = true;
     const startedAt = Date.now();

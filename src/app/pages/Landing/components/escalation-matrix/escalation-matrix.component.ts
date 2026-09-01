@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EscalationLevel, SectionVariant } from '../../landing.types';
-import { LEVEL_COLORS } from '../../../escalation-matrix/escalation-matrix.constants';
-import { EscalationMatrixService } from '../../../escalation-matrix/services/escalation-matrix.service';
+import { LEVEL_COLORS } from '../../../EM/escalation-matrix.constants';
+import { EscalationMatrixService } from '../../../EM/services/escalation-matrix.service';
 
 @Component({
   selector: 'app-landing-escalation-matrix',

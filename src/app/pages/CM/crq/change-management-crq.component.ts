@@ -1,9 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImpactedLsiDetail, PlannedOutage } from '../shared/types';
+import { ImpactedLsiDetail, PlannedOutage } from '../components/types';
 import { DetailTab } from './components/planned-outage-input/planned-outage-input.component';
-import { ImpactedLsiModalMode } from '../shared/impacted-lsi-modal/impacted-lsi-modal.component';
-import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav.component';
+import { ImpactedLsiModalMode } from '../components/impacted-lsi-modal/impacted-lsi-modal.component';
+import { CM_SIDEBAR_ITEMS, SidebarNavItem } from '../components/sidebar-nav/sidebar-nav.component';
 import { ChangeManagementService } from '../services/change-management.service';
 import { SessionService } from '../../../services/session.service';
 import { LoadingService } from '../../../services/loading.service';

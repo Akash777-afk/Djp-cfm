@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ASSET } from '../../noc-portal.constants';
 import { HealthIndexService } from '../../services/health-index.service';
-import { ChartSeries, ChartThreshold, CurveStyle } from '../../../../shared/svg-line-chart/svg-line-chart.component';
+import { ChartSeries, ChartThreshold, CurveStyle } from '../svg-line-chart/svg-line-chart.component';
 
 export interface HealthChartLegendItem {
   label: string;

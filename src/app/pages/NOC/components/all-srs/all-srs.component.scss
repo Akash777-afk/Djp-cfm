@@ -57,17 +57,17 @@ $asr-columns:
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 18px;
-  row-gap: 12px;
+  gap: 14px;
+  row-gap: 10px;
 }
-.asr-toolbar-left { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; row-gap: 12px; }
-.asr-toolbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; row-gap: 12px; }
+.asr-toolbar-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; row-gap: 10px; }
+.asr-toolbar-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; row-gap: 10px; }
 
 .asr-title {
   display: flex;
   align-items: center;
-  gap: 15px;
-  font-size: 24px; // matches .nhi-heading-title (LSI Health Index)
+  gap: 12px;
+  font-size: 20px; // matches .nhi-heading-title (LSI Health Index)
   color: rgba(17, 16, 16, 0.79);
   flex-shrink: 0;
 }
@@ -79,8 +79,8 @@ $asr-columns:
 .asr-history-tab {
   appearance: none;
   -webkit-appearance: none;
-  height: 40px;
-  padding: 0 18px;
+  height: 34px;
+  padding: 0 16px;
   border-radius: 999px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.16);
@@ -106,15 +106,15 @@ $asr-columns:
   position: relative;
   display: flex;
   align-items: center;
-  width: 210px;
+  width: 200px;
   flex-shrink: 0;
-  height: 46px;
+  height: 38px;
   border-radius: 30px;
   background-color: #f9f9f9;
   border: 1px solid #cfd4dc;
   box-sizing: border-box;
-  padding: 0 16px;
-  font-size: 15px;
+  padding: 0 14px;
+  font-size: 14px;
   color: rgba(15, 23, 42, 0.5);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 
@@ -135,15 +135,15 @@ $asr-columns:
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 46px;
+  gap: 8px;
+  height: 38px;
   flex-shrink: 0;
-  padding: 0 18px;
+  padding: 0 16px;
   border-radius: 30px;
   background-color: #f9f9f9;
   border: 1px solid #cfd4dc;
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: 14px;
   color: rgba(15, 23, 42, 0.5);
   cursor: pointer;
   white-space: nowrap;
@@ -151,12 +151,12 @@ $asr-columns:
 .asr-sort-chevron { width: 18px; height: 18px; transition: transform 0.2s ease; &.asr-sort-chevron-open { transform: rotate(180deg); } }
 
 .asr-create-btn {
-  height: 46px;
+  height: 38px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
+  padding: 0 20px;
   border-radius: 999px;
   background-color: $color-brand-red;
   color: #fff;
@@ -173,7 +173,7 @@ $asr-columns:
 .asr-icon-btn-wrap { position: relative; flex: 0 0 auto; }
 .asr-icon-btn {
   flex: 0 0 auto;
-  width: 56px; height: 56px;
+  width: 44px; height: 44px;
   padding: 4px;
   border-radius: 50%;
   box-sizing: border-box;
@@ -236,10 +236,10 @@ $asr-columns:
 .asr-cell {
   display: flex;
   align-items: center;
-  min-height: 65px;
-  padding: 10px 24px;
+  min-height: 52px;
+  padding: 8px 18px;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.5);
   white-space: nowrap;
   overflow: hidden;
@@ -250,8 +250,8 @@ $asr-columns:
 
 .asr-header-cell {
   min-height: auto;
-  padding: 0 24px 14px;
-  font-size: 14px;
+  padding: 0 18px 10px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.3px;
   text-transform: uppercase;
@@ -276,8 +276,8 @@ $asr-columns:
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 34px;
-  padding: 0 17px;
+  height: 28px;
+  padding: 0 14px;
   box-sizing: border-box;
   border-radius: 999px;
   border: 0.7px solid;
@@ -292,9 +292,9 @@ $asr-columns:
 // Matrix's escalation-tracking column.
 .asr-tracking-cell { gap: 14px; }
 .asr-tracking-pill {
-  height: 36px;
+  height: 30px;
   box-sizing: border-box;
-  padding: 0 14px;
+  padding: 0 12px;
   border-radius: 999px;
   background-color: #fff;
   border: 0.7px solid;
@@ -332,8 +332,8 @@ $asr-columns:
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 60px 0;
+  gap: 12px;
+  padding: 40px 0;
 }
 .asr-empty-text { font-size: 18px; font-weight: 500; color: #9ca3af; }
 
@@ -342,17 +342,17 @@ $asr-columns:
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid rgba(100, 116, 139, 0.18);
-  font-size: 15px;
+  font-size: 14px;
 }
 .asr-showing-text { color: rgba(0, 0, 0, 0.5); }
 .asr-pagination-buttons { display: flex; align-items: center; gap: 8px; }
 .asr-page-btn {
-  height: 38px;
-  min-width: 38px;
+  height: 34px;
+  min-width: 34px;
   box-sizing: border-box;
-  padding: 0 14px;
+  padding: 0 12px;
   border-radius: 11px;
   background-color: rgba(0, 0, 0, 0.04);
   color: rgba(0, 0, 0, 0.7);

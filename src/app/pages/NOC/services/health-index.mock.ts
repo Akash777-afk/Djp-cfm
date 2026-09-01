@@ -1,4 +1,4 @@
-import { ChartSeries, ChartThreshold } from '../../../shared/svg-line-chart/svg-line-chart.component';
+import { ChartSeries, ChartThreshold } from '../components/svg-line-chart/svg-line-chart.component';
 
 // Representative sample data — no real LSI Health Index API exists anywhere
 // in this codebase yet (unlike Incident Management / Escalation Matrix /

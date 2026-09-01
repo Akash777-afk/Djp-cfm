@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SidebarNavItem } from '../change-management/shared/sidebar-nav/sidebar-nav.component';
+import { SidebarNavItem } from '../CM/components/sidebar-nav/sidebar-nav.component';
 import {
   NAV_ITEMS,
   NETWORK_ALARMS,
@@ -166,11 +166,11 @@ export class NocPortalComponent implements OnInit {
   // All 5 share the same #64748B gray at the SVG level, so no per-icon CSS
   // border/recolor is needed — they're rendered uniformly by .np-srs-icon-circle.
   readonly srSummaryToolbarIcons = [
-    { key: 'a',      icon: '/assets/NOC_Portal/Group ssr2.svg',            alt: 'A' },
-    { key: 'r',      icon: '/assets/NOC_Portal/Group ssr.svg',             alt: 'R' },
-    { key: 'clock',  icon: '/assets/NOC_Portal/solar_alarm-linearssr.svg', alt: 'Reminder' },
-    { key: 'flash',  icon: '/assets/NOC_Portal/iconoir_auto-flashssr.svg', alt: 'Quick action' },
-    { key: 'attach', icon: '/assets/NOC_Portal/proicons_attachssr.svg',    alt: 'Attach' },
+    { key: 'a',      icon: '/assets/noc-portal/Group ssr2.svg',            alt: 'A' },
+    { key: 'r',      icon: '/assets/noc-portal/Group ssr.svg',             alt: 'R' },
+    { key: 'clock',  icon: '/assets/noc-portal/solar_alarm-linearssr.svg', alt: 'Reminder' },
+    { key: 'flash',  icon: '/assets/noc-portal/iconoir_auto-flashssr.svg', alt: 'Quick action' },
+    { key: 'attach', icon: '/assets/noc-portal/proicons_attachssr.svg',    alt: 'Attach' },
   ];
   onSrSummaryToolbarIconClick(key: string): void {
     console.log('SR Summary toolbar icon:', key);
@@ -195,7 +195,7 @@ export class NocPortalComponent implements OnInit {
   // RefreshCwss.svg (not the green RefreshCw.svg used elsewhere) — same
   // #64748B gray as the other 4 toolbar icons, matching this row's color
   // instead of the green convention used in SR Insights/All Work Notes.
-  readonly srSummaryRefreshIcon = '/assets/NOC_Portal/RefreshCwss.svg';
+  readonly srSummaryRefreshIcon = '/assets/noc-portal/RefreshCwss.svg';
   isSrSummaryRefreshing = false;
   onSrSummaryRefresh(): void {
     this.isSrSummaryRefreshing = true;

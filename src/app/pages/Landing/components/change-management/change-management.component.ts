@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SectionVariant } from '../../landing.types';
-import { ChangeManagementService } from '../../../change-management/services/change-management.service';
-import { StatCard } from '../../../change-management/landing/change-management-landing.types';
+import { ChangeManagementService } from '../../../CM/services/change-management.service';
+import { StatCard } from '../../../CM/landing/change-management-landing.types';
 
 interface ChangeBar { label: string; height: number; active: boolean; }
 interface ChangeYLabel { label: string; top: number; }

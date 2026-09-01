@@ -9,13 +9,7 @@
   title="NOC AI Assistant"
 >
   <span class="nch-fab-ring" *ngIf="chat.hasUnread" aria-hidden="true"></span>
-  <!-- Custom AI/chat icon: speech bubble + a small sparkle to read as
-       "intelligent assistant" rather than a generic chat/WhatsApp glyph. -->
-  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
-    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h9A2.5 2.5 0 0 1 18 5.5v6A2.5 2.5 0 0 1 15.5 14H10l-3.6 3.2A.6.6 0 0 1 5 16.75V14h-.5A2.5 2.5 0 0 1 2 11.5v-6A2.5 2.5 0 0 1 4 5.5Z" fill="#fff"/>
-    <path d="M9.2 8.1c.35-1.1.55-1.65.9-1.65s.55.55.9 1.65c.35 1.1.55 1.3 1.65 1.65-1.1.35-1.3.55-1.65 1.65-.35 1.1-.55 1.65-.9 1.65s-.55-.55-.9-1.65c-.35-1.1-.55-1.3-1.65-1.65 1.1-.35 1.3-.55 1.65-1.65Z" fill="#e60012"/>
-    <circle cx="18" cy="4.3" r="1.3" fill="#fff"/>
-  </svg>
+  <img class="nch-fab-icon" src="/assets/noc-portal/ai-chatbot-robot.png" alt="" aria-hidden="true">
 </button>
 
 <!-- ===== Panel ===== -->
@@ -24,11 +18,7 @@
   <!-- Header -->
   <div class="nch-header" (click)="chat.isMinimized && chat.restore()">
     <div class="nch-header-icon">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h9A2.5 2.5 0 0 1 18 5.5v6A2.5 2.5 0 0 1 15.5 14H10l-3.6 3.2A.6.6 0 0 1 5 16.75V14h-.5A2.5 2.5 0 0 1 2 11.5v-6A2.5 2.5 0 0 1 4 5.5Z" fill="#fff"/>
-        <path d="M9.2 8.1c.35-1.1.55-1.65.9-1.65s.55.55.9 1.65c.35 1.1.55 1.3 1.65 1.65-1.1.35-1.3.55-1.65 1.65-.35 1.1-.55 1.65-.9 1.65s-.55-.55-.9-1.65c-.35-1.1-.55-1.3-1.65-1.65 1.1-.35 1.3-.55 1.65-1.65Z" fill="#e60012"/>
-        <circle cx="18" cy="4.3" r="1.3" fill="#fff"/>
-      </svg>
+      <img class="nch-header-icon-img" src="/assets/noc-portal/ai-chatbot-robot.png" alt="">
     </div>
     <div class="nch-header-text">
       <div class="nch-header-title">NOC AI Assistant</div>
@@ -38,6 +28,9 @@
       </div>
     </div>
     <div class="nch-header-actions">
+      <button type="button" class="nch-icon-btn" *ngIf="chat.messages.length > 0" (click)="onClearConversation(); $event.stopPropagation()" aria-label="Clear conversation" title="Clear conversation">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V7h10ZM10.5 11v6M13.5 11v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <button type="button" class="nch-icon-btn" (click)="chat.isMinimized ? chat.restore() : chat.minimize(); $event.stopPropagation()" [attr.aria-label]="chat.isMinimized ? 'Restore' : 'Minimize'" [title]="chat.isMinimized ? 'Restore' : 'Minimize'">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
@@ -75,9 +68,7 @@
         <div class="nch-msg" *ngFor="let m of chat.messages; trackBy: trackByMessageId" [class.nch-msg-user]="m.sender === 'user'" [class.nch-msg-ai]="m.sender === 'ai'">
 
           <div class="nch-msg-avatar" *ngIf="m.sender === 'ai'">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
-              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h9A2.5 2.5 0 0 1 18 5.5v6A2.5 2.5 0 0 1 15.5 14H10l-3.6 3.2A.6.6 0 0 1 5 16.75V14h-.5A2.5 2.5 0 0 1 2 11.5v-6A2.5 2.5 0 0 1 4 5.5Z" fill="#fff"/>
-            </svg>
+            <img class="nch-avatar-img" src="/assets/noc-portal/ai-chatbot-robot.png" alt="">
           </div>
 
           <div class="nch-bubble">
@@ -105,7 +96,7 @@
         <!-- AI thinking -->
         <div class="nch-msg nch-msg-ai" *ngIf="chat.isThinking">
           <div class="nch-msg-avatar">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h9A2.5 2.5 0 0 1 18 5.5v6A2.5 2.5 0 0 1 15.5 14H10l-3.6 3.2A.6.6 0 0 1 5 16.75V14h-.5A2.5 2.5 0 0 1 2 11.5v-6A2.5 2.5 0 0 1 4 5.5Z" fill="#fff"/></svg>
+            <img class="nch-avatar-img" src="/assets/noc-portal/ai-chatbot-robot.png" alt="">
           </div>
           <div class="nch-bubble nch-thinking">
             <span class="nch-thinking-text">AI is analyzing</span>

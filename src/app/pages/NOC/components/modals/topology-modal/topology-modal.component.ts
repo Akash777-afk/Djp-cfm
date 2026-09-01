@@ -20,7 +20,7 @@ export class TopologyModalComponent {
   // pre-rendered images, not a real charting engine. There's no graphing
   // library or node/edge data model anywhere else in this codebase to
   // extend, and no device-photo assets to rebuild the diagram from parts.
-  readonly diagramImage = '/assets/NOC_Portal/TOPpol.png';
+  readonly diagramImage = '/assets/noc-portal/TOPpol.png';
 
   readonly rjnOptions = ['RJN-2201', 'RJN-2202', 'RJN-2203'];
   rjnNumber = '';

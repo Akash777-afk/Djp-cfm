@@ -60,25 +60,42 @@ $breakpoint-desktop: 1024px;
   gap: 15px;
   margin-left: auto;
 }
-.aop-icon-btn {
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  background: transparent;
-  width: 44px; height: 44px;
-  padding: 0;
-  cursor: pointer;
-  border-radius: 10px;
+// Enhanced/Classical UI mode toggle — replaces the old Settings/Add/
+// Open-externally icon row. Reuses the same red already established by
+// .aop-tab-active (#e40000) below, so the active pill reads as the same
+// "selected" color language already on this page.
+.aop-ui-toggle {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  gap: 4px;
+  padding: 4px;
+  background-color: #fdecec;
+  border: 1px solid #f6d0d0;
+  border-radius: 999px;
+}
+.aop-ui-toggle-option {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #b91c1c;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
-  img { width: 29px; height: 29px; }
-
-  &:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.08); }
-  &:active { transform: scale(0.94); }
+  &:hover:not(.aop-ui-toggle-active) { background-color: rgba(228, 0, 0, 0.08); }
   &:focus-visible { outline: 2px solid #e60012; outline-offset: 2px; }
+}
+.aop-ui-toggle-active {
+  background-color: #e40000;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(228, 0, 0, 0.35);
 }
 
 // ---------- Tab bar (shared visual style for both the main and applications rows) ----------

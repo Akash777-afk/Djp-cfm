@@ -127,9 +127,9 @@ export class SrSummaryComponent implements OnInit, OnChanges {
   // confirmed mapping: two-person icon = Participants, person+plus =
   // Add participant, person+link = Linked SRs. ----------
   readonly quickActions: QuickAction[] = [
-    { key: 'participants',    icon: '/assets/NOC_Portal/Group ssr5.png', label: 'Participants' },
-    { key: 'add-participant', icon: '/assets/NOC_Portal/Group ssr4.png', label: 'Add participant' },
-    { key: 'linked-srs',      icon: '/assets/NOC_Portal/Group ssr3.svg', label: 'Linked SRs' },
+    { key: 'participants',    icon: '/assets/noc-portal/Group ssr5.png', label: 'Participants' },
+    { key: 'add-participant', icon: '/assets/noc-portal/Group ssr4.png', label: 'Add participant' },
+    { key: 'linked-srs',      icon: '/assets/noc-portal/Group ssr3.svg', label: 'Linked SRs' },
   ];
   onQuickActionClick(key: string): void {
     console.log('SR Summary quick action:', key);

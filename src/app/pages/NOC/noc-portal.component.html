@@ -37,8 +37,6 @@
   </button>
 </nav>
 
-<app-im-header-bar [scale]="scale" breadcrumbText="NOC Portal"></app-im-header-bar>
-
 <!-- Wrapper has no explicit height — it's a plain block box (height:auto)
      that sizes itself to its child's real content on every render, so it
      always fits however many accordion sections/table rows happen to be
@@ -47,12 +45,7 @@
 <div class="the-djp-noc-portal-scale-wrapper" [style.--djp-scale]="scale">
 <div class="the-djp-noc-portal">
 
-  <!-- "You're on a different page now" cue between clicking Search and the
-       SR Details state appearing — position:absolute (not fixed) so it
-       naturally scales with the canvas instead of needing the fixed-element-
-       trapped-by-transform:scale() workaround the modals/sidebar use. Only
-       covers this canvas, not the header/sidebar/search bar above it —
-       those stay visibly persistent through the transition on purpose. -->
+  
   <div class="np-sr-transition-overlay" *ngIf="isSrTransitioning">
     <div class="np-sr-transition-spinner"></div>
     <div class="np-sr-transition-text">Loading SR details…</div>
@@ -101,10 +94,10 @@
       <span class="np-nav-pill-label">{{ item.label }}</span>
     </div>
     <div class="np-nav-icon-btn" role="button" tabindex="0" aria-label="Edit" (click)="onNavEditClick()" (keyup.enter)="onNavEditClick()">
-      <img src="/assets/NOC_Portal/edit.png" alt="" />
+      <img src="/assets/noc-portal/edit.png" alt="" />
     </div>
     <div class="np-nav-icon-btn" role="button" tabindex="0" aria-label="Menu" (click)="onNavMenuClick()" (keyup.enter)="onNavMenuClick()">
-      <img src="/assets/NOC_Portal/hammenu.svg" alt="" />
+      <img src="/assets/noc-portal/hammenu.svg" alt="" />
     </div>
   </div>
 
@@ -133,7 +126,7 @@
     </svg>
     <img
       class="np-notif-filter"
-      src="/assets/NOC_Portal/Frame 14.svg"
+      src="/assets/noc-portal/Frame 14.svg"
       alt=""
       role="button" tabindex="0"
       (click)="onNotificationsFilterClick()" (keyup.enter)="onNotificationsFilterClick()"
@@ -163,11 +156,11 @@
             <div class="np-profile-info">
               <div class="np-profile-bank">{{ profile.bank }}</div>
               <div class="np-profile-contact">
-                <img src="/assets/NOC_Portal/Phone.svg" alt="" />
+                <img src="/assets/noc-portal/Phone.svg" alt="" />
                 <span>{{ profile.phone }}</span>
               </div>
               <div class="np-profile-contact">
-                <img src="/assets/NOC_Portal/Mail.svg" alt="" />
+                <img src="/assets/noc-portal/Mail.svg" alt="" />
                 <span>{{ profile.email }}</span>
               </div>
             </div>
@@ -188,14 +181,14 @@
       <div class="np-card np-card-alarms">
         <div class="np-alarms-group">
           <div class="np-alarms-head">
-            <img src="/assets/NOC_Portal/ic_sharp-alarm.svg" alt="" />
+            <img src="/assets/noc-portal/ic_sharp-alarm.svg" alt="" />
             <span>Network Alarms</span>
           </div>
           <div class="np-alarm-badge" *ngFor="let a of networkAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
         </div>
         <div class="np-alarms-group">
           <div class="np-alarms-head">
-            <img src="/assets/NOC_Portal/icon-park-outline_alarm.svg" alt="" />
+            <img src="/assets/noc-portal/icon-park-outline_alarm.svg" alt="" />
             <span>Threshold Alarms</span>
           </div>
           <div class="np-alarm-badge" *ngFor="let a of thresholdAlarms" [style.backgroundColor]="a.bg" [style.color]="a.color">{{ a.label }}: {{ a.count }}</div>
@@ -206,7 +199,7 @@
       <div class="np-card np-card-otn">
         <div class="np-otn-head">
           <div class="np-otn-head-label">
-            <img src="/assets/NOC_Portal/TrendingUp.svg" alt="" />
+            <img src="/assets/noc-portal/TrendingUp.svg" alt="" />
             <span>OTN Span Loss</span>
           </div>
           <div class="np-btn np-btn-purple" role="button" tabindex="0" (click)="onViewOtnDetails()" (keyup.enter)="onViewOtnDetails()">View Full Details</div>
@@ -226,13 +219,13 @@
       <!-- Card 4: Status -->
       <div class="np-card np-card-status">
         <div class="np-card-heading">
-          <img class="np-card-heading-icon" src="/assets/NOC_Portal/mdi_list-status.svg" alt="" />
+          <img class="np-card-heading-icon" src="/assets/noc-portal/mdi_list-status.svg" alt="" />
           <span>Status</span>
           <div class="np-card-heading-actions">
-            <img src="/assets/NOC_Portal/gg_info.svg" alt="Info" role="button" tabindex="0" (click)="onStatusInfoClick()" (keyup.enter)="onStatusInfoClick()" />
+            <img src="/assets/noc-portal/gg_info.svg" alt="Info" role="button" tabindex="0" (click)="onStatusInfoClick()" (keyup.enter)="onStatusInfoClick()" />
             <img
               [class.spinning]="isStatusRefreshing"
-              src="/assets/NOC_Portal/RefreshCw.svg" alt="Refresh"
+              src="/assets/noc-portal/RefreshCw.svg" alt="Refresh"
               role="button" tabindex="0"
               (click)="onStatusRefresh()" (keyup.enter)="onStatusRefresh()"
             />
@@ -249,10 +242,10 @@
       <!-- Card 5: Product Details -->
       <div class="np-card np-card-product">
         <div class="np-card-heading">
-          <img class="np-card-heading-icon" src="/assets/NOC_Portal/ix_details.svg" alt="" />
+          <img class="np-card-heading-icon" src="/assets/noc-portal/ix_details.svg" alt="" />
           <span>Product details</span>
           <div class="np-card-heading-actions">
-            <img src="/assets/NOC_Portal/gg_info-1.svg" alt="Info" role="button" tabindex="0" (click)="onProductDetailsInfoClick()" (keyup.enter)="onProductDetailsInfoClick()" />
+            <img src="/assets/noc-portal/gg_info-1.svg" alt="Info" role="button" tabindex="0" (click)="onProductDetailsInfoClick()" (keyup.enter)="onProductDetailsInfoClick()" />
           </div>
         </div>
         <div class="np-product-grid">
@@ -409,11 +402,11 @@
                   <span class="np-insights-tooltip">Expand</span>
                 </button>
                 <button type="button" class="np-insights-icon-btn" (click)="onSrInsightsRefresh(card)">
-                  <img src="/assets/NOC_Portal/RefreshCw.svg" alt="" />
+                  <img src="/assets/noc-portal/RefreshCw.svg" alt="" />
                   <span class="np-insights-tooltip">Refresh</span>
                 </button>
                 <button type="button" class="np-insights-icon-btn" (click)="onSrInsightsInfo(card)">
-                  <img src="/assets/NOC_Portal/gg_info.svg" alt="" />
+                  <img src="/assets/noc-portal/gg_info.svg" alt="" />
                   <span class="np-insights-tooltip">More info</span>
                 </button>
               </div>
@@ -443,7 +436,7 @@
           <!-- FLT OBSERVATION -->
           <div class="np-rca-card np-rca-card-flt">
             <div class="np-rca-card-head">
-              <img class="np-rca-card-icon" src="/assets/NOC_Portal/FLT Observation.png" alt="" />
+              <img class="np-rca-card-icon" src="/assets/noc-portal/FLT Observation.png" alt="" />
               <span>FLT OBSERVATION</span>
             </div>
 
@@ -472,7 +465,7 @@
           <!-- EXPECTED ROOT CAUSE -->
           <div class="np-rca-card np-rca-card-cause">
             <div class="np-rca-card-head">
-              <img class="np-rca-card-icon" src="/assets/NOC_Portal/Expected root cause.png" alt="" />
+              <img class="np-rca-card-icon" src="/assets/noc-portal/Expected root cause.png" alt="" />
               <span>EXPECTED ROOT CAUSE</span>
             </div>
 
@@ -562,10 +555,10 @@
 
 <!-- ===== Footer ===== -->
   <div class="the-main-page">
-    <div class="tier-1">
+    <a class="tier-1" href="https://www.tieroneoss.com" target="_blank" rel="noopener noreferrer">
       <div class="powered-by">Powered by</div>
       <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
-    </div>
+    </a>
   </div>
 </div>
 </div>

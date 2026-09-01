@@ -13,7 +13,7 @@ export const environment = {
   useMockChangeManagement: true,
 
   // ---- DJP backend base URLs (mirrors djp/EscalationMatrix's environment.ts
-  // exactly — dev-176 values). Different DJP services target different base
+  // exactly — dev-156 values). Different DJP services target different base
   // URLs even though they look similar; don't assume they're interchangeable.
   // Confirmed via live VPN testing + source re-check (see
   // escalation-matrix.service.ts / session.service.ts):
@@ -29,13 +29,13 @@ export const environment = {
   // apiURL / loginEndPoint / nocPortalUrl / kmPortalUrl are carried over for
   // later modules (Change Management, Incident Management) but not yet
   // consumed by anything in djp-cfm.
-  apiURL: 'http://10.240.72.176:8090',
-  apiEndPoint: 'http://10.240.72.176:9000',
-  broadcastURL: 'http://10.240.72.176:8090',
-  tierOneEndPoint: 'http://10.240.72.176:8180',
-  loginEndPoint: 'http://10.240.72.176:8090',
-  nocPortalUrl: 'http://10.240.72.176:8180/customerPortal/',
-  kmPortalUrl: 'http://10.240.72.176:8180/KnowledegeManagement/',
+  apiURL: 'http://10.240.72.156:8090',
+  apiEndPoint: 'http://10.240.72.156:9000',
+  broadcastURL: 'http://10.240.72.156:8090',
+  tierOneEndPoint: 'http://10.240.72.156:8180',
+  loginEndPoint: 'http://10.240.72.156:8090',
+  nocPortalUrl: 'http://10.240.72.156:8180/customerPortal/',
+  kmPortalUrl: 'http://10.240.72.156:8180/KnowledegeManagement/',
 };
 
 /*

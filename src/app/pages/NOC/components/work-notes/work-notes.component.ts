@@ -43,8 +43,8 @@ export class WorkNotesComponent implements OnInit {
   // literal refresh action here, just the closest existing status-ish
   // glyph) next to "SR Status" — both per explicit confirmation, no new
   // icon assets introduced.
-  readonly clockIcon = '/assets/NOC_Portal/Clock.svg';
-  readonly statusIcon = '/assets/NOC_Portal/RefreshCw.svg';
+  readonly clockIcon = '/assets/noc-portal/Clock.svg';
+  readonly statusIcon = '/assets/noc-portal/RefreshCw.svg';
 
   notes: WorkNote[] = [];
 

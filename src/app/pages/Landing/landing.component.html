@@ -10,15 +10,22 @@
     </div>
 
     <div class="aop-header-actions">
-      <button type="button" class="aop-icon-btn" aria-label="Settings" (click)="onSettingsClick()">
-        <img src="/assets/landing/Icon-4.svg" alt="" />
-      </button>
-      <button type="button" class="aop-icon-btn" aria-label="Add" (click)="onAddClick()">
-        <img src="/assets/landing/Icon-3.svg" alt="" />
-      </button>
-      <button type="button" class="aop-icon-btn" aria-label="Open externally" (click)="onExternalLinkClick()">
-        <img src="/assets/landing/Icon-2.svg" alt="" />
-      </button>
+      <div class="aop-ui-toggle">
+        <button
+          type="button"
+          class="aop-ui-toggle-option"
+          [class.aop-ui-toggle-active]="uiMode === 'enhanced'"
+          [attr.aria-pressed]="uiMode === 'enhanced'"
+          (click)="setUiMode('enhanced')"
+        >Enhanced UI</button>
+        <button
+          type="button"
+          class="aop-ui-toggle-option"
+          [class.aop-ui-toggle-active]="uiMode === 'classical'"
+          [attr.aria-pressed]="uiMode === 'classical'"
+          (click)="setUiMode('classical')"
+        >Classical UI</button>
+      </div>
     </div>
   </div>
 
@@ -29,8 +36,8 @@
       class="aop-tab-btn"
       *ngFor="let tab of navTabs"
       [class.aop-tab-active]="tab.active"
-      (click)="setActiveTab(tab)"
-    >{{ tab.label }}</button>
+      (click)="onDesktopTabClick(tab)"
+    >{{ tab.desktopLabel || tab.label }}</button>
   </div>
   <div class="aop-separator"></div>
 

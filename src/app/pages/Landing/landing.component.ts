@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MainCardKey, NavTabItem } from './landing.types';
 
 @Component({
@@ -7,6 +8,8 @@ import { MainCardKey, NavTabItem } from './landing.types';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
+
+  constructor(private router: Router) {}
 
   // ---------- Responsive scale-to-fit (desktop canvas, >= 1024px) ----------
   // A fixed 1920-wide design, scaled to the window's width only (capped at
@@ -27,15 +30,14 @@ export class LandingComponent implements OnInit {
   analyticsTitle = 'Analytics Overview';
   analyticsSubtitle = 'Real-time insights and performance metrics';
 
-  // No destination exists yet for any of these 3 actions.
-  onSettingsClick(): void {
-    console.log('Analytics overview: settings clicked');
-  }
-  onAddClick(): void {
-    console.log('Analytics overview: add clicked');
-  }
-  onExternalLinkClick(): void {
-    console.log('Analytics overview: external-link clicked');
+  // Replaces the old Settings/Add/Open-externally icon row (none of which
+  // had a real destination — see prior console.log stubs in git history).
+  // No other component reads/sets this today; this is the only place the
+  // Enhanced/Classical UI mode lives, so there's nothing else to reuse.
+  uiMode: 'enhanced' | 'classical' = 'enhanced';
+
+  setUiMode(mode: 'enhanced' | 'classical'): void {
+    this.uiMode = mode;
   }
 
   // ---------- Main nav tabs + 2x2 grid (Analytics Overview section) ----------
@@ -44,7 +46,7 @@ export class LandingComponent implements OnInit {
     { label: 'Incident management',  active: false },
     { label: 'Escalation matrix',    active: false },
     { label: 'SR Overview',          active: false },
-    { label: 'Problem management',   active: false },
+    { label: 'Problem management',   active: false, desktopLabel: 'NOC Portal', route: '/noc-portal' },
     { label: 'Proactive automation', active: false },
   ];
 
@@ -74,6 +76,15 @@ export class LandingComponent implements OnInit {
   setActiveTab(tab: NavTabItem): void {
     this.navTabs.forEach(t => (t.active = false));
     tab.active = true;
+  }
+
+  // Desktop tab bar only (see NavTabItem.route) — e.g. the NOC Portal tab
+  // has no card of its own, it just navigates away from this page.
+  onDesktopTabClick(tab: NavTabItem): void {
+    this.setActiveTab(tab);
+    if (tab.route) {
+      this.router.navigate([tab.route]);
+    }
   }
 
   get activeMainCardKey(): MainCardKey | undefined {

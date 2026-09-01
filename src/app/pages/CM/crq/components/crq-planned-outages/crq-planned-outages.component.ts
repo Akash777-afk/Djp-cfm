@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PlannedOutage } from '../../../shared/types';
+import { PlannedOutage } from '../../../components/types';
 
 @Component({
   selector: 'app-crq-planned-outages',

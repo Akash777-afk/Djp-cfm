@@ -1,5 +1,5 @@
 import { DashboardChangeRow, DashboardChangeStatus, StatCard } from '../landing/change-management-landing.types';
-import { ImpactedLsiDetail, OutageCommunicationRecord, PlannedOutage } from '../shared/types';
+import { ImpactedLsiDetail, OutageCommunicationRecord, PlannedOutage } from '../components/types';
 import {
   CmDashboardData, CrqPageData, LinkStatusResponse, MailOutageResponse,
   PoInternalResponse, ServiceImpactApiRow, SyncPoResponse,

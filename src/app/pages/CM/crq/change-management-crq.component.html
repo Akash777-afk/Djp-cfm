@@ -1,4 +1,7 @@
-<app-cm-sidebar-nav [scale]="scale" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
+<!-- top=32 matches NOC Portal's sidebar (see noc-portal.component.scss's
+     .np-sidebar top) so the rail starts at the same vertical position
+     in both modules. -->
+<app-cm-sidebar-nav [scale]="scale" [top]="32" [items]="sidebarItems" (itemClick)="onSidebarItemClick($event)"></app-cm-sidebar-nav>
 <app-cm-create-po-modal
   [isOpen]="isCreatePoModalOpen"
   (closed)="onCreatePoModalClosed()"
@@ -57,10 +60,10 @@
 
   <!-- ===================== FOOTER ===================== -->
   <div class="the-main-page">
-    <div class="tier-1">
+    <a class="tier-1" href="https://www.tieroneoss.com" target="_blank" rel="noopener noreferrer">
       <div class="powered-by">Powered by</div>
       <img class="t1-4-icon" src="\assets/shared/im-3-tier1.png" alt="" />
-    </div>
+    </a>
   </div>
 
 </div>

@@ -5,16 +5,16 @@ glance where an asset belongs and what's safe to touch.
 
 ```
 src/assets/
-├── shared/               used by 2+ pages
-├── landing/               used only by the landing page
-├── incident-management/   used only by /incident-management
-├── escalation-matrix/     used only by /escalation-matrix
-├── change-management/     used only by /change-management and /change-management/crq
-└── _unused/                not referenced anywhere in src/app — cleanup candidates
+├── shared/                 used by 2+ pages
+├── landing/                used only by the landing page
+├── incident-management/    used only by /incident-management
+├── escalation-matrix/      used only by /escalation-matrix
+├── change-management/      used only by /change-management and /change-management/crq
+└── noc-portal/             used only by /noc-portal
 ```
 
 References in code always include the folder, e.g.
-`src="/assets/escalation-matrix/EMLevel4.png"`.
+`src="/assets/escalation-matrix/L1-recon.png"`.
 
 ## Maintenance rules
 
@@ -22,14 +22,13 @@ References in code always include the folder, e.g.
   it. If you already know 2+ pages will use it, put it in `shared/` instead.
 - **An asset becomes used by a second page**: move the file into `shared/`
   and update every reference (old page + new page) to the new path.
-- **Deleting from `_unused/`**: grep the codebase for the filename once
-  first (`grep -r "filename.ext" src/app`) in case something references it
-  dynamically (string concatenation, a constant built elsewhere) rather
-  than as a literal path — the classification below was built from a static
-  scan and won't catch that. If nothing turns up, it's safe to delete.
+- **Before deleting anything as unused**: grep the codebase for the filename
+  once first (`grep -r "filename.ext" src/app`) in case something
+  references it dynamically (string concatenation, a constant built
+  elsewhere) rather than as a literal path.
 - Keep this file in sync when you move things around — it's the map.
 
-## shared/ (13 files — used by 2+ pages)
+## shared/ (10 files — used by 2+ pages)
 
 | File | Used by |
 |---|---|
@@ -39,70 +38,57 @@ References in code always include the folder, e.g.
 | `Expansion.png` | escalation-matrix, noc-portal |
 | `Filter.png` | escalation-matrix, noc-portal |
 | `Refresh.png` | escalation-matrix, noc-portal |
-| `Screenshot 2026-07-28 121148.png` | change-management, incident-management |
 | `Search-topbar.svg` | escalation-matrix, incident-management |
 | `Settings.png` | escalation-matrix, noc-portal |
-| `famicons_book.png` | change-management, escalation-matrix, incident-management |
-| `header-topright2.png` | change-management, incident-management, landing |
 | `im-3-refresh.svg` | change-management, incident-management |
 | `im-3-tier1.png` | escalation-matrix, incident-management |
 
-## landing/ (11 files)
+## landing/ (9 files)
 
 `Expand.svg`, `Icon-2.svg`, `Icon-3.svg`, `Icon-4.svg`, `Icon-5.svg`,
-`Vector-1.svg`, `Vector-3.svg`, `Vector-4.svg`, `Vector.svg`,
-`not-submitted.svg`, `submitted.svg`
+`Vector-1.svg`, `Vector-3.svg`, `Vector-4.svg`, `Vector.svg`
 
-## incident-management/ (24 files)
+## incident-management/ (14 files)
 
-`Breadcrumb-incedentm.png`, `SR-overview.svg`, `im-1-broadcast.svg`,
-`im-2-cd1-b.svg`, `im-2-cd1-t.svg`, `im-2-cd2-b.svg`, `im-2-cd2-t.svg`,
-`im-2-cd3-b.svg`, `im-2-cd3-t.svg`, `im-2-cd4-b.svg`, `im-2-cd4-t.svg`,
-`im-2-cd5-b.svg`, `im-2-cd5-t.svg`, `im-2-cd6-b.svg`, `im-2-cd6-t.svg`,
-`im-2-cd7-b.svg`, `im-2-cd7-t.svg`, `im-2-cd8-b.svg`, `im-2-cd8-t.svg`,
-`im-2-refresh.svg`, `im-3-settings.svg`, `im-3-tablerefresh.svg`,
-`im-3-vipflag1.svg`, `im-3-vipflag2.svg`
+`IM-Broadcast.svg`, `SR-overview.svg`,
+`im-2-cd1-t.svg`, `im-2-cd2-t.svg`, `im-2-cd3-t.svg`, `im-2-cd4-t.svg`,
+`im-2-cd5-t.svg`, `im-2-cd6-t.svg`, `im-2-cd7-t.svg`, `im-2-cd8-t.svg`,
+`im-3-settings.svg`, `im-3-tablerefresh.svg`, `im-3-vipflag1.svg`,
+`im-3-vipflag2.svg`
 
-## escalation-matrix/ (9 files)
+## escalation-matrix/ (10 files)
 
-`E1m.png`, `EMLevel4.png`, `EMLevel5.png`, `EMLevel6.png`,
-`Escalatedicon.png`, `L1-recon.png`, `L2-recon.png`, `L3-recon.png`,
-`TotalEM.png`
+`AirtelIQ2.svg`, `Allcount.svg`, `Escalatedicon.png`,
+`Knowledge-managemnt.svg`, `L1-recon.png`, `L2-recon.png`, `L3-recon.png`,
+`Level 6.svg`, `level 4.svg`, `level 5.svg`
 
-## change-management/ (18 files)
+## change-management/ (16 files)
 
 `Icon-2.png`, `Icon-3.png`, `Icon-4.png`, `Icon-5.png`, `Icon-6.png`,
-`Iconsch.png`, `Screenshot 2026-07-28 121147.png`, `cm-3-ic1.svg`,
-`cm-3-ic2.svg`, `cm-3-ic3.svg`, `contact.png`, `graph.png`,
-`iconoir_filter.png`, `mail po icons.svg`, `material-symbols_call.png`,
+`Iconsch.png`, `cm-3-ic1.svg`, `cm-3-ic2.svg`, `cm-3-ic3.svg`,
+`contact.png`, `graph.png`, `iconoir_filter.png`, `mail po icons.svg`,
 `planned outage icon.svg`, `plus.png`, `uil_calender.png`
 
-## _unused/ (66 files)
+## noc-portal/ (49 files)
 
-Not referenced anywhere in `src/app` as of this reorg. Kept rather than
-deleted in case they're wanted later — see the deletion rule above before
-removing any of them.
+`Aiinsights.svg`, `Clock.svg`, `Expected root cause.png`,
+`FLT Observation.png`, `Frame 13.svg`, `Frame 14.svg`,
+`Frame 427319839.svg`, `Frame 427319853.svg`, `Frame 427319854.svg`,
+`Frame 427319855.svg`, `Group ssr.svg`, `Group ssr2.svg`, `Group ssr3.svg`,
+`Group ssr4.png`, `Group ssr5.png`, `Knowledgemmt.svg`, `LSIHI.svg`,
+`Mail.svg`, `Phone.svg`, `RefreshCw.svg`, `RefreshCwss.svg`, `TOPpol.png`,
+`TrendingUp.svg`, `ai-chatbot-robot.png`, `alert.svg`, `alert2.svg`,
+`docu.svg`, `edit.png`, `eye.svg`, `fluent-mdl2_my-network.svg`,
+`gg_info-1.svg`, `gg_info.svg`, `graph.svg`, `hammenu.svg`, `hicon.svg`,
+`ic_sharp-alarm.svg`, `icon-park-outline_alarm.svg`,
+`iconoir_auto-flashssr.svg`, `invent.svg`, `ix_details.svg`, `link.svg`,
+`majesticons_analytics-line.svg`, `material-symbols_call.svg`,
+`mdi_list-status.svg`, `perfoemance.svg`, `proicons_attachssr.svg`,
+`solar_alarm-linearssr.svg`, `tdesign_call.svg`, `topology.svg`
 
-`academicons_open-data.png`, `Ai insights.png`, `Broadcasticon.png`,
-`cm-1-searchicon.png`, `contact.svg`, `Documentation-topbar.svg`,
-`edit.png`, `EMLevel1.png`, `EMLevel2.png`, `EMLevel3.png`,
-`Group 427319744.svg`, `header-topright.png`, `Icon-1.png`, `Icon-7.png`,
-`icon-park-outline_more-app.svg`, `icon-park-solid_add.png`,
-`icon-park_full-screen-one.svg`, `Icon.png`, `Icon.svg`,
-`im-1-airtel-logo.svg`, `im-1-brdct.svg`, `im-1-menu.svg`,
-`im-1-playbutton.svg`, `im-1-refresh.svg`, `im-1-searchbutton.svg`,
-`im-1-sidebar.svg`, `im-1-time.svg`, `incident-management.svg`,
-`inventory blueprint.png`, `link status.png`, `mdi_contact.png`,
-`mennuu.png`, `modern-ui.svg`, `performance.png`, `plus.svg`,
-`streamline_customer-support-1-1.svg`, `streamline_customer-support-1.svg`,
-`tabler_topology-star.svg`, `tdesign_task-error.svg`, `tile-1.svg`,
-`tile-2.svg`, `tile-3.svg`, `tile-4.svg`, `tile-5.svg`, `tile-6.svg`,
-`tile-7.svg`, `tile-8.svg`, `tile-open.svg`, `topology.png`,
-`Vector-1.png`, `Vector-10.png`, `Vector-11.png`, `Vector-12.png`,
-`Vector-13.png`, `Vector-14.png`, `Vector-15.png`, `Vector-2.png`,
-`Vector-2.svg`, `Vector-3.png`, `Vector-4.png`, `Vector-5.png`,
-`Vector-6.png`, `Vector-7.png`, `Vector-8.png`, `Vector-9.png`,
-`Vector.png`
-
-*(`.gitkeep` stays at the assets root, not in `_unused/` — it's a git
-housekeeping file, not a real asset.)*
+*(`.gitkeep` stays at the assets root — it's a git housekeeping file, not a
+real asset. This folder previously also had `NOC_Portal/` — a
+differently-cased duplicate of this same folder — and an `_unused/`
+archive of confirmed-orphaned files; both were removed in the 2026-08-28
+structure cleanup after every file was individually re-verified as
+genuinely unreferenced.)*

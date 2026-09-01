@@ -41,6 +41,10 @@ export class NocChatbotComponent {
     }
   }
 
+  onClearConversation(): void {
+    this.chat.clearConversation();
+  }
+
   onMessageAction(msg: ChatMessage): void {
     if (msg.actionRoute) {
       this.chat.close();

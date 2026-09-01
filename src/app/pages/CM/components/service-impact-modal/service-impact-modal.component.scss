@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 8px;
   overflow: auto;
 
   // Scrollable so a tall card can still be reached in full, but the
@@ -26,7 +26,7 @@
 }
 
 .si-card {
-  width: min(1140px, 92vw);
+  width: min(620px, 84vw);
   // No max-height / internal scroll here on purpose — the card grows to fit
   // all of its content (header, filter bar, full table for the current
   // page, pagination) and the overlay itself scrolls if that's taller than
@@ -49,13 +49,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 28px 32px;
+  padding: 12px 16px;
   border-bottom: 1.3px solid #f0f0f0;
 }
 .si-title {
-  font-size: 24px;
+  font-size: 16px;
   letter-spacing: -0.22px;
-  line-height: 33px;
+  line-height: 28px;
   font-weight: 600;
   color: #e40000;
 }
@@ -76,18 +76,18 @@
   flex-shrink: 0;
   display: flex;
   align-items: flex-end;
-  gap: 24px;
-  padding: 24px 32px;
+  gap: 10px;
+  padding: 12px 14px;
 }
 .si-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .si-field-domain { width: 230px; }
 .si-field-node { flex: 1 1 auto; min-width: 0; }
 .si-field-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.6px;
   text-transform: uppercase;
@@ -95,7 +95,7 @@
 }
 .si-field-box {
   position: relative;
-  height: 48px;
+  height: 36px;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   box-sizing: border-box;
@@ -122,7 +122,7 @@
   background: transparent;
   border-radius: 12px;
   font: inherit;
-  font-size: 15px;
+  font-size: 12px;
   color: #101828;
   padding: 0px 40px 0px 16px;
   transition: background-color 0.15s ease, box-shadow 0.15s ease;
@@ -146,14 +146,14 @@
   flex-shrink: 0;
 }
 .si-reset-btn {
-  height: 48px;
-  padding: 0px 24px;
+  height: 36px;
+  padding: 0px 16px;
   border-radius: 26px;
   background-color: #fff;
   border: 1px solid #d1d5db;
   color: #374151;
   font: inherit;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -161,14 +161,14 @@
   &:hover { background-color: rgba(0, 0, 0, 0.03); }
 }
 .si-search-btn {
-  height: 48px;
-  padding: 0px 28px;
+  height: 36px;
+  padding: 0px 18px;
   border-radius: 26px;
   background-color: #e40000;
   border: none;
   color: #fff;
   font: inherit;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: filter 0.15s ease;
@@ -184,22 +184,22 @@
   // .si-pagination), so 8px + 24px = 32px total — lining its title/cell/
   // footer text up with "Domain"/"Service Impact Details" above, which sit
   // at a flat 32px with no bordered box in between.
-  padding: 24px 8px 32px;
+  padding: 10px 8px 14px;
 }
 .si-results-header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 20px 24px;
+  gap: 10px;
+  padding: 14px 16px;
   border: 1px solid rgba(100, 116, 139, 0.22);
   border-bottom: none;
   border-radius: 12px 12px 0 0;
   background-color: #fff;
 }
 .si-results-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #101828;
 }
@@ -217,7 +217,7 @@
   outline: none;
   padding: 0px 16px;
   font: inherit;
-  font-size: 14px;
+  font-size: 12px;
   color: #101828;
   transition: border-color 0.15s ease;
 
@@ -232,7 +232,7 @@
   border: 1px solid #e40000;
   color: #e40000;
   font: inherit;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -252,7 +252,7 @@
   padding: 40px 0;
   text-align: center;
   color: #9ca3af;
-  font-size: 15px;
+  font-size: 12px;
 }
 .si-table {
   width: 100%;
@@ -262,18 +262,18 @@
   th {
     background-color: #f9fafb;
     border-bottom: 1px solid #eaecf0;
-    padding: 14px 24px;
+    padding: 10px 14px;
     text-align: left;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.44);
   }
   td {
-    padding: 16px 24px;
+    padding: 10px 14px;
     border-bottom: 1px solid #eaecf0;
-    font-size: 15px;
+    font-size: 12px;
     color: #374151;
   }
   tr:last-child td { border-bottom: none; }
@@ -292,13 +292,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 16px 24px;
+  gap: 10px;
+  padding: 10px 14px;
   border: 1px solid rgba(100, 116, 139, 0.22);
   border-top: none;
   border-radius: 0 0 12px 12px;
   background-color: #fafafb;
-  font-size: 14px;
+  font-size: 11px;
   color: #6b7280;
   flex-wrap: wrap;
 }
@@ -316,7 +316,7 @@
   .si-select {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0px 26px 0px 12px;
     color: #101828;
   }
@@ -341,7 +341,7 @@
   background-color: #fff;
   width: 32px;
   height: 32px;
-  font-size: 16px;
+  font-size: 12px;
   color: #374151;
   cursor: pointer;
   transition: background-color 0.15s ease;

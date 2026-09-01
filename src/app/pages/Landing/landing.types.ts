@@ -1,6 +1,11 @@
 export interface NavTabItem {
   label: string;
   active: boolean;
+  // Desktop-only override: when set, the desktop tab bar shows this instead
+  // of `label` (mobile keeps showing `label`), and clicking the desktop tab
+  // navigates to `route` instead of just toggling active state.
+  desktopLabel?: string;
+  route?: string;
 }
 
 export type MainCardKey = 'sr' | 'incident' | 'change' | 'escalation';

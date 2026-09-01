@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LandingComponent } from './pages/landing/landing.component';
-import { ChangeManagementLandingComponent } from './pages/change-management/landing/change-management-landing.component';
-import { ChangeManagementCrqComponent } from './pages/change-management/crq/change-management-crq.component';
-import { IncidentManagementComponent } from './pages/incident-management/incident-management.component';
-import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-matrix.component';
-import { NocPortalComponent } from './pages/noc-portal/noc-portal.component';
+import { LandingComponent } from './pages/Landing/landing.component';
+import { ChangeManagementLandingComponent } from './pages/CM/landing/change-management-landing.component';
+import { ChangeManagementCrqComponent } from './pages/CM/crq/change-management-crq.component';
+import { IncidentManagementComponent } from './pages/IM/incident-management.component';
+import { EscalationMatrixComponent } from './pages/EM/escalation-matrix.component';
+import { NocPortalComponent } from './pages/NOC/noc-portal.component';
 
 const routes: Routes = [
   {

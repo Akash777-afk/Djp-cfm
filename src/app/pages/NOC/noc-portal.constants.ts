@@ -2,9 +2,9 @@ import {
   AlarmBadge, OtnSpanLossRow, PrimaryNavItem, ProductDetailField,
   SrNotificationTab, StatusField, TopUtilityIcon,
 } from './noc-portal.types';
-import { SidebarNavItem } from '../change-management/shared/sidebar-nav/sidebar-nav.component';
+import { SidebarNavItem } from '../CM/components/sidebar-nav/sidebar-nav.component';
 
-const A = '/assets/NOC_Portal';
+const A = '/assets/noc-portal';
 
 export const PROFILE = {
   name: 'Sam Raechell',

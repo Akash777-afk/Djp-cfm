@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 14px;
   overflow: auto;
 
   scrollbar-width: none;
@@ -21,7 +21,7 @@
 }
 
 .ilm-card {
-  width: min(620px, 92vw);
+  width: min(520px, 92vw);
   margin: auto 0;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.22);
   border-radius: 22px;
@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 26px 30px;
+  padding: 14px 16px;
   border-bottom: 1.3px solid #f0f0f0;
 }
 .ilm-title {
@@ -63,8 +63,8 @@
 .ilm-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px 24px;
-  padding: 26px 30px;
+  gap: 12px 14px;
+  padding: 14px 16px;
 }
 .ilm-field {
   display: flex;
@@ -157,8 +157,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 20px 30px;
+  gap: 8px;
+  padding: 12px 15px;
   border-top: 1.3px solid #f0f0f0;
 }
 .ilm-cancel-btn {

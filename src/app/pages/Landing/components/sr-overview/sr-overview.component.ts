@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SectionVariant, SrRow } from '../../landing.types';
-import { LEVEL_COLORS, levelColorRgba } from '../../../escalation-matrix/escalation-matrix.constants';
+import { LEVEL_COLORS, levelColorRgba } from '../../../EM/escalation-matrix.constants';
 
 @Component({
   selector: 'app-sr-overview',

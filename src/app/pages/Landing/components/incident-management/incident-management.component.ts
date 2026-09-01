@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IncidentBar, IncidentStat, SectionVariant } from '../../landing.types';
-import { IncidentManagementService } from '../../../incident-management/services/incident-management.service';
+import { IncidentManagementService } from '../../../IM/services/incident-management.service';
 
 // Chrome (bg/border/color/width) is this card's own presentation, not
 // something any API returns — kept local and keyed by the real StatTile
